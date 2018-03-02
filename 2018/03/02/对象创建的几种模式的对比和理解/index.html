@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="设计模式,对象创建模式," />
 
 
 
@@ -79,16 +79,22 @@
 
 
 
-<meta name="description" content="记录花花小草的技术成长之旅">
-<meta property="og:type" content="website">
-<meta property="og:title" content="花花小草">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="对象创建模式有： 原型模式； 工厂方法； 抽象工厂； 生成器模式； 单例模式； 原型模式 应用于复制操作的模式。主要涉及到深复制和浅复制的理解； 工厂方法工厂方法模式是抽象工厂模式的组成部分。各种具体工厂重载其抽象工厂父类中定义的工厂方法，并用这个重载的工厂方法创建自己的产品。 生产者的重要之处不在于创建对象，而是使用（类或对象的）工厂方法创建具体产品，并返回抽象类型（也就是说返回的并不是具体的产">
+<meta name="keywords" content="设计模式,对象创建模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对象创建的几种模式的对比和理解">
+<meta property="og:url" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/index.html">
 <meta property="og:site_name" content="花花小草">
-<meta property="og:description" content="记录花花小草的技术成长之旅">
+<meta property="og:description" content="对象创建模式有： 原型模式； 工厂方法； 抽象工厂； 生成器模式； 单例模式； 原型模式 应用于复制操作的模式。主要涉及到深复制和浅复制的理解； 工厂方法工厂方法模式是抽象工厂模式的组成部分。各种具体工厂重载其抽象工厂父类中定义的工厂方法，并用这个重载的工厂方法创建自己的产品。 生产者的重要之处不在于创建对象，而是使用（类或对象的）工厂方法创建具体产品，并返回抽象类型（也就是说返回的并不是具体的产">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/工厂方法.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/抽象工厂.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/生成器模式.jpg">
+<meta property="og:updated_time" content="2018-03-02T03:07:40.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="花花小草">
-<meta name="twitter:description" content="记录花花小草的技术成长之旅">
+<meta name="twitter:title" content="对象创建的几种模式的对比和理解">
+<meta name="twitter:description" content="对象创建模式有： 原型模式； 工厂方法； 抽象工厂； 生成器模式； 单例模式； 原型模式 应用于复制操作的模式。主要涉及到深复制和浅复制的理解； 工厂方法工厂方法模式是抽象工厂模式的组成部分。各种具体工厂重载其抽象工厂父类中定义的工厂方法，并用这个重载的工厂方法创建自己的产品。 生产者的重要之处不在于创建对象，而是使用（类或对象的）工厂方法创建具体产品，并返回抽象类型（也就是说返回的并不是具体的产">
+<meta name="twitter:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/工厂方法.jpg">
 
 
 
@@ -118,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/"/>
 
 
 
 
 
-  <title>花花小草</title>
+  <title>对象创建的几种模式的对比和理解 | 花花小草</title>
   
 
 
@@ -143,8 +149,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -247,9 +252,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -279,9 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/02/对象创建的几种模式的对比和理解/" itemprop="url">对象创建的几种模式的对比和理解</a></h1>
+          <h1 class="post-title" itemprop="name headline">对象创建的几种模式的对比和理解</h1>
         
 
         <div class="post-meta">
@@ -353,26 +356,21 @@
       
 
       
-        
-          
-          对象创建模式有：
-原型模式；
+        <p>对象创建模式有：</p>
+<pre><code>原型模式；
 工厂方法；
 抽象工厂；
 生成器模式；
 单例模式；
-原型模式 应用于复制操作的模式。主要涉及到深复制和浅复制的理解；
-工厂方法工厂方法模式是抽象工厂模式的组成部分。各种具体工厂重载其抽象工厂父类中定义的工厂方法，并用这个重载的工厂方法创建自己的产品。
-生产者的重要之处不在
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/02/对象创建的几种模式的对比和理解/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+</code></pre><h3 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h3><p> 应用于复制操作的模式。主要涉及到深复制和浅复制的理解；</p>
+<h3 id="工厂方法"><a href="#工厂方法" class="headerlink" title="工厂方法"></a>工厂方法</h3><p>工厂方法模式是抽象工厂模式的组成部分。<br>各种具体工厂重载其抽象工厂父类中定义的工厂方法，并用这个重载的工厂方法创建自己的产品。</p>
+<p>生产者的重要之处不在于创建对象，而是使用（类或对象的）工厂方法创建具体产品，并返回抽象类型（也就是说返回的并不是具体的产品子类，而是具体产品的父类Product）。</p>
+<p>一个类中无法预期需要生成哪个类的对象，想让它的子类决定生成的对象。<br><img src="/2018/03/02/对象创建的几种模式的对比和理解/工厂方法.jpg" alt="工厂方法"></p>
+<h3 id="抽象工厂"><a href="#抽象工厂" class="headerlink" title="抽象工厂"></a>抽象工厂</h3><p>工厂方法生产的都是一个系列的产品。<br>而抽象工厂是对工厂方法的Product和Creator作了抽象之后，Creator的子类可以通过组合Product创建多系列产品。<br><img src="/2018/03/02/对象创建的几种模式的对比和理解/抽象工厂.jpg" alt="抽象工厂"></p>
+<h3 id="生成器模式"><a href="#生成器模式" class="headerlink" title="生成器模式"></a>生成器模式</h3><p>生成器模式，也叫做建造者模式；<br>生成器模式中包含两个角色：分别是指导者和生成器。</p>
+<p>上面说抽象工厂是为了生产一系列产品的复杂创建类型的设计模式，<br>抽象工厂则是会以固定的方式，固定的步骤来构建一个类型的产品。虽然它可以生成一系列的产品，但是产品种类相同的话，那么生产的步骤也是固定的。如果要生产不同的产品，就需要创建不同的类来实现不同的事物。抽象工厂在创建完产品时，会立即返回。<br>生成器模式，是为了以不同的方式（例如，不同的状态组合），不同的步骤来构建同类产品；这里生成的对象，使用不同的步骤和方式就可以生成有差别的对象。构建不同状态的同一事物。生成器模式是在构建步骤完成之后在最后返回产品。<br><img src="/2018/03/02/对象创建的几种模式的对比和理解/生成器模式.jpg" alt="生成器模式"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>关于原型模式和单例模式比较简单，就不一一对比了。工厂方法，抽象工厂和生成器模式几个创建复杂对象的模式有时候可能引起混淆，所以做了简单的对比，具体的实现还是需要在项目中根据具体情况来选择合适的模式。</p>
+
       
     </div>
     
@@ -382,168 +380,72 @@
     
 
     
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持就是对我的鼓励</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="shiru 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="shiru 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
 
     
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/08/Mac下基于github的hexo博客搭建及常用功能添加/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="shiru">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花花小草">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/08/Mac下基于github的hexo博客搭建及常用功能添加/" itemprop="url">Mac下基于github的hexo博客搭建及常用功能添加</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-08T11:32:26+08:00">
-                2018-02-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hexo博客教程/" itemprop="url" rel="index">
-                    <span itemprop="name">hexo博客教程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
+            <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
           
-
+            <a href="/tags/对象创建模式/" rel="tag"># 对象创建模式</a>
           
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
+      
 
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+      
       
       
 
       
-        
-          
-          这篇文章主要讲述了在Mac上如何基于github搭建属于自己的博客，一方面可以方便和小伙伴们互相学习，一方面方便自己记录日常。
-其实网上搭建博客的方法有很多种，比如基于Wordpress的，基于jekyll的，还有就是基于hexo的。基于Wordpress的需要购买域名和虚拟主机，相对而言，基于
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/02/08/Mac下基于github的hexo博客搭建及常用功能添加/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/08/Mac下基于github的hexo博客搭建及常用功能添加/" rel="next" title="Mac下基于github的hexo博客搭建及常用功能添加">
+                <i class="fa fa-chevron-left"></i> Mac下基于github的hexo博客搭建及常用功能添加
+              </a>
+            
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
 
-    
+          <span class="post-nav-divider"></span>
 
-    
-
-    
-
-    <footer class="post-footer">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
       
 
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -553,10 +455,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -564,6 +467,15 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzk3NC8xMDUwOQ=="></div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -584,8 +496,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -645,6 +566,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#原型模式"><span class="nav-number">1.</span> <span class="nav-text">原型模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工厂方法"><span class="nav-number">2.</span> <span class="nav-text">工厂方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抽象工厂"><span class="nav-number">3.</span> <span class="nav-text">抽象工厂</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成器模式"><span class="nav-number">4.</span> <span class="nav-text">生成器模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number"></span> <span class="nav-text">总结</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -778,6 +715,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -806,6 +747,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 
