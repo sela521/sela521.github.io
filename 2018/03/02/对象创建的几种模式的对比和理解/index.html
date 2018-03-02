@@ -79,21 +79,21 @@
 
 
 
-<meta name="description" content="对象创建模式有： 原型模式； 工厂方法； 抽象工厂； 生成器模式； 单例模式； 原型模式 应用于复制操作的模式。主要涉及到深复制和浅复制的理解； 工厂方法工厂方法模式是抽象工厂模式的组成部分。 各种具体工厂重载其抽象工厂父类中定义的工厂方法，并用这个重载的工厂方法创建自己的产品。 生产者的重要之处不在于创建对象，而是使用（类或对象的）工厂方法创建具体产品，并返回抽象类型（也就是说返回的并不是具体的">
+<meta name="description" content="对象创建模式有： 原型模式； 工厂方法； 抽象工厂； 生成器模式； 单例模式； 原型模式 应用于复制操作的模式。主要涉及到深复制和浅复制的理解； 对象在复制时，需要它所对应的类实现了NSCopying协议中定义的- (id)copyWithZone:(NSZone *)zone方法。 但是如果要深复制数组，并且数组中的元素是对象的话，就需要注意，不是简单的[array copy]就可以实现的">
 <meta name="keywords" content="设计模式,对象创建模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="对象创建的几种模式的对比和理解">
 <meta property="og:url" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/index.html">
 <meta property="og:site_name" content="花花小草">
-<meta property="og:description" content="对象创建模式有： 原型模式； 工厂方法； 抽象工厂； 生成器模式； 单例模式； 原型模式 应用于复制操作的模式。主要涉及到深复制和浅复制的理解； 工厂方法工厂方法模式是抽象工厂模式的组成部分。 各种具体工厂重载其抽象工厂父类中定义的工厂方法，并用这个重载的工厂方法创建自己的产品。 生产者的重要之处不在于创建对象，而是使用（类或对象的）工厂方法创建具体产品，并返回抽象类型（也就是说返回的并不是具体的">
+<meta property="og:description" content="对象创建模式有： 原型模式； 工厂方法； 抽象工厂； 生成器模式； 单例模式； 原型模式 应用于复制操作的模式。主要涉及到深复制和浅复制的理解； 对象在复制时，需要它所对应的类实现了NSCopying协议中定义的- (id)copyWithZone:(NSZone *)zone方法。 但是如果要深复制数组，并且数组中的元素是对象的话，就需要注意，不是简单的[array copy]就可以实现的">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/工厂方法.jpg">
 <meta property="og:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/抽象工厂.jpg">
 <meta property="og:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/生成器模式.jpg">
-<meta property="og:updated_time" content="2018-03-02T03:35:44.000Z">
+<meta property="og:updated_time" content="2018-03-02T05:41:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="对象创建的几种模式的对比和理解">
-<meta name="twitter:description" content="对象创建模式有： 原型模式； 工厂方法； 抽象工厂； 生成器模式； 单例模式； 原型模式 应用于复制操作的模式。主要涉及到深复制和浅复制的理解； 工厂方法工厂方法模式是抽象工厂模式的组成部分。 各种具体工厂重载其抽象工厂父类中定义的工厂方法，并用这个重载的工厂方法创建自己的产品。 生产者的重要之处不在于创建对象，而是使用（类或对象的）工厂方法创建具体产品，并返回抽象类型（也就是说返回的并不是具体的">
+<meta name="twitter:description" content="对象创建模式有： 原型模式； 工厂方法； 抽象工厂； 生成器模式； 单例模式； 原型模式 应用于复制操作的模式。主要涉及到深复制和浅复制的理解； 对象在复制时，需要它所对应的类实现了NSCopying协议中定义的- (id)copyWithZone:(NSZone *)zone方法。 但是如果要深复制数组，并且数组中的元素是对象的话，就需要注意，不是简单的[array copy]就可以实现的">
 <meta name="twitter:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/工厂方法.jpg">
 
 
@@ -362,7 +362,7 @@
 抽象工厂；
 生成器模式；
 单例模式；
-</code></pre><h3 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h3><p> 应用于复制操作的模式。主要涉及到深复制和浅复制的理解；</p>
+</code></pre><h3 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h3><p> 应用于复制操作的模式。主要涉及到深复制和浅复制的理解；<br> 对象在复制时，需要它所对应的类实现了NSCopying协议中定义的- (id)copyWithZone:(NSZone *)zone方法。<br> 但是如果要深复制数组，并且数组中的元素是对象的话，就需要注意，不是简单的[array copy]就可以实现的，这样数组中的对象还是指向同一地址，并没有实现数组的深拷贝。而要实现数组深拷贝，首先数组中的对象所在的类，需要实现上面所讲的copyWithZone方法。然后对数组进行遍历时，对每个元素进行copy。还有一种比较简便的方法，就是使用这个方法[[NSMutableArray alloc] initWithArray:arr1 copyItems:YES]。当然前提也是这个对象所对应的类实现了copyWithZone。</p>
 <h3 id="工厂方法"><a href="#工厂方法" class="headerlink" title="工厂方法"></a>工厂方法</h3><p>工厂方法模式是抽象工厂模式的组成部分。</p>
 <p>各种具体工厂重载其抽象工厂父类中定义的工厂方法，并用这个重载的工厂方法创建自己的产品。</p>
 <p>生产者的重要之处不在于创建对象，而是使用（类或对象的）工厂方法创建具体产品，并返回抽象类型（也就是说返回的并不是具体的产品子类，而是具体产品的父类Product）。</p>
