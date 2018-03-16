@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="设计模式,对象创建模式," />
+  <meta name="keywords" content="推送,通知,极光推送," />
 
 
 
@@ -79,22 +79,20 @@
 
 
 
-<meta name="description" content="对象创建模式有： 原型模式； 工厂方法； 抽象工厂； 生成器模式； 单例模式； 原型模式 应用于复制操作的模式。主要涉及到深复制和浅复制的理解； 对象在复制时，需要它所对应的类实现了NSCopying协议中定义的- (id)copyWithZone:(NSZone *)zone方法。 但是如果要深复制数组，并且数组中的元素是对象的话，就需要注意，不是简单的[array copy]就可以实现的">
-<meta name="keywords" content="设计模式,对象创建模式">
+<meta name="description" content="极光推送：JPush iOS推送分为两种：第一种是APNs[(Apple Push Notification Service)苹果推送通知服务]推送，第二种是JPush应用内推送； APNs推送APNs推送，是指JPush代理开发者的应用向苹果的APNs服务器推送，再由服务器向iOS设备推送。这种方式需要基于开发者提供的应用证书。这种推送方式可以通过在设置-&amp;gt;通知中关闭。这种推送方法需要应用">
+<meta name="keywords" content="推送,通知,极光推送">
 <meta property="og:type" content="article">
-<meta property="og:title" content="对象创建的几种模式的对比和理解">
-<meta property="og:url" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/index.html">
+<meta property="og:title" content="iOS 极光推送了解">
+<meta property="og:url" content="http://yoursite.com/2018/03/16/iOS-极光推送了解/index.html">
 <meta property="og:site_name" content="花花小草">
-<meta property="og:description" content="对象创建模式有： 原型模式； 工厂方法； 抽象工厂； 生成器模式； 单例模式； 原型模式 应用于复制操作的模式。主要涉及到深复制和浅复制的理解； 对象在复制时，需要它所对应的类实现了NSCopying协议中定义的- (id)copyWithZone:(NSZone *)zone方法。 但是如果要深复制数组，并且数组中的元素是对象的话，就需要注意，不是简单的[array copy]就可以实现的">
+<meta property="og:description" content="极光推送：JPush iOS推送分为两种：第一种是APNs[(Apple Push Notification Service)苹果推送通知服务]推送，第二种是JPush应用内推送； APNs推送APNs推送，是指JPush代理开发者的应用向苹果的APNs服务器推送，再由服务器向iOS设备推送。这种方式需要基于开发者提供的应用证书。这种推送方式可以通过在设置-&amp;gt;通知中关闭。这种推送方法需要应用">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/工厂方法.jpg">
-<meta property="og:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/抽象工厂.jpg">
-<meta property="og:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/生成器模式.jpg">
-<meta property="og:updated_time" content="2018-03-02T05:46:09.000Z">
+<meta property="og:image" content="http://yoursite.com/2018/03/16/iOS-极光推送了解/APNS和应用内消息的对比.png">
+<meta property="og:updated_time" content="2018-03-16T08:47:15.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="对象创建的几种模式的对比和理解">
-<meta name="twitter:description" content="对象创建模式有： 原型模式； 工厂方法； 抽象工厂； 生成器模式； 单例模式； 原型模式 应用于复制操作的模式。主要涉及到深复制和浅复制的理解； 对象在复制时，需要它所对应的类实现了NSCopying协议中定义的- (id)copyWithZone:(NSZone *)zone方法。 但是如果要深复制数组，并且数组中的元素是对象的话，就需要注意，不是简单的[array copy]就可以实现的">
-<meta name="twitter:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/工厂方法.jpg">
+<meta name="twitter:title" content="iOS 极光推送了解">
+<meta name="twitter:description" content="极光推送：JPush iOS推送分为两种：第一种是APNs[(Apple Push Notification Service)苹果推送通知服务]推送，第二种是JPush应用内推送； APNs推送APNs推送，是指JPush代理开发者的应用向苹果的APNs服务器推送，再由服务器向iOS设备推送。这种方式需要基于开发者提供的应用证书。这种推送方式可以通过在设置-&amp;gt;通知中关闭。这种推送方法需要应用">
+<meta name="twitter:image" content="http://yoursite.com/2018/03/16/iOS-极光推送了解/APNS和应用内消息的对比.png">
 
 
 
@@ -124,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/03/16/iOS-极光推送了解/"/>
 
 
 
 
 
-  <title>对象创建的几种模式的对比和理解 | 花花小草</title>
+  <title>iOS 极光推送了解 | 花花小草</title>
   
 
 
@@ -267,7 +265,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/16/iOS-极光推送了解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shiru">
@@ -284,7 +282,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">对象创建的几种模式的对比和理解</h1>
+          <h1 class="post-title" itemprop="name headline">iOS 极光推送了解</h1>
         
 
         <div class="post-meta">
@@ -296,8 +294,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-02T10:49:50+08:00">
-                2018-03-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T16:27:52+08:00">
+                2018-03-16
               </time>
             
 
@@ -319,8 +317,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">设计模式</span>
+                  <a href="/categories/推送通知/" itemprop="url" rel="index">
+                    <span itemprop="name">推送通知</span>
                   </a>
                 </span>
 
@@ -356,25 +354,27 @@
       
 
       
-        <p>对象创建模式有：</p>
-<pre><code>原型模式；
-工厂方法；
-抽象工厂；
-生成器模式；
-单例模式；
-</code></pre><h3 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h3><p> 应用于复制操作的模式。主要涉及到深复制和浅复制的理解；<br> 对象在复制时，需要它所对应的类实现了NSCopying协议中定义的- (id)copyWithZone:(NSZone *)zone方法。<br> 但是如果要深复制数组，并且数组中的元素是对象的话，就需要注意，不是简单的[array copy]就可以实现的，这样数组中的对象还是指向同一地址，并没有实现数组的深拷贝。而要实现数组深拷贝，首先数组中的对象所在的类，需要实现上面所讲的copyWithZone方法。然后对数组进行遍历时，对每个元素进行copy。还有一种比较简便的方法，就是使用这个方法[[NSMutableArray alloc] initWithArray:array copyItems:YES]。当然前提也是这个对象所对应的类实现了copyWithZone。</p>
-<h3 id="工厂方法"><a href="#工厂方法" class="headerlink" title="工厂方法"></a>工厂方法</h3><p>工厂方法模式是抽象工厂模式的组成部分。</p>
-<p>各种具体工厂重载其抽象工厂父类中定义的工厂方法，并用这个重载的工厂方法创建自己的产品。</p>
-<p>生产者的重要之处不在于创建对象，而是使用（类或对象的）工厂方法创建具体产品，并返回抽象类型（也就是说返回的并不是具体的产品子类，而是具体产品的父类Product）。</p>
-<p>适合“一个类中无法预期需要生成哪个类的对象，想让它的子类决定生成的对象”的情况。<br><img src="/2018/03/02/对象创建的几种模式的对比和理解/工厂方法.jpg" alt="工厂方法"></p>
-<h3 id="抽象工厂"><a href="#抽象工厂" class="headerlink" title="抽象工厂"></a>抽象工厂</h3><p>工厂方法生产的都是一种产品。</p>
-<p>而抽象工厂是对工厂方法的Product和Creator作了抽象之后，Creator的子类可以通过组合Product创建一系列的多种产品。如果需要增加产品种类，只要增加相应的产品类，不会影响别的产品的创建。<br><img src="/2018/03/02/对象创建的几种模式的对比和理解/抽象工厂.jpg" alt="抽象工厂"></p>
-<h3 id="生成器模式"><a href="#生成器模式" class="headerlink" title="生成器模式"></a>生成器模式</h3><p>生成器模式，也叫做建造者模式；</p>
-<p>生成器模式中包含两个角色：分别是指导者和生成器。生成器模式所要构建的对象是由很多部分组成的。</p>
-<p>上面说抽象工厂是为了生产一系列产品的复杂创建类型的设计模式，</p>
-<p>抽象工厂则是会以固定的方式，固定的步骤来构建一个类型的产品。虽然它可以生成一系列的产品，但是产品种类相同的话，那么生产的步骤也是固定的。如果要生产不同的产品，就需要创建不同的类来实现不同的事物。抽象工厂在创建完产品时，会立即返回。</p>
-<p>生成器模式，是为了以不同的方式（例如，不同的状态组合），不同的步骤来分步构建同类产品；这里生成的对象，使用不同的步骤和方式就可以生成有差别的对象。构建不同状态的同一事物。生成器模式是在构建步骤完成之后在最后返回产品。<br><img src="/2018/03/02/对象创建的几种模式的对比和理解/生成器模式.jpg" alt="生成器模式"></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>关于原型模式和单例模式比较简单，就不一一对比了。工厂方法，抽象工厂和生成器模式几个创建复杂对象的模式有时候可能引起混淆，所以做了简单的对比。具体的实现还是需要在项目中根据具体情况来选择合适的模式。网上也有很多关于这几种模式的举例，根据每种模式的特点，自己最好能想出几个例子，会有助于理解。</p>
+        <p>极光推送：JPush iOS推送分为两种：第一种是APNs[(Apple Push Notification Service)苹果推送通知服务]推送，第二种是JPush应用内推送；</p>
+<h3 id="APNs推送"><a href="#APNs推送" class="headerlink" title="APNs推送"></a>APNs推送</h3><p>APNs推送，是指JPush代理开发者的应用向苹果的APNs服务器推送，再由服务器向iOS设备推送。这种方式需要基于开发者提供的应用证书。这种推送方式可以通过在设置-&gt;通知中关闭。这种推送方法需要应用的证书和推送指定的iOS环境匹配才能收到，也就是说要证书匹配。<br>（苹果官方推送系统）可随时推送。如果APP处于后台或者退出状态，会以系统的APNS提醒。如果APP处于前台状态，就不展示提醒。</p>
+<h3 id="JPush应用内推送"><a href="#JPush应用内推送" class="headerlink" title="JPush应用内推送"></a>JPush应用内推送</h3><p>JPush应用内推送，是指当APP启动时，应用内嵌的JPush SDK会开启长连接到JPush服务器，因此，服务器（极光自己的推送服务器）可以直接推送消息到APP。。这种的只有在APP处于前台活跃状态，和JPush建立连接时才能接受到推送来的消息。<br>默认不展示提醒。可通过JPush提供的接口networkDidReceiveMessage接口自己来获取推送内容。</p>
+<h3 id="APNs推送与JPush应用内推送的区别"><a href="#APNs推送与JPush应用内推送的区别" class="headerlink" title="APNs推送与JPush应用内推送的区别"></a>APNs推送与JPush应用内推送的区别</h3><p><img src="/2018/03/16/iOS-极光推送了解/APNS和应用内消息的对比.png" alt="APNs推送与JPush应用内推送的区别"></p>
+<h4 id="别名"><a href="#别名" class="headerlink" title="别名"></a>别名</h4><p>为每一个安装了应用程序的用户，可以指定一个别名。推送消息时，就以此别名来表示。<br>如果一个别名被指定给多个用户，那么服务器给这个别名推送消息时，就会同时给这几个同别名的用户都推送消息。<br>别名的命名和长度也是有限制的。个数只能有一个。<br>有对应的API来设置，删除，获取别名。<br>我们的应用中，就是以老师的teacherId来作为每个用户的别名的。</p>
+<h4 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h4><p>给每个用户可以指定多个标签，可以在推送消息时，根据这些标签，批量的推送给带这些标签的用户。<br>标签的命名，个数和长度都有限制。<br>都有对应的API来添加，设置、清除、获取。</p>
+<h4 id="Badge"><a href="#Badge" class="headerlink" title="Badge"></a>Badge</h4><p>设置程序图标的右上角角标，一般就是消息或者推送通知的个数。</p>
+<h3 id="如何获取APNs推送的内容"><a href="#如何获取APNs推送的内容" class="headerlink" title="如何获取APNs推送的内容"></a>如何获取APNs推送的内容</h3><p>当用户点击推送来打开应用时，应用可以在APPDelegate中的下面两个方法中根据不同的状态来获取推送的内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1、- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions;</span><br><span class="line">根据launchOptions这个字典中是否含有UIApplicationLaunchOptionsRemoteNotificationKey这个key值来判断应用的打开方式；</span><br><span class="line">如果含有这个key值，就说明是从点击推送的消息来打开应用的。如果不含有这个key的话，就说明是通过点击桌面的图标或者其他的方式来启动的。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2、iOS6及以下的系统版本</span><br><span class="line">- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">3、iOS7及以上版本</span><br><span class="line">- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">4、iOS10及以上版本</span><br><span class="line">- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler; </span><br><span class="line">// NSDictionary * userInfo = notification.request.content.userInfo; </span><br><span class="line">// APNs内容为userInfo</span><br><span class="line"></span><br><span class="line">- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler; </span><br><span class="line">// NSDictionary * userInfo = response.notification.request.content.userInfo; </span><br><span class="line">// APNs内容为userInfo</span><br></pre></td></tr></table></figure>
+<h3 id="如何获取JPush自定义消息推送内容"><a href="#如何获取JPush自定义消息推送内容" class="headerlink" title="如何获取JPush自定义消息推送内容"></a>如何获取JPush自定义消息推送内容</h3><p>要获取JPush的内容得在APPDelegate中的- (BOOL)application:(UIApplication <em>)application didFinishLaunchingWithOptions:(NSDictionary </em>) launchOptions方法中注册通知并实现其回调方法。<br>如注册通知<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];</span><br><span class="line">    [defaultCenter addObserver:self selector:@selector(networkDidReceiveMessage:) name:kJPFNetworkDidReceiveMessageNotification object:nil];</span><br></pre></td></tr></table></figure></p>
+<p>实现回调</p>
+<pre><code>- (void)networkDidReceiveMessage:(NSNotification *)notification {
+        NSDictionary * userInfo = [notification userInfo];
+        NSString *content = [userInfo valueForKey:@&quot;content&quot;];
+        NSDictionary *extras = [userInfo valueForKey:@&quot;extras&quot;]; 
+        NSString *customizeField1 = [extras valueForKey:@&quot;customizeField1&quot;]; //服务端传递的Extras附加字段，key是自己定义的
+    }
+</code></pre><p>我们项目中是在- (BOOL)application:(UIApplication <em>)application didFinishLaunchingWithOptions:(NSDictionary </em>) launchOptions中首先去设置用户的别名，在设置完成的回调方法中去注册获取JPush推送的通知，并实现了推送的回调。</p>
 
       
     </div>
@@ -421,9 +421,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
+            <a href="/tags/推送/" rel="tag"># 推送</a>
           
-            <a href="/tags/对象创建模式/" rel="tag"># 对象创建模式</a>
+            <a href="/tags/通知/" rel="tag"># 通知</a>
+          
+            <a href="/tags/极光推送/" rel="tag"># 极光推送</a>
           
         </div>
       
@@ -436,8 +438,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/02/08/Mac下基于github的hexo博客搭建及常用功能添加/" rel="next" title="Mac下基于github的hexo博客搭建及常用功能添加">
-                <i class="fa fa-chevron-left"></i> Mac下基于github的hexo博客搭建及常用功能添加
+              <a href="/2018/03/02/对象创建的几种模式的对比和理解/" rel="next" title="对象创建的几种模式的对比和理解">
+                <i class="fa fa-chevron-left"></i> 对象创建的几种模式的对比和理解
               </a>
             
           </div>
@@ -445,10 +447,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/16/iOS-极光推送了解/" rel="prev" title="iOS 极光推送了解">
-                iOS 极光推送了解 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -585,7 +583,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#原型模式"><span class="nav-number">1.</span> <span class="nav-text">原型模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工厂方法"><span class="nav-number">2.</span> <span class="nav-text">工厂方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抽象工厂"><span class="nav-number">3.</span> <span class="nav-text">抽象工厂</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成器模式"><span class="nav-number">4.</span> <span class="nav-text">生成器模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number"></span> <span class="nav-text">总结</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#APNs推送"><span class="nav-number">1.</span> <span class="nav-text">APNs推送</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JPush应用内推送"><span class="nav-number">2.</span> <span class="nav-text">JPush应用内推送</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#APNs推送与JPush应用内推送的区别"><span class="nav-number">3.</span> <span class="nav-text">APNs推送与JPush应用内推送的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#别名"><span class="nav-number">3.1.</span> <span class="nav-text">别名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#标签"><span class="nav-number">3.2.</span> <span class="nav-text">标签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Badge"><span class="nav-number">3.3.</span> <span class="nav-text">Badge</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何获取APNs推送的内容"><span class="nav-number">4.</span> <span class="nav-text">如何获取APNs推送的内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何获取JPush自定义消息推送内容"><span class="nav-number">5.</span> <span class="nav-text">如何获取JPush自定义消息推送内容</span></a></li></ol></div>
             
 
           </div>
