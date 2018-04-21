@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,网络请求," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="平时在项目中一直是用网络请求的第三方框架 AFNetwork和 ASIHTTPRequest比较多一些。最近还是想系统的从苹果官方的原生网络类开始做一个详细的了解。 原生网络请求类首先苹果官方提供的原生网络请求类包括：NSURLConnection和NSURLSession。其中，NSURLConnection从iOS9开始不被官方推荐使用了，而推荐使用从iOS7开始出现的NSURLSession">
+<meta name="keywords" content="iOS,网络请求">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 网络请求--原生网络类">
+<meta property="og:url" content="http://yoursite.com/2018/04/21/iOS-网络请求-原生网络类/index.html">
+<meta property="og:site_name" content="花花小草">
+<meta property="og:description" content="平时在项目中一直是用网络请求的第三方框架 AFNetwork和 ASIHTTPRequest比较多一些。最近还是想系统的从苹果官方的原生网络类开始做一个详细的了解。 原生网络请求类首先苹果官方提供的原生网络请求类包括：NSURLConnection和NSURLSession。其中，NSURLConnection从iOS9开始不被官方推荐使用了，而推荐使用从iOS7开始出现的NSURLSession">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-21T12:18:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS 网络请求--原生网络类">
+<meta name="twitter:description" content="平时在项目中一直是用网络请求的第三方框架 AFNetwork和 ASIHTTPRequest比较多一些。最近还是想系统的从苹果官方的原生网络类开始做一个详细的了解。 原生网络请求类首先苹果官方提供的原生网络请求类包括：NSURLConnection和NSURLSession。其中，NSURLConnection从iOS9开始不被官方推荐使用了，而推荐使用从iOS7开始出现的NSURLSession">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/21/iOS-网络请求-原生网络类/"/>
+
+
+
+
+
+  <title>iOS 网络请求--原生网络类 | 花花小草</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">花花小草</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/21/iOS-网络请求-原生网络类/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shiru">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花花小草">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS 网络请求--原生网络类</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-21T19:27:04+08:00">
+                2018-04-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>平时在项目中一直是用网络请求的第三方框架 AFNetwork和 ASIHTTPRequest比较多一些。最近还是想系统的从苹果官方的原生网络类开始做一个详细的了解。</p>
+<p>原生网络请求类<br>首先苹果官方提供的原生网络请求类包括：NSURLConnection和NSURLSession。<br>其中，NSURLConnection从iOS9开始不被官方推荐使用了，而推荐使用从iOS7开始出现的NSURLSession。</p>
+<h2 id="（一）、NSURLConnection"><a href="#（一）、NSURLConnection" class="headerlink" title="（一）、NSURLConnection"></a>（一）、NSURLConnection</h2><h3 id="概述："><a href="#概述：" class="headerlink" title="概述："></a>概述：</h3><p>我们通过提供 NSURLRequest对象给NSURLConnection，来异步的加载URL的内容。<br>NSURLConnection的接口比较少，只提供了开始和取消URL请求的操作。</p>
+<p>NSURLRequest不能修改请求方式，默认GET请求；<br>NSMutableURLRequest可以修改请求方式。</p>
+<h3 id="NSURLConnection请求的方式"><a href="#NSURLConnection请求的方式" class="headerlink" title="NSURLConnection请求的方式"></a>NSURLConnection请求的方式</h3><p>NSURLConnection请求的方式有三种：</p>
+<h4 id="1、同步请求："><a href="#1、同步请求：" class="headerlink" title="1、同步请求："></a>1、同步请求：</h4><p>NSURLConnection的类目 NSURLConnectionSynchronousLoading提供了同步加载的方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ (nullable NSData *)sendSynchronousRequest:(NSURLRequest *)request returningResponse:(NSURLResponse * _Nullable * _Nullable)response error:(NSError **)error API_DEPRECATED(&quot;Use [NSURLSession dataTaskWithRequest:completionHandler:] (see NSURLSession.h&quot;, macos(10.3,10.11), ios(2.0,9.0), tvos(9.0,9.0)) __WATCHOS_PROHIBITED;</span><br></pre></td></tr></table></figure></p>
+<h4 id="2、Block异步请求"><a href="#2、Block异步请求" class="headerlink" title="2、Block异步请求"></a>2、Block异步请求</h4><p>NSURLConnection的类目 NSURLConnectionQueuedLoading提供了异步加载的方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+ (void)sendAsynchronousRequest:(NSURLRequest*) request</span><br><span class="line">                          queue:(NSOperationQueue*) queue</span><br><span class="line">              completionHandler:(void (^)(NSURLResponse* _Nullable response, NSData* _Nullable data, NSError* _Nullable connectionError)) handler API_DEPRECATED(&quot;Use [NSURLSession dataTaskWithRequest:completionHandler:] (see NSURLSession.h&quot;, macos(10.7,10.11), ios(5.0,9.0), tvos(9.0,9.0)) __WATCHOS_PROHIBITED;</span><br></pre></td></tr></table></figure></p>
+<h4 id="3、代理异步请求"><a href="#3、代理异步请求" class="headerlink" title="3、代理异步请求"></a>3、代理异步请求</h4><p>逻辑上来讲，NSURLConnectionDownloadDelegate，NSURLConnectionDataDelegate，都是NSURLConnectionDelegate的子类。</p>
+<p>我们可以通过遵守NSURLConnectionDelegate，NSURLConnectionDownloadDelegate，NSURLConnectionDataDelegate协议的代理对象来创建URLconnection对象。</p>
+<p>当URL请求加载时，这些connection会调用代理的方法来提供加载进度和状态。也可以调用代理方法来复写这些connection的默认行为（比如，指定如何处理特定的重定向）。</p>
+<p>当加载失败时，调用NSURLConnectionDelegate的代理方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;</span><br></pre></td></tr></table></figure></p>
+<p>当加载完成并加载成功时，调用NSURLConnectionDelegate的代理方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)connectionDidFinishLoading:(NSURLConnection *)connection;</span><br></pre></td></tr></table></figure></p>
+<p>和NSURLConnectionDownloadDelegate的代理方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//加载成功后提供下载文件的位置</span><br><span class="line">- (void)connectionDidFinishDownloading:(NSURLConnection *)connection destinationURL:(NSURL *) destinationURL;</span><br></pre></td></tr></table></figure></p>
+<h3 id="NSURLConnection三种请求的示例"><a href="#NSURLConnection三种请求的示例" class="headerlink" title="NSURLConnection三种请求的示例"></a>NSURLConnection三种请求的示例</h3><h4 id="1、同步请求"><a href="#1、同步请求" class="headerlink" title="1、同步请求"></a>1、同步请求</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//发送同步请求，会阻塞主线程</span><br><span class="line">NSURL *url = [NSURL URLWithString:@&quot;https://www.baidu.com/&quot;];</span><br><span class="line">NSURLRequest *request = [NSURLRequest requestWithURL:url];</span><br><span class="line"></span><br><span class="line">NSHTTPURLResponse *response = nil;</span><br><span class="line">NSError *error = nil;</span><br><span class="line">NSData *syncData = [NSURLConnection sendSynchronousRequest:request returningResponse:&amp;response error:&amp;error];</span><br><span class="line"></span><br><span class="line">NSString *str = [[NSString alloc] initWithData:syncData encoding:NSUTF8StringEncoding];</span><br><span class="line">NSLog(@&quot;syncData = %@&quot;, str);</span><br></pre></td></tr></table></figure>
+<h4 id="2、异步请求"><a href="#2、异步请求" class="headerlink" title="2、异步请求"></a>2、异步请求</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//发送异步请求</span><br><span class="line">NSURL *url = [NSURL URLWithString:@&quot;https://www.baidu.com/&quot;];</span><br><span class="line">NSURLRequest *request = [NSURLRequest requestWithURL:url];</span><br><span class="line"></span><br><span class="line">[NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc]init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) &#123;</span><br><span class="line">    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];</span><br><span class="line">    NSLog(@&quot;AsyncData = %@&quot;, str);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<h4 id="3、代理异步请求-1"><a href="#3、代理异步请求-1" class="headerlink" title="3、代理异步请求"></a>3、代理异步请求</h4><p>创建请求，并设置代理<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (void)pressbtn1</span><br><span class="line">&#123;</span><br><span class="line">    NSURL *url = [NSURL URLWithString: @&quot;https://www.baidu.com/&quot;];</span><br><span class="line">    NSURLRequest *request = [NSURLRequest requestWithURL:url];</span><br><span class="line">    _connect = [NSURLConnection connectionWithRequest:request delegate:self];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>代理方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark -NSURLConnectionDataDelegate</span><br><span class="line">//接收到服务器响应时调用</span><br><span class="line">- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response</span><br><span class="line">&#123;</span><br><span class="line">    //将响应码转化成为HHTTP响应码</span><br><span class="line">    NSHTTPURLResponse *res = (NSHTTPURLResponse *)response;</span><br><span class="line">    if(res.statusCode == 200)</span><br><span class="line">    &#123;</span><br><span class="line">        NSLog(@&quot;请求成功&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    else if (res.statusCode == 404)</span><br><span class="line">    &#123;</span><br><span class="line">        NSLog(@&quot;没有找到文件&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    else if(res.statusCode == 500)</span><br><span class="line">    &#123;</span><br><span class="line">        NSLog(@&quot;服务器内部错误&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//当接收到数据时调用</span><br><span class="line">- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data</span><br><span class="line">&#123;</span><br><span class="line">    [_data appendData:data];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//当服务器数据返回完毕时调用</span><br><span class="line">- (void)connectionDidFinishLoading:(NSURLConnection *)connection</span><br><span class="line">&#123;</span><br><span class="line">    NSString *str = [[NSString alloc] initWithData:_data encoding:NSUTF8StringEncoding];</span><br><span class="line">    NSLog(@&quot;代理 data = %@&quot;, str);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="（二）、NSURLSession"><a href="#（二）、NSURLSession" class="headerlink" title="（二）、NSURLSession"></a>（二）、NSURLSession</h2><h3 id="概述：-1"><a href="#概述：-1" class="headerlink" title="概述："></a>概述：</h3><p>NSURLSession类及其相关类提供了下载内容的API和很多代理方法，如支持认证，断点续传，当APP没有运行或者被挂起时，后台下载的功能。</p>
+<p>NSURLSession支持HTTP/1.1，SPDY，HTTP/2协议。</p>
+<p>使用NSURLSession的API，我们可以创建一个或多个会话，每个会话都协调管理一组相关的数据传输任务。<br>举个例子，在一个web浏览器中，我们可以为每个标签或窗口创建一个会话，可以为交互使用创建一个会话，也可以为后台下载创建另一个会话。 </p>
+<p>在每个会话里，APP可以添加一系列任务，每个任务都代表一个特定URL的请求。 </p>
+<h3 id="会话的四种类型"><a href="#会话的四种类型" class="headerlink" title="会话的四种类型"></a>会话的四种类型</h3><p>在一个给定的URL会话中，所有的任务共享一个会话配置对象 NSURLSessionConfiguration，它定义了连接的配置方式，比如同时连接到单个主机的最大数，是否允许通过蜂窝网连接等等。<br>会话的方式取决于创建它的配置对象： </p>
+<p>1、单例会话。单例共享的会话用于基本请求，没有配置对象。这种会话不可定制，但是如果要求不多的话，可以选择这种方式。我们可以通过调用sharedSession的类方法来访问该会话。</p>
+<p>2、默认会话。默认会话和单例会话非常相似，但是我们可以使用代理获取更多的数据。我们可以调用NSURLSessionConfiguration类中的defaultSessionConfiguration方法创建默认的会话配置。 </p>
+<p>3、短会话。短会话和默认会话很相似，但是不会将cache，cookies或credential写入磁盘。可以通过调用NSURLSessionConfiguration类中的ephemeralSessionConfiguration方法创建短会话配置。 </p>
+<p>4、后台会话。后台会话可以在APP没有运行时在后台上传或者下载。可以通过调用NSURLSessionConfiguration类中的backgroundSessionConfiguration方法创建后台会话配置。</p>
+<p>会话配置对象也包含了对 URLCache和 HTTPCookieStorage对象的引用，在做请求、处理响应和决定配置和请求类型时使用。 </p>
+<p>会话中的任务也会共享一个通用代理，使我们在各种事件发生时（比如认证失败时，数据从服务器到达时，数据准备好被缓存时等等），提供或获取信息。使用URL会话，当会话在执行任务时，会有一个事件逐步发生的列表，从而相应的代理方法会被调用。 </p>
+<p>另一方面，如果不需要代理提供的任何功能，我们也可以在创建会话时，通过传递nil来使用这个API，不提供任何功能。 </p>
+<p>注意：<br>会话对象保持着代理的强引用直到APP运行或会话明确无效。如果不废除这个会话，APP就会内存泄漏。 </p>
+<h3 id="会话可以创建的任务类型"><a href="#会话可以创建的任务类型" class="headerlink" title="会话可以创建的任务类型"></a>会话可以创建的任务类型</h3><p>在会话中，我们可以创建上传数据到服务器的任务，也可以创建任务从服务器获取数据来作为磁盘文件或内存NSData对象。</p>
+<p>NSURLSession的API提供了3种类型的任务：</p>
+<p>1、Data任务。Data任务使用NSData对象发送或接收数据。Data任务旨在对服务器短而频繁的交互请求。</p>
+<p>2、 Upload任务。上传任务和Data任务相似，但是它也可以发送数据（通常是文件形式），当APP不运行时，支持后台上传。 </p>
+<p>3、 Download任务。下载任务以文件形式获取数据，当APP不运行时，支持后台下载。 </p>
+<h3 id="会话返回数据的方式"><a href="#会话返回数据的方式" class="headerlink" title="会话返回数据的方式"></a>会话返回数据的方式</h3><p>和大部分网络API一样，NSURLSession的API是高度异步的。它会以下面两种方式中的一种来返回数据，取决于你调用的方法： </p>
+<p>1、当传输成功完成或者传输错误时，调用完成处理的block； </p>
+<p>2、当接收到数据或传输完成时，调用session的代理。 </p>
+<p>NSURLSession的API还提供了查询状态和进度的属性，可以跟筠需要对任务当前的状态（随时注意状态变化）来做一些项目决策。</p>
+<p>URL会话也支持取消，重新开始，继续，挂起任务，并支持继续下载挂起、下载取消、下载失败的功能。 </p>
+<h3 id="URLSession的使用"><a href="#URLSession的使用" class="headerlink" title="URLSession的使用"></a>URLSession的使用</h3><p>使用NSURLSession类请求： </p>
+<p>1、创建一个session配置。对于后台会话，这个配置必须包含唯一标识符。存储标识符，当APP崩掉或结束挂起时，使用它来重连会话。 </p>
+<p>2、创建会话，指定配置对象和代理。 </p>
+<p>3、在会话中创建任务对象，每个任务代表一个URL请求。<br>这些任务对象是NSURLSessionTask——NSURLSessionDataTask, NSURLSessionUploadTask,  NSURLSessionDownloadTask，取决于你创建的方式。<br>每个任务的初始状态都是都是暂停状态。APP在任务中调用resume方法后，就开始下载指定资源。 </p>
+<p>开始任务后，会话调用代理方法的步骤： </p>
+<p>1、如果与服务器第一次握手需要连接的身份认证（如SSL客户端认证），NSURLSession会调用代理方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">URLSession:task:didReceiveChallenge:completionHandler:</span><br></pre></td></tr></table></figure></p>
+<p>或<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">URLSession:didReceiveChallenge:completionHandler:</span><br></pre></td></tr></table></figure></p>
+<p>2、如果任务的数据从流中获取，NSURLSession调用代理方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">URLSession:task:needNewBodyStream:</span><br></pre></td></tr></table></figure></p>
+<p>来获取NSInputStream的实例为新的请求提供body数据。 </p>
+<p>3、在body内容第一次上传到服务器期间，代理定期会收到回调<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">URLSession:task:didSendBodyData:totalBytesSent:totalBytesExpectedToSend:</span><br></pre></td></tr></table></figure></p>
+<p>来报告上传的进度。</p>
+<p>4、服务器发送响应。 </p>
+<p>5、如果响应指明要求认证，会话调用代理的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">URLSession:task:didReceiveChallenge:completionHandler:</span><br></pre></td></tr></table></figure></p>
+<p>方法。回到第2步。 </p>
+<p>6、如果响应是HTTP重定向响应，NSURLSession对象调用代理的方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">URLSession:task:willPerformHTTPRedirection:newRequest:completionHandler:</span><br></pre></td></tr></table></figure></p>
+<p>代理方法使用所提供的NSURLRequest对象（遵循重定向），一个新的NSURLRequest对象（重定向到不同URL），或者nil（将重定向的响应体作为有效响应并作为结果返回）来调用所提供的completion处理回调。<br>如果要遵循重定向，回到第2步。<br>如果代理没有实现这个方法，重定向追踪最大重定向数。 </p>
+<p>7、对于通过调用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">downloadTaskWithResumeData:</span><br></pre></td></tr></table></figure></p>
+<p>或<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">downloadTaskWithResumeData:completionHandler:</span><br></pre></td></tr></table></figure></p>
+<p>创建的下载（或重下载）任务，NSURLSession使用新任务对象调用代理方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">URLSession:downloadTask:didResumeAtOffset:expectedTotalBytes:</span><br></pre></td></tr></table></figure></p>
+<p>8、对于数据任务，NSURLSession对象调用代理方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">URLSession:dataTask:didBecomeDownloadTask:</span><br></pre></td></tr></table></figure></p>
+<p>，来决定是否转变数据任务为下载任务，然后调用处理回调来转变，继续，取消任务。如果APP选择将数据任务转变为下载任务，NSURLSession会使用新下载任务作为参数调用代理的方法。调用之后，代理不会收到来自数据任务的进一步回调，而是开始收到来自下载任务的回调。 </p>
+<p>9、在从服务器传输的过程中，代理会定时的收到任务的回调来报告传输的进度。<br>对于数据任务，会话使用他们收到的原始数据调用代理的方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">URLSession:dataTask:didReceiveData:</span><br></pre></td></tr></table></figure></p>
+<p>对于下载任务，会话使用成功写入磁盘的字节数调用代理的方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">URLSession:downloadTask:didWriteData:totalBytesWritten:totalBytesExpectedToWrite:</span><br></pre></td></tr></table></figure></p>
+<p>如果用户告诉APP暂停下载，通过调用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cancelByProducingResumeData:</span><br></pre></td></tr></table></figure></p>
+<p>方法取消任务。<br>最后，如果用户告诉APP继续下载，那么需要传递已经返回的resume数据给<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">downloadTaskWithResumeData:</span><br></pre></td></tr></table></figure></p>
+<p>方法或<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">downloadTaskWithResumeData:completionHandler:</span><br></pre></td></tr></table></figure></p>
+<p>方法来创建新的下载任务来继续下载。（回到第1步）。 </p>
+<p>10、对于数据任务，NSURLSession对象可调用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">URLSession:dataTask:willCacheResponse:completionHandler:</span><br></pre></td></tr></table></figure></p>
+<p>方法。然后APP决定是否允许缓存。如果你没有实现这个方法，默认的方式是使用会话的配置对象中指定的缓存策略。 </p>
+<p>11、如果响应是多部分编码的，会话可再次调用代理的didReceiveResponse方法，然后不调用或者多次调用didReceiveData。如果这样的情况发生了，那么请转至步骤8（处理didReceiveResponse调用）。 </p>
+<p>12、如果下载任务成功完成，那么NSURLSession对象使用临时文件的位置调用任务的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">URLSession:downloadTask:didFinishDownloadingToURL:</span><br></pre></td></tr></table></figure></p>
+<p>方法。APP必须在代理方法返回前，要么从这个文件中读取响应数据，要么把它移动到持久存储的位置。 </p>
+<p>13、当任务完成时，NSURLSession对象使用一个error对象或者nil（如果任务成功完成）调用代理的方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">URLSession:task:didCompleteWithError:</span><br></pre></td></tr></table></figure></p>
+<p>如果下载任务继续，NSError对象的userInfo字典包含了NSURLSessionDownloadTaskResumeData 键的值。APP传递这个值来调用方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">downloadTaskWithResumeData:</span><br></pre></td></tr></table></figure></p>
+<p> 或方法<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">downloadTaskWithResumeData:completionHandler:</span><br></pre></td></tr></table></figure></p>
+<p> 来创建新的下载任务来继续存在的下载。<br>如果任务没有被继续，APP就会创建一个新的下载任务并从开始重启事件。<br>这两种情况下，如果传输失败，如果不是服务器原因，请转至步骤3（创建和继续任务）。 </p>
+<p>14、如果不再需要会话，我们可以通过调用invalidateAndCancel（取消任务）或finishTasksAndInvalidate （允许任务来在废弃之前完成）。<br>如果没有废弃会话，当APP终止时，它会自动消失（除非是具有活动任务的后台会话）。</p>
+<p>在废弃会话后，当所有的任务被取消或完成时，会话会调用代理的URLSession:didBecomeInvalidWithError:方法。<br>当代理方法返回时，会话释放代理的强引用。 </p>
+<p>如果APP取消了正在进行的下载，虽然会发生错误，NSURLSession对象还是会调用代理的 URLSession:task:didCompleteWithError:方法。 </p>
+<h4 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h4><p>URL会话的API都是完全线程安全的。可任意创建会话和任务。代理方法调用完成处理回调时，会在代理队列中被自动适当安排。 </p>
+<h4 id="NSCopying"><a href="#NSCopying" class="headerlink" title="NSCopying"></a>NSCopying</h4><p>会话和任务都遵守NSCopying协议，当copy一个会话或者任务时，我们会得到一个相同对象。而当copy一个配置对象时，我们会得到一个新的对象，可以独立的修改。</p>
+<h4 id="App-Transport-Security-ATS-应用传输安全"><a href="#App-Transport-Security-ATS-应用传输安全" class="headerlink" title="App Transport Security (ATS)应用传输安全"></a>App Transport Security (ATS)应用传输安全</h4><p>在iOS9.0和 OS X10.11开始出现，对于使用NSURLSession的所有HTTP连接，默认会启用这个叫做ATS的新安全功能。ATS要求HTTP连接使用HTTPS（RFC 2818）。 </p>
+<h3 id="不同会话方式和不同任务类型的请求示例"><a href="#不同会话方式和不同任务类型的请求示例" class="headerlink" title="不同会话方式和不同任务类型的请求示例"></a>不同会话方式和不同任务类型的请求示例</h3><h4 id="1、单例会话"><a href="#1、单例会话" class="headerlink" title="1、单例会话"></a>1、单例会话</h4><p>使用Block来处理请求</p>
+<p>####（1）、Data任务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//1、创建单例会话</span><br><span class="line">NSURLSession *session = [NSURLSession sharedSession];</span><br><span class="line"></span><br><span class="line">//2、创建请求和任务对象</span><br><span class="line">NSURL *url = [NSURL URLWithString:@&quot;https://www.jianshu.com/u/8ca9e2a2536a&quot;];</span><br><span class="line">NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)&#123;</span><br><span class="line">    </span><br><span class="line">    if (error == nil &amp;&amp; data)</span><br><span class="line">    &#123;</span><br><span class="line">        NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];</span><br><span class="line">        NSLog(@&quot;请求成功 = %@&quot;, dataStr);</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        NSLog(@&quot;请求失败&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[dataTask resume];</span><br></pre></td></tr></table></figure></p>
+<h4 id="（2）、download任务"><a href="#（2）、download任务" class="headerlink" title="（2）、download任务"></a>（2）、download任务</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">//1、创建单例会话</span><br><span class="line">NSURLSession *session = [NSURLSession sharedSession];</span><br><span class="line"></span><br><span class="line">//2、创建请求和任务对象</span><br><span class="line">NSURL *url = [NSURL URLWithString:@&quot;https://image.baidu.com/search/detail?ct=503316480&amp;z=0&amp;ipn=d&amp;word=%E5%9B%BE%E7%89%87&amp;hs=0&amp;pn=0&amp;spn=0&amp;di=113313207810&amp;pi=0&amp;rn=1&amp;tn=baiduimagedetail&amp;is=0%2C0&amp;ie=utf-8&amp;oe=utf-8&amp;cl=2&amp;lm=-1&amp;cs=594559231%2C2167829292&amp;os=2394225117%2C7942915&amp;simid=3436308227%2C304878115&amp;adpicid=0&amp;lpn=0&amp;ln=30&amp;fr=ala&amp;fm=&amp;sme=&amp;cg=&amp;bdtype=0&amp;oriquery=&amp;objurl=http%3A%2F%2Fimg.taopic.com%2Fuploads%2Fallimg%2F120727%2F201995-120HG1030762.jpg&amp;fromurl=ippr_z2C%24qAzdH3FAzdH3Fooo_z%26e3Bpw5rtv_z%26e3Bv54AzdH3Fejvp56AzdH3Fda8da0AzdH3Fdanll9_z%26e3Bip4s&amp;gsm=0&amp;islist=&amp;querylist=&quot;];</span><br><span class="line">NSURLSessionDownloadTask *downloadTask = [session downloadTaskWithURL:url completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error)&#123;</span><br><span class="line">    if (error == nil &amp;&amp; location)</span><br><span class="line">    &#123;</span><br><span class="line">        NSLog(@&quot;下载成功：location.path = %@&quot;, location.path);</span><br><span class="line">        </span><br><span class="line">        NSString *filePath = @&quot;/Users/shiru/Desktop/downloadImage.png&quot;;</span><br><span class="line">        NSError *fileError;</span><br><span class="line">        [[NSFileManager defaultManager] copyItemAtPath:location.path toPath:filePath error:&amp;fileError];</span><br><span class="line">        </span><br><span class="line">        if (fileError == nil) &#123;</span><br><span class="line">            NSLog(@&quot;file save success&quot;);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            NSLog(@&quot;file save error: %@&quot;,fileError);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        NSLog(@&quot;下载失败error&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;];</span><br><span class="line">[downloadTask resume];</span><br></pre></td></tr></table></figure>
+<h4 id="（3）、upload任务"><a href="#（3）、upload任务" class="headerlink" title="（3）、upload任务"></a>（3）、upload任务</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">//1、创建单例会话</span><br><span class="line">NSURLSession *session = [NSURLSession sharedSession];</span><br><span class="line"></span><br><span class="line">//2、创建请求和任务对象</span><br><span class="line">NSURL *url = [NSURL URLWithString:@&quot;https://www.freeimagehosting.net/upl.php&quot;];</span><br><span class="line">NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];</span><br><span class="line">request.HTTPMethod = @&quot;POST&quot;;</span><br><span class="line">NSData *data = [NSData dataWithContentsOfFile:@&quot;/Users/shiru/Desktop/private/个人相关/天籁小学.jpg&quot;];</span><br><span class="line"></span><br><span class="line">NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request fromData:data completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)&#123;</span><br><span class="line">    if (error == nil &amp;&amp; data)</span><br><span class="line">    &#123;</span><br><span class="line">        NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];</span><br><span class="line">        NSLog(@&quot;上传成功：dataStr = %@&quot;, dataStr);</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        NSLog(@&quot;上传失败&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;];</span><br><span class="line">[uploadTask resume];</span><br></pre></td></tr></table></figure>
+<h4 id="2、默认会话"><a href="#2、默认会话" class="headerlink" title="2、默认会话"></a>2、默认会话</h4><p>####（1）、Data任务<br>在这里使用NSURLSessionDataDelegate代理的方法来处理请求<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    //1、创建会话配置</span><br><span class="line">    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];</span><br><span class="line">    configuration.allowsCellularAccess = NO;</span><br><span class="line">    configuration.timeoutIntervalForRequest = 10;</span><br><span class="line">    </span><br><span class="line">    //2、创建单例会话</span><br><span class="line">    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:[NSOperationQueue mainQueue]];</span><br><span class="line">    </span><br><span class="line">    //3、创建请求和任务对象</span><br><span class="line">    NSURL *url = [NSURL URLWithString:@&quot;https://www.jianshu.com/u/8ca9e2a2536a&quot;];</span><br><span class="line">    NSURLSessionDataTask *dataTask = [session dataTaskWithURL:url];</span><br><span class="line">    </span><br><span class="line">    [dataTask resume];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark -NSURLSessionDataDelegate</span><br><span class="line">//接收到服务器响应</span><br><span class="line">- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask</span><br><span class="line">didReceiveResponse:(NSURLResponse *)response</span><br><span class="line"> completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler</span><br><span class="line">&#123;</span><br><span class="line">    completionHandler(NSURLSessionResponseAllow);// 允许处理服务器的响应，才会继续接收服务器返回的数据</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//接收服务器回传的数据,有可能执行多次</span><br><span class="line">- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask</span><br><span class="line">    didReceiveData:(NSData *)data</span><br><span class="line">&#123;</span><br><span class="line">    if (data)</span><br><span class="line">    &#123;</span><br><span class="line">        NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];</span><br><span class="line">        NSLog(@&quot;请求成功 = %@&quot;, dataStr);</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        NSLog(@&quot;请求失败&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask</span><br><span class="line"> willCacheResponse:(NSCachedURLResponse *)proposedResponse</span><br><span class="line"> completionHandler:(void (^)(NSCachedURLResponse * _Nullable cachedResponse))completionHandler</span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="（2）、download任务-1"><a href="#（2）、download任务-1" class="headerlink" title="（2）、download任务"></a>（2）、download任务</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    //1、创建会话配置</span><br><span class="line">    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];</span><br><span class="line">    configuration.allowsCellularAccess = NO;</span><br><span class="line">    configuration.timeoutIntervalForRequest = 10;</span><br><span class="line">    </span><br><span class="line">    //2、创建单例会话</span><br><span class="line">    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:[NSOperationQueue mainQueue]];</span><br><span class="line">    </span><br><span class="line">    //3、创建请求和任务对象</span><br><span class="line">    NSURL *url = [NSURL URLWithString:@&quot;https://www.jianshu.com/u/8ca9e2a2536a&quot;];</span><br><span class="line">    NSURLSessionDownloadTask *downloadTask = [session downloadTaskWithURL:url];</span><br><span class="line">    [downloadTask resume];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark -NSURLSessionDownloadDelegate</span><br><span class="line">//下载完成</span><br><span class="line">- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask</span><br><span class="line">didFinishDownloadingToURL:(NSURL *)location</span><br><span class="line">&#123;</span><br><span class="line">    if (location)</span><br><span class="line">    &#123;</span><br><span class="line">        NSLog(@&quot;下载成功：location.path = %@&quot;, location.path);</span><br><span class="line">        </span><br><span class="line">        NSString *filePath = @&quot;/Users/shiru/Desktop/downloadImage1.png&quot;;</span><br><span class="line">        NSError *fileError;</span><br><span class="line">        [[NSFileManager defaultManager] copyItemAtPath:location.path toPath:filePath error:&amp;fileError];</span><br><span class="line">        </span><br><span class="line">        if (fileError == nil) &#123;</span><br><span class="line">            NSLog(@&quot;file save success&quot;);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            NSLog(@&quot;file save error: %@&quot;,fileError);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        NSLog(@&quot;下载失败error&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line"> 监测临时文件下载的数据大小，当每次写入临时文件时，就会调用一次</span><br><span class="line"> bytesWritten 每次写入多少</span><br><span class="line"> totalBytesWritten  已经写入了多少</span><br><span class="line"> totalBytesExpectedToWrite 文件总大小</span><br><span class="line"> */</span><br><span class="line">- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask</span><br><span class="line">      didWriteData:(int64_t)bytesWritten</span><br><span class="line"> totalBytesWritten:(int64_t)totalBytesWritten</span><br><span class="line">totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite</span><br><span class="line">&#123;</span><br><span class="line">    //打印下载进度</span><br><span class="line">    NSLog(@&quot;%f&quot;,totalBytesWritten * 1.0 / totalBytesExpectedToWrite);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask</span><br><span class="line"> didResumeAtOffset:(int64_t)fileOffset</span><br><span class="line">expectedTotalBytes:(int64_t)expectedTotalBytes</span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="（3）、upload任务-1"><a href="#（3）、upload任务-1" class="headerlink" title="（3）、upload任务"></a>（3）、upload任务</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">//1、创建会话配置</span><br><span class="line">NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];</span><br><span class="line">configuration.allowsCellularAccess = NO;</span><br><span class="line">configuration.timeoutIntervalForRequest = 10;</span><br><span class="line"></span><br><span class="line">//2、创建单例会话</span><br><span class="line">NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:[NSOperationQueue mainQueue]];</span><br><span class="line"></span><br><span class="line">//3、创建请求和任务对象</span><br><span class="line">NSURL *url = [NSURL URLWithString:@&quot;https://www.freeimagehosting.net/upl.php&quot;];</span><br><span class="line">NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];</span><br><span class="line">request.HTTPMethod = @&quot;POST&quot;;</span><br><span class="line">NSData *data = [NSData dataWithContentsOfFile:@&quot;/Users/shiru/Desktop/private/个人相关/天籁小学.jpg&quot;];</span><br><span class="line"></span><br><span class="line">NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request fromData:data completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)&#123;</span><br><span class="line">    if (error == nil &amp;&amp; data)</span><br><span class="line">    &#123;</span><br><span class="line">        NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];</span><br><span class="line">        NSLog(@&quot;上传成功：dataStr = %@&quot;, dataStr);</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        NSLog(@&quot;上传失败&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;];</span><br><span class="line">[uploadTask resume];</span><br></pre></td></tr></table></figure>
+<h4 id="3、默认会话实现断点续传"><a href="#3、默认会话实现断点续传" class="headerlink" title="3、默认会话实现断点续传"></a>3、默认会话实现断点续传</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">- (IBAction)startDonload:(id)sender</span><br><span class="line">&#123;</span><br><span class="line">    //1、创建会话配置</span><br><span class="line">    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];</span><br><span class="line">    configuration.allowsCellularAccess = NO;</span><br><span class="line">    configuration.timeoutIntervalForRequest = 10;</span><br><span class="line">    </span><br><span class="line">    //2、创建单例会话</span><br><span class="line">    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:[NSOperationQueue mainQueue]];</span><br><span class="line">    self.session = session;</span><br><span class="line">    </span><br><span class="line">    //3、创建请求和任务对象</span><br><span class="line">    NSURL *url = [NSURL URLWithString:@&quot;https://120.25.226.186:32812/resources/videos/minion_02.mp4&quot;];</span><br><span class="line">    NSURLSessionDownloadTask *downloadTask = [session downloadTaskWithURL:url];</span><br><span class="line">    self.downloadTask = downloadTask;</span><br><span class="line">    [self.downloadTask resume];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (IBAction)pauseDownload:(id)sender</span><br><span class="line">&#123;</span><br><span class="line">    [self.downloadTask cancelByProducingResumeData:^(NSData *resumeData)&#123;</span><br><span class="line">        //将已下载的数据保存起来，以备断点续传使用</span><br><span class="line">        self.resumeData = resumeData;</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (IBAction)resumeDownload:(id)sender</span><br><span class="line">&#123;</span><br><span class="line">    self.downloadTask = [self.session downloadTaskWithResumeData:self.resumeData];</span><br><span class="line">    [self.downloadTask resume];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#pragma mark -NSURLSessionDownloadDelegate</span><br><span class="line">//下载完成</span><br><span class="line">- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask</span><br><span class="line">didFinishDownloadingToURL:(NSURL *)location</span><br><span class="line">&#123;</span><br><span class="line">    if (location)</span><br><span class="line">    &#123;</span><br><span class="line">        NSLog(@&quot;下载成功：location.path = %@&quot;, location.path);</span><br><span class="line">        </span><br><span class="line">        NSString *filePath = @&quot;/Users/shiru/Desktop/downloadMP4File.mp4&quot;;</span><br><span class="line">        NSError *fileError;</span><br><span class="line">        [[NSFileManager defaultManager] copyItemAtPath:location.path toPath:filePath error:&amp;fileError];</span><br><span class="line">        </span><br><span class="line">        if (fileError == nil) &#123;</span><br><span class="line">            NSLog(@&quot;file save success&quot;);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            NSLog(@&quot;file save error: %@&quot;,fileError);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        NSLog(@&quot;下载失败error&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask</span><br><span class="line">      didWriteData:(int64_t)bytesWritten</span><br><span class="line"> totalBytesWritten:(int64_t)totalBytesWritten</span><br><span class="line">totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite</span><br><span class="line">&#123;</span><br><span class="line">    //打印下载百分比</span><br><span class="line">    NSLog(@&quot;%f&quot;,totalBytesWritten * 1.0 / totalBytesExpectedToWrite);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持就是对我的鼓励</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="shiru 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="shiru 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/网络请求/" rel="tag"># 网络请求</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/20/iOS-事件传递和响应/" rel="next" title="iOS 事件传递和响应">
+                <i class="fa fa-chevron-left"></i> iOS 事件传递和响应
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzk3NC8xMDUwOQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shiru</p>
+              <p class="site-description motion-element" itemprop="description">记录花花小草的技术成长之旅</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#（一）、NSURLConnection"><span class="nav-number">1.</span> <span class="nav-text">（一）、NSURLConnection</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述："><span class="nav-number">1.1.</span> <span class="nav-text">概述：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSURLConnection请求的方式"><span class="nav-number">1.2.</span> <span class="nav-text">NSURLConnection请求的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、同步请求："><span class="nav-number">1.2.1.</span> <span class="nav-text">1、同步请求：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、Block异步请求"><span class="nav-number">1.2.2.</span> <span class="nav-text">2、Block异步请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、代理异步请求"><span class="nav-number">1.2.3.</span> <span class="nav-text">3、代理异步请求</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSURLConnection三种请求的示例"><span class="nav-number">1.3.</span> <span class="nav-text">NSURLConnection三种请求的示例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、同步请求"><span class="nav-number">1.3.1.</span> <span class="nav-text">1、同步请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、异步请求"><span class="nav-number">1.3.2.</span> <span class="nav-text">2、异步请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、代理异步请求-1"><span class="nav-number">1.3.3.</span> <span class="nav-text">3、代理异步请求</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#（二）、NSURLSession"><span class="nav-number">2.</span> <span class="nav-text">（二）、NSURLSession</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述：-1"><span class="nav-number">2.1.</span> <span class="nav-text">概述：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#会话的四种类型"><span class="nav-number">2.2.</span> <span class="nav-text">会话的四种类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#会话可以创建的任务类型"><span class="nav-number">2.3.</span> <span class="nav-text">会话可以创建的任务类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#会话返回数据的方式"><span class="nav-number">2.4.</span> <span class="nav-text">会话返回数据的方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#URLSession的使用"><span class="nav-number">2.5.</span> <span class="nav-text">URLSession的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#线程安全"><span class="nav-number">2.5.1.</span> <span class="nav-text">线程安全</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NSCopying"><span class="nav-number">2.5.2.</span> <span class="nav-text">NSCopying</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#App-Transport-Security-ATS-应用传输安全"><span class="nav-number">2.5.3.</span> <span class="nav-text">App Transport Security (ATS)应用传输安全</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不同会话方式和不同任务类型的请求示例"><span class="nav-number">2.6.</span> <span class="nav-text">不同会话方式和不同任务类型的请求示例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、单例会话"><span class="nav-number">2.6.1.</span> <span class="nav-text">1、单例会话</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（2）、download任务"><span class="nav-number">2.6.2.</span> <span class="nav-text">（2）、download任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（3）、upload任务"><span class="nav-number">2.6.3.</span> <span class="nav-text">（3）、upload任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、默认会话"><span class="nav-number">2.6.4.</span> <span class="nav-text">2、默认会话</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（2）、download任务-1"><span class="nav-number">2.6.5.</span> <span class="nav-text">（2）、download任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（3）、upload任务-1"><span class="nav-number">2.6.6.</span> <span class="nav-text">（3）、upload任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、默认会话实现断点续传"><span class="nav-number">2.6.7.</span> <span class="nav-text">3、默认会话实现断点续传</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shiru</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
