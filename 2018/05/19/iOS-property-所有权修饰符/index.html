@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="设计模式,对象创建模式," />
+  <meta name="keywords" content="iOS,property关键字," />
 
 
 
@@ -79,22 +79,21 @@
 
 
 
-<meta name="description" content="对象创建模式有： 原型模式； 工厂方法； 抽象工厂； 生成器模式； 单例模式； 原型模式 应用于复制操作的模式。主要涉及到深复制和浅复制的理解； 对象在复制时，需要它所对应的类实现了NSCopying协议中定义的- (id)copyWithZone:(NSZone *)zone方法。 但是如果要深复制数组，并且数组中的元素是对象的话，就需要注意，不是简单的[array copy]就可以实现的">
-<meta name="keywords" content="设计模式,对象创建模式">
+<meta name="description" content="自己生成的对象，自己所持有；非自己生成的对象，自己也能持有；自己持有的对象不再需要时释放；非自己持有的对象无法释放； 所有权修饰符：OC将变量类型定义为id类型或各种对象类型；类型上必须附加所有权修饰符。所有权修饰符共有四种：strong修饰符； weak修饰符；unsafe_unretained修饰符； autoreleasing修饰符； strong修饰符： strong修饰符是id类型和对象">
+<meta name="keywords" content="iOS,property关键字">
 <meta property="og:type" content="article">
-<meta property="og:title" content="对象创建的几种模式的对比和理解">
-<meta property="og:url" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/index.html">
+<meta property="og:title" content="iOS @property 所有权修饰符">
+<meta property="og:url" content="http://yoursite.com/2018/05/19/iOS-property-所有权修饰符/index.html">
 <meta property="og:site_name" content="花花小草">
-<meta property="og:description" content="对象创建模式有： 原型模式； 工厂方法； 抽象工厂； 生成器模式； 单例模式； 原型模式 应用于复制操作的模式。主要涉及到深复制和浅复制的理解； 对象在复制时，需要它所对应的类实现了NSCopying协议中定义的- (id)copyWithZone:(NSZone *)zone方法。 但是如果要深复制数组，并且数组中的元素是对象的话，就需要注意，不是简单的[array copy]就可以实现的">
+<meta property="og:description" content="自己生成的对象，自己所持有；非自己生成的对象，自己也能持有；自己持有的对象不再需要时释放；非自己持有的对象无法释放； 所有权修饰符：OC将变量类型定义为id类型或各种对象类型；类型上必须附加所有权修饰符。所有权修饰符共有四种：strong修饰符； weak修饰符；unsafe_unretained修饰符； autoreleasing修饰符； strong修饰符： strong修饰符是id类型和对象">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/工厂方法.jpg">
-<meta property="og:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/抽象工厂.jpg">
-<meta property="og:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/生成器模式.jpg">
-<meta property="og:updated_time" content="2018-03-02T05:46:09.000Z">
+<meta property="og:image" content="http://yoursite.com/2018/05/19/iOS-property-所有权修饰符/不可变字符串.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/05/19/iOS-property-所有权修饰符/可变字符串.jpg">
+<meta property="og:updated_time" content="2018-05-19T05:42:47.343Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="对象创建的几种模式的对比和理解">
-<meta name="twitter:description" content="对象创建模式有： 原型模式； 工厂方法； 抽象工厂； 生成器模式； 单例模式； 原型模式 应用于复制操作的模式。主要涉及到深复制和浅复制的理解； 对象在复制时，需要它所对应的类实现了NSCopying协议中定义的- (id)copyWithZone:(NSZone *)zone方法。 但是如果要深复制数组，并且数组中的元素是对象的话，就需要注意，不是简单的[array copy]就可以实现的">
-<meta name="twitter:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/工厂方法.jpg">
+<meta name="twitter:title" content="iOS @property 所有权修饰符">
+<meta name="twitter:description" content="自己生成的对象，自己所持有；非自己生成的对象，自己也能持有；自己持有的对象不再需要时释放；非自己持有的对象无法释放； 所有权修饰符：OC将变量类型定义为id类型或各种对象类型；类型上必须附加所有权修饰符。所有权修饰符共有四种：strong修饰符； weak修饰符；unsafe_unretained修饰符； autoreleasing修饰符； strong修饰符： strong修饰符是id类型和对象">
+<meta name="twitter:image" content="http://yoursite.com/2018/05/19/iOS-property-所有权修饰符/不可变字符串.jpg">
 
 
 
@@ -124,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/05/19/iOS-property-所有权修饰符/"/>
 
 
 
 
 
-  <title>对象创建的几种模式的对比和理解 | 花花小草</title>
+  <title>iOS @property 所有权修饰符 | 花花小草</title>
   
 
 
@@ -267,7 +266,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/19/iOS-property-所有权修饰符/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shiru">
@@ -284,7 +283,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">对象创建的几种模式的对比和理解</h1>
+          <h1 class="post-title" itemprop="name headline">iOS @property 所有权修饰符</h1>
         
 
         <div class="post-meta">
@@ -296,8 +295,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-02T10:49:50+08:00">
-                2018-03-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-19T13:37:23+08:00">
+                2018-05-19
               </time>
             
 
@@ -319,8 +318,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">设计模式</span>
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
                   </a>
                 </span>
 
@@ -356,25 +355,25 @@
       
 
       
-        <p>对象创建模式有：</p>
-<pre><code>原型模式；
-工厂方法；
-抽象工厂；
-生成器模式；
-单例模式；
-</code></pre><h3 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h3><p> 应用于复制操作的模式。主要涉及到深复制和浅复制的理解；<br> 对象在复制时，需要它所对应的类实现了NSCopying协议中定义的- (id)copyWithZone:(NSZone *)zone方法。<br> 但是如果要深复制数组，并且数组中的元素是对象的话，就需要注意，不是简单的[array copy]就可以实现的，这样数组中的对象还是指向同一地址，并没有实现数组的深拷贝。而要实现数组深拷贝，首先数组中的对象所在的类，需要实现上面所讲的copyWithZone方法。然后对数组进行遍历时，对每个元素进行copy。还有一种比较简便的方法，就是使用这个方法[[NSMutableArray alloc] initWithArray:array copyItems:YES]。当然前提也是这个对象所对应的类实现了copyWithZone。</p>
-<h3 id="工厂方法"><a href="#工厂方法" class="headerlink" title="工厂方法"></a>工厂方法</h3><p>工厂方法模式是抽象工厂模式的组成部分。</p>
-<p>各种具体工厂重载其抽象工厂父类中定义的工厂方法，并用这个重载的工厂方法创建自己的产品。</p>
-<p>生产者的重要之处不在于创建对象，而是使用（类或对象的）工厂方法创建具体产品，并返回抽象类型（也就是说返回的并不是具体的产品子类，而是具体产品的父类Product）。</p>
-<p>适合“一个类中无法预期需要生成哪个类的对象，想让它的子类决定生成的对象”的情况。<br><img src="/2018/03/02/对象创建的几种模式的对比和理解/工厂方法.jpg" alt="工厂方法"></p>
-<h3 id="抽象工厂"><a href="#抽象工厂" class="headerlink" title="抽象工厂"></a>抽象工厂</h3><p>工厂方法生产的都是一种产品。</p>
-<p>而抽象工厂是对工厂方法的Product和Creator作了抽象之后，Creator的子类可以通过组合Product创建一系列的多种产品。如果需要增加产品种类，只要增加相应的产品类，不会影响别的产品的创建。<br><img src="/2018/03/02/对象创建的几种模式的对比和理解/抽象工厂.jpg" alt="抽象工厂"></p>
-<h3 id="生成器模式"><a href="#生成器模式" class="headerlink" title="生成器模式"></a>生成器模式</h3><p>生成器模式，也叫做建造者模式；</p>
-<p>生成器模式中包含两个角色：分别是指导者和生成器。生成器模式所要构建的对象是由很多部分组成的。</p>
-<p>上面说抽象工厂是为了生产一系列产品的复杂创建类型的设计模式，</p>
-<p>抽象工厂则是会以固定的方式，固定的步骤来构建一个类型的产品。虽然它可以生成一系列的产品，但是产品种类相同的话，那么生产的步骤也是固定的。如果要生产不同的产品，就需要创建不同的类来实现不同的事物。抽象工厂在创建完产品时，会立即返回。</p>
-<p>生成器模式，是为了以不同的方式（例如，不同的状态组合），不同的步骤来分步构建同类产品；这里生成的对象，使用不同的步骤和方式就可以生成有差别的对象。构建不同状态的同一事物。生成器模式是在构建步骤完成之后在最后返回产品。<br><img src="/2018/03/02/对象创建的几种模式的对比和理解/生成器模式.jpg" alt="生成器模式"></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>关于原型模式和单例模式比较简单，就不一一对比了。工厂方法，抽象工厂和生成器模式几个创建复杂对象的模式有时候可能引起混淆，所以做了简单的对比。具体的实现还是需要在项目中根据具体情况来选择合适的模式。网上也有很多关于这几种模式的举例，根据每种模式的特点，自己最好能想出几个例子，会有助于理解。</p>
+        <p>自己生成的对象，自己所持有；<br>非自己生成的对象，自己也能持有；<br>自己持有的对象不再需要时释放；<br>非自己持有的对象无法释放；</p>
+<p>所有权修饰符：<br>OC将变量类型定义为id类型或各种对象类型；类型上必须附加所有权修饰符。<br>所有权修饰符共有四种：<br><strong>strong修饰符；
+</strong>weak修饰符；<br><strong>unsafe_unretained修饰符；
+</strong>autoreleasing修饰符；</p>
+<p><strong>strong修饰符：
+</strong>strong修饰符是id类型和对象类型默认的所有权修饰符。<br><strong>strong修饰符表示对对象的“强引用”。持有强引用的变量在超出其作用域时被废弃，随着强引用的失效，引用的对象会随之释放。
+</strong>strong修饰符的变量，不仅仅只在变量作用域中，在赋值上也能够正确的管理对象的所有者。</p>
+<p>通过废弃带__strong修饰符的变量（变量作用域结束或者成员变量所属对象废弃）或者对变量赋值，都可以做到“不再需要自己持有对象时释放”。</p>
+<p><strong>weak修饰符：
+</strong>strong修饰符虽然已经能解决大部分内存管理的问题，但是有些重大问题还是不能解决，比如循环引用的问题。<br>循环引用容易引发内存泄漏的问题。<br>循环引用包括，对象之间互相引用，以及对象对自身的引用。</p>
+<p><strong>weak修饰符可以避免循环引用。</strong>weak修饰符提供弱引用，弱引用不能持有对象实例。<br>在持有某个对象的弱引用时，若该对象被废弃，则此弱引用将自动失效且处于nil状态。<br><strong>weak修饰符只能用于iOS5以上及OS X Lion以上版本的应用程序。<br>iOS4以及OS X Snow Leopard的应用程序中可使用</strong>unsafe_unretained修饰符来代替。</p>
+<p><strong>unsafe_unretained修饰符：
+</strong>unsafe_unretained修饰符和<strong>weak修饰符在使用上是一样的。<br>但是在使用</strong>unsafe_unretained修饰符赋值给附有<strong>strong修饰符的变量时，有必要确保被赋值的对象确实存在。<br>这种修饰符存在的原因就是因为在iOS4以及OS X Snow Leopard的应用程序中，需要使用其来代替</strong>weak修饰符。赋值给附有__unsafe_unretained修饰符变量的对象在通过该变量使用时，如果没有确保其确实存在，那么应用程序可能就会崩溃。</p>
+<p>__autoreleasing修饰符：<br>后续再加</p>
+<h3 id="常用的-property属性有："><a href="#常用的-property属性有：" class="headerlink" title="常用的@property属性有："></a>常用的@property属性有：</h3><p>strong：强引用。ARC中不再使用retain，使用strong替代，因此strong和retain同义，可使对象的引用数加1；<br>weak：弱引用。不持有对象，不会对对象的引用计数加1；当对象被释放后，会指向nil，不会产生野指针；一般在可能出现循环引用的情况下是呀，如delegate。<br>assign：修饰非对象类型和基础数据类型的属性，不涉及内存管理，因此也不会被引用计数。<br>copy：创建一个新的对象，新对象的引用计数+1，但不会改变原来的对象的引用计数。<br>nonatomic：和atomic相对，是非原子性操作，非线程安全；<br>atomic：原子性操作，线程安全，但是会影响性能；<br>readwrite：可读可写，getter/setter<br>readonly：可读不可写，getter<br>writeonly：可写不可读，setter</p>
+<h3 id="NSString为什么要用copy修饰，而不是strong"><a href="#NSString为什么要用copy修饰，而不是strong" class="headerlink" title="NSString为什么要用copy修饰，而不是strong?"></a>NSString为什么要用copy修饰，而不是strong?</h3><p>copy和strong修饰的区别，其实只在传入NSMutableString的表现上有所区别。下面举例来说明：<br>首先分别声明strong和copy修复的变量；<br>然后我们将NSString类型的字符串赋给这两个变量：<br><img src="/2018/05/19/iOS-property-所有权修饰符/不可变字符串.jpg" alt="不可变字符串"></p>
+<p>根据打印的字符串内容和内存地址，可以看出： strStrong和 strCopy都指向NSString的 strTest地址，并且指向的内容也是相同的。也就是说， strStrong和 strCopy对strTest都做了浅拷贝，只拷贝了其指向的内容。</p>
+<p>而当我们将 NSMutableString类型的字符串复制给这两个变量时：<br><img src="/2018/05/19/iOS-property-所有权修饰符/可变字符串.jpg" alt="可变字符串"></p>
+<p>根据打印的字符串内容和内存地址，可以看出：strStrong仍然指向的是 mutabllStrTest的地址，而strCopy则是对mutabllStrTest做了一次深拷贝，也就是对strCopy指向了一个新生成的对象，这个对象的内容和mutabllStrTest暂且保持一致。这个strCopy新生成的对象不会使mutabllStrTest的引用计数发生变化。<br>而当我们对NSMutableString类型的mutabllStrTest做了一些变化时，可以发现：strStrong跟随mutabllStrTest做了变化，而strCopy依然是如复制初时的样子。<br>因此，当传入的字符串为NSString类型时，copy和strong的效果是一致的。但是如果是NSMutableString类型，就要注意copy和strong的修饰符了。</p>
 
       
     </div>
@@ -421,9 +420,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-            <a href="/tags/对象创建模式/" rel="tag"># 对象创建模式</a>
+            <a href="/tags/property关键字/" rel="tag"># property关键字</a>
           
         </div>
       
@@ -436,8 +435,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/02/08/Mac下基于github的hexo博客搭建及常用功能添加/" rel="next" title="Mac下基于github的hexo博客搭建及常用功能添加">
-                <i class="fa fa-chevron-left"></i> Mac下基于github的hexo博客搭建及常用功能添加
+              <a href="/2018/05/03/UILabel、UITextView、M80AttributedLabel、YYLabel的简单对比/" rel="next" title="UILabel、UITextView、M80AttributedLabel、YYLabel的简单对比">
+                <i class="fa fa-chevron-left"></i> UILabel、UITextView、M80AttributedLabel、YYLabel的简单对比
               </a>
             
           </div>
@@ -445,10 +444,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/16/iOS-极光推送了解/" rel="prev" title="iOS 极光推送了解">
-                iOS 极光推送了解 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -585,7 +580,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#原型模式"><span class="nav-number">1.</span> <span class="nav-text">原型模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工厂方法"><span class="nav-number">2.</span> <span class="nav-text">工厂方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抽象工厂"><span class="nav-number">3.</span> <span class="nav-text">抽象工厂</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成器模式"><span class="nav-number">4.</span> <span class="nav-text">生成器模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number"></span> <span class="nav-text">总结</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#常用的-property属性有："><span class="nav-number">1.</span> <span class="nav-text">常用的@property属性有：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSString为什么要用copy修饰，而不是strong"><span class="nav-number">2.</span> <span class="nav-text">NSString为什么要用copy修饰，而不是strong?</span></a></li></ol></div>
             
 
           </div>
