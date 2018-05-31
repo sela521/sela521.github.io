@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,Block," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Blocks是C语言的扩充功能：带有自动变量（局部变量）的匿名函数；匿名函数就是没有名称的函数。 1、Block语法和Block变量C语言中的变量（根据作用域不同区分的）： 1、自动变量（局部变量）； 2、函数的参数； 3、静态变量（静态局部变量）； 4、静态全局变量； 5、全局变量； 其中，静态变量（静态局部变量）、静态全局变量、全局变量是可以在函数的多次调用之间传递的变量。 Block语法，形">
+<meta name="keywords" content="iOS,Block">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS Blocks语法、变量及为什么选用copy修饰符">
+<meta property="og:url" content="http://yoursite.com/2018/05/31/iOS-Blocks语法、变量及为什么选用copy修饰符/index.html">
+<meta property="og:site_name" content="花花小草">
+<meta property="og:description" content="Blocks是C语言的扩充功能：带有自动变量（局部变量）的匿名函数；匿名函数就是没有名称的函数。 1、Block语法和Block变量C语言中的变量（根据作用域不同区分的）： 1、自动变量（局部变量）； 2、函数的参数； 3、静态变量（静态局部变量）； 4、静态全局变量； 5、全局变量； 其中，静态变量（静态局部变量）、静态全局变量、全局变量是可以在函数的多次调用之间传递的变量。 Block语法，形">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/05/31/iOS-Blocks语法、变量及为什么选用copy修饰符/block截获自动变量.png">
+<meta property="og:updated_time" content="2018-05-31T02:49:11.427Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS Blocks语法、变量及为什么选用copy修饰符">
+<meta name="twitter:description" content="Blocks是C语言的扩充功能：带有自动变量（局部变量）的匿名函数；匿名函数就是没有名称的函数。 1、Block语法和Block变量C语言中的变量（根据作用域不同区分的）： 1、自动变量（局部变量）； 2、函数的参数； 3、静态变量（静态局部变量）； 4、静态全局变量； 5、全局变量； 其中，静态变量（静态局部变量）、静态全局变量、全局变量是可以在函数的多次调用之间传递的变量。 Block语法，形">
+<meta name="twitter:image" content="http://yoursite.com/2018/05/31/iOS-Blocks语法、变量及为什么选用copy修饰符/block截获自动变量.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/31/iOS-Blocks语法、变量及为什么选用copy修饰符/"/>
+
+
+
+
+
+  <title>iOS Blocks语法、变量及为什么选用copy修饰符 | 花花小草</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">花花小草</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/31/iOS-Blocks语法、变量及为什么选用copy修饰符/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shiru">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花花小草">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS Blocks语法、变量及为什么选用copy修饰符</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-31T10:28:06+08:00">
+                2018-05-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Blocks是C语言的扩充功能：带有自动变量（局部变量）的匿名函数；<br>匿名函数就是没有名称的函数。</p>
+<h3 id="1、Block语法和Block变量"><a href="#1、Block语法和Block变量" class="headerlink" title="1、Block语法和Block变量"></a>1、Block语法和Block变量</h3><p>C语言中的变量（根据作用域不同区分的）：</p>
+<p>1、自动变量（局部变量）；</p>
+<p>2、函数的参数；</p>
+<p>3、静态变量（静态局部变量）；</p>
+<p>4、静态全局变量；</p>
+<p>5、全局变量；</p>
+<p>其中，静态变量（静态局部变量）、静态全局变量、全局变量是可以在函数的多次调用之间传递的变量。</p>
+<p>Block语法，形式如下：（^ 返回值类型 参数列表 表达式）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">^(void)  (int event)</span><br><span class="line">&#123;</span><br><span class="line">      Printf(“buttonId:%d event=%d\n”, i, event);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Block语法与一般C语言函数定义相比，有两点不同：</p>
+<p>1、没有函数名；</p>
+<p>2、带^;</p>
+<p>^：插入记号，便于查找</p>
+<p>Block语法可以省略返回值类型；也可以省略参数列表类型；<br>省略返回值类型和参数列表类型后的语法格式为：^{}</p>
+<p>函数指针的声明示例：<br>int (*funcptr)  (int) = &func;</p>
+<p>Block类型变量的示例：<br>int  (^blk)  (int)</p>
+<p>Block变量和一般的C语言变量完全相同，可作为以下用途使用：</p>
+<p>1、自动变量；</p>
+<p>2、函数参数；</p>
+<p>3、静态（局部）变量；</p>
+<p>4、静态全局变量；</p>
+<p>5、全局变量；</p>
+<h3 id="2、截获自动变量值"><a href="#2、截获自动变量值" class="headerlink" title="2、截获自动变量值"></a>2、截获自动变量值</h3><p>demo如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">int i = 10;</span><br><span class="line">NSString *str = @&quot;hello&quot;;</span><br><span class="line"></span><br><span class="line">void (^blk) (void) = ^&#123;</span><br><span class="line">    NSLog(@&quot;str = %@, i = %d&quot;, str, i);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">str = @&quot;I&apos;m not ok&quot;;</span><br><span class="line"></span><br><span class="line">i = 11;</span><br><span class="line">blk();</span><br><span class="line">NSLog(@&quot;end&quot;);</span><br></pre></td></tr></table></figure></p>
+<p>最后打印的日志如下：<br><img src="/2018/05/31/iOS-Blocks语法、变量及为什么选用copy修饰符/block截获自动变量.png" alt="日志"></p>
+<p>从上面的日志可以看出：Block语法使用的是之前定义时的自动变量的值，也就是截获自动变量的值，保存起来，在执行时使用。即使在block定义和执行期间修改过这些自动变量的值，也不会影响，它还是执行之前定义时所截获的自动变量值。</p>
+<p>这就是自动变量值的截获。</p>
+<h3 id="3、-block说明符"><a href="#3、-block说明符" class="headerlink" title="3、__block说明符"></a>3、__block说明符</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">int i = 10;</span><br><span class="line">NSString *str = @&quot;hello&quot;;</span><br><span class="line"></span><br><span class="line">void (^blk) (void) = ^&#123;</span><br><span class="line">    i = 12;</span><br><span class="line">    NSLog(@&quot;str = %@, i = %d&quot;, str, i);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">str = @&quot;I&apos;m not ok&quot;;</span><br><span class="line"></span><br><span class="line">i = 11;</span><br><span class="line">blk();</span><br><span class="line">NSLog(@&quot;end&quot;);</span><br></pre></td></tr></table></figure>
+<p>这个时候，i = 12会报错：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Variable is not assignable (missing __block type specifier)</span><br></pre></td></tr></table></figure></p>
+<p>如果将i声明为__block int i = 10;，就可以实现在block中对i进行赋值。</p>
+<p>这种变量称为__block变量。</p>
+<h3 id="4、Block循环引用"><a href="#4、Block循环引用" class="headerlink" title="4、Block循环引用"></a>4、Block循环引用</h3><p>避免循环引用的方法有三种：</p>
+<p>1、使用__block</p>
+<p>2、使用__weak</p>
+<p>3、使用__unsafe_unretained</p>
+<p>使用__block修饰符的优点：</p>
+<p>1、可以动态的控制对象的持有周期；（在执行block时，可动态的决定是都将nil或者其他对象赋值给__block变量）</p>
+<p>2、在ARC和MRC都可以使用；</p>
+<p>3、可以修饰对象，也可以修饰基本数据类型；</p>
+<p>使用__block修饰符的缺点：</p>
+<p>1、为了避免循环引用，必须执行Block；如果只执行了Block语法，却不执行Block的使用时，无法避免循环使用。</p>
+<p>__weak修饰的自动变量：不能在Block中被赋值；只能修饰对象，不能修饰基本数据类型。</p>
+<p><strong>unsafe_unretained是在iOS4以及OS X Snow Leopard的环境下，也就是不能使用</strong>weak的环境下使用</p>
+<h3 id="5、copy-release"><a href="#5、copy-release" class="headerlink" title="5、copy/release"></a>5、copy/release</h3><p>ARC无效时，</p>
+<p>Block从栈复制到堆，是通过copy实例方法实现；</p>
+<p>手动释放Block，通过release实例方法来来释放；</p>
+<p>在堆上，可通过retain实例方法持有；</p>
+<p>而在栈上，使用retain方法持有是无效的；</p>
+<p>因此推荐使用copy实例方法来持有Block，copy方法可实现将Block从栈复制到堆上。<br>默认情况下，Block创建时是在栈上的。</p>
+<p>ARC无效时，__block可以被用来避免Block的循环使用。</p>
+<p>因为，当Block从栈复制到堆上时，如果Block中使用的自动变量，有<strong>block说明符，那么就不会被retain。如果Block中使用的自动变量，没有</strong>block说明符，那么就会被retain。</p>
+<p>注意：__block修饰符在ARC有效和无效时，区别很大，因此使用需注意。</p>
+<h3 id="6、为什么要选用copy来修饰Block？"><a href="#6、为什么要选用copy来修饰Block？" class="headerlink" title="6、为什么要选用copy来修饰Block？"></a>6、为什么要选用copy来修饰Block？</h3><p>首先，Block也是OC对象。</p>
+<p>Block一共有三种类型：</p>
+<p>1）、全局Block（ _NSGlobalBlock）：设置在程序的数据区（.data区）；</p>
+<p>2）、栈中的Block（ _NSStackBlock）：设置在栈上的；</p>
+<p>3）、堆中的Block（ _NSMallocBlock）：设置在由malloc函数分配的内存块（堆）中。</p>
+<p>1）、全局Block对象</p>
+<p>有两种情况：</p>
+<p>（1）在记述全局变量的地方存在Block语法：因为在使用全局变量的地方不能使用自动变量，所以不存在对自动变量的截获，因此Block语法的内容也不会依赖于执行时的状态，就可以设置在与全局变量相同的数据区域，因此成为全局Block对象；（不截获）</p>
+<p>（2）Block语法中的表达式，可能会截获自动变量的值，但是只要不使用截获的自动变量，这样的Block也是全局Block；（截获但不使用）</p>
+<p>2）、栈中的Block</p>
+<p>除了上面两种情况之外生成的Block都是_NSStackBlock对象，设置在栈上。</p>
+<p>3）、堆中的Block</p>
+<p>配置在全局变量上的Block，从变量的作用域外也可以通过指针安全的使用。</p>
+<p>设置在栈上的Block，如果其所属的变量的作用域结束，这个Block也会被废弃。<strong>block变量也是配置在栈上的，如果其所属的变量的作用域结束，这个</strong>block变量也会被废弃。</p>
+<p>Block提供了将Block和__block变量从栈上复制到堆上的方法来解决问题，这样“即使Block语法记述的变量作用域结束，堆上的Block也可以继续存在”。</p>
+<p>在ARC有效时，编译器大多数情况下会恰当的进行判断，自动生成将Block从栈上复制到堆上的代码。比如，将Block作为函数返回值返回时，编译器会自动生成复制到堆上的代码。</p>
+<p>但是有些情况下，需要手动的使用copy方法生成代码，来将Block从栈上复制到堆上。</p>
+<p>这些不能自动生成复制代码的情况有：</p>
+<p>1、通过方法或函数的参数传递Block时，需要手动复制。</p>
+<p>但是如果在方法或者函数中适当的复制了传递过来的参数，就不必在调用之前手动复制了。</p>
+<p>比如在Cocoa框架的方法名中含有usingBlock的方法（如NSArray类的enumerateObjectsUsingBlock方法），再比如Grand Central Dispatch的API(如dispatch_async函数)。</p>
+<p>如果不想判断这些情况，可以在所有情况下都进行copy，但是Block从栈上复制到堆上是非常消耗CPU的。</p>
+<p>对于已经在堆上的Block或者全局Block调用copy方法，不会引起任何问题。</p>
+<p>对于全局的Block进行copy时，什么也不做；</p>
+<p>对于堆上的Block进行copy时，Block的引用计数加1.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持就是对我的鼓励</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="shiru 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="shiru 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/Block/" rel="tag"># Block</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/19/iOS-property-所有权修饰符/" rel="next" title="iOS @property 所有权修饰符">
+                <i class="fa fa-chevron-left"></i> iOS @property 所有权修饰符
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzk3NC8xMDUwOQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shiru</p>
+              <p class="site-description motion-element" itemprop="description">记录花花小草的技术成长之旅</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、Block语法和Block变量"><span class="nav-number">1.</span> <span class="nav-text">1、Block语法和Block变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、截获自动变量值"><span class="nav-number">2.</span> <span class="nav-text">2、截获自动变量值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、-block说明符"><span class="nav-number">3.</span> <span class="nav-text">3、__block说明符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、Block循环引用"><span class="nav-number">4.</span> <span class="nav-text">4、Block循环引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、copy-release"><span class="nav-number">5.</span> <span class="nav-text">5、copy/release</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6、为什么要选用copy来修饰Block？"><span class="nav-number">6.</span> <span class="nav-text">6、为什么要选用copy来修饰Block？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shiru</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
