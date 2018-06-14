@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,UIBezierPath," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="首先我们需要先了解一下UIBezierPath的语法及相关API的使用方法。顾名思义，UIBezierPath是一个路径，这个路径由一些直线或者曲线组成，可以画出一些像矩形，椭圆，弧形或者多边形等图形。 我们可以把这些路径通过特定的方法渲染到当前绘画的上下文环境中。 过程分为这样几个步骤： 1、创建；2、配置；3、渲染； UIBezierPath对象可以在代码中被重用，特可以多次使用相同的对象去">
+<meta name="keywords" content="iOS,UIBezierPath">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UIBezierPath绘制小猪佩奇">
+<meta property="og:url" content="http://yoursite.com/2018/06/12/UIBezierPath绘制小猪佩奇/index.html">
+<meta property="og:site_name" content="花花小草">
+<meta property="og:description" content="首先我们需要先了解一下UIBezierPath的语法及相关API的使用方法。顾名思义，UIBezierPath是一个路径，这个路径由一些直线或者曲线组成，可以画出一些像矩形，椭圆，弧形或者多边形等图形。 我们可以把这些路径通过特定的方法渲染到当前绘画的上下文环境中。 过程分为这样几个步骤： 1、创建；2、配置；3、渲染； UIBezierPath对象可以在代码中被重用，特可以多次使用相同的对象去">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/06/12/UIBezierPath绘制小猪佩奇/佩奇颜色图.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/06/12/UIBezierPath绘制小猪佩奇/佩奇颜色图.jpg">
+<meta property="og:updated_time" content="2018-06-12T03:30:04.999Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UIBezierPath绘制小猪佩奇">
+<meta name="twitter:description" content="首先我们需要先了解一下UIBezierPath的语法及相关API的使用方法。顾名思义，UIBezierPath是一个路径，这个路径由一些直线或者曲线组成，可以画出一些像矩形，椭圆，弧形或者多边形等图形。 我们可以把这些路径通过特定的方法渲染到当前绘画的上下文环境中。 过程分为这样几个步骤： 1、创建；2、配置；3、渲染； UIBezierPath对象可以在代码中被重用，特可以多次使用相同的对象去">
+<meta name="twitter:image" content="http://yoursite.com/2018/06/12/UIBezierPath绘制小猪佩奇/佩奇颜色图.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/12/UIBezierPath绘制小猪佩奇/"/>
+
+
+
+
+
+  <title>UIBezierPath绘制小猪佩奇 | 花花小草</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">花花小草</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/12/UIBezierPath绘制小猪佩奇/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shiru">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花花小草">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">UIBezierPath绘制小猪佩奇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-12T10:27:43+08:00">
+                2018-06-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="首先我们需要先了解一下UIBezierPath的语法及相关API的使用方法。"><a href="#首先我们需要先了解一下UIBezierPath的语法及相关API的使用方法。" class="headerlink" title="首先我们需要先了解一下UIBezierPath的语法及相关API的使用方法。"></a>首先我们需要先了解一下UIBezierPath的语法及相关API的使用方法。</h3><p>顾名思义，UIBezierPath是一个路径，这个路径由一些直线或者曲线组成，可以画出一些像矩形，椭圆，弧形或者多边形等图形。</p>
+<p>我们可以把这些路径通过特定的方法渲染到当前绘画的上下文环境中。</p>
+<p>过程分为这样几个步骤：</p>
+<p>1、创建；<br>2、配置；<br>3、渲染；</p>
+<p>UIBezierPath对象可以在代码中被重用，特可以多次使用相同的对象去渲染相同的图形。</p>
+<p>画多边形：</p>
+<p>1、创建一个空路径，当前点还没有被指定，但必须明确指定；</p>
+<p>2、在还没开始画之前，通过 moveToPoint:指定当前点。</p>
+<p>3、其他的方法都会添加一条直线或者曲线到路径中。这些新添加的线都会开始于当前点，结束于我们指定的点。</p>
+<p>4、添加完成以后，新的线的终点就会自动成为当前点。</p>
+<p>一个UIBezierPath包含许多开的或闭的子路径，其中每条子路径代表一个连通路径。</p>
+<p>我们可以调用 closePath方法通过添加一条从当前点到子路径的第一个点的方式来关闭一个子路径。</p>
+<p>我们也可以调用moveToPoint:方法结束当前子路径（没有关闭子路径），设置新的子路径的起点。</p>
+<p>UIBezierPath对象的子路径共享相同的绘制属性。如果要对不同子路径使用不同的绘制属性，那么我们必须把不同的路径配置到不同的UIBezierPath对象中。</p>
+<p>配置完UIBezierPath对象的几何路径和属性后，我们可以使用stroke和fill方法来在当前的图文上下文环境中进行路径绘制。stroke方法通过使用当前的stroke颜色和UIBezierPath对象的属性（如 lineWidth、lineCapStyle、lineJoinStyle等）来勾画出路径的轮廓。同样的，fill方法是通过使用当前的填充色，在路径所包围起来的区域填充颜色。</p>
+<p>另外，使用UIBezierPath对象来绘制图形，我们还可以使用它来定义新的切图区域。addClip方法会将UIBezierPath对象所表示的形状和当前图文环境的切图区域做交集。在接下来的绘制中，只有位于这个交集区域的内容才会被绘制在图文环境中。</p>
+<p>创建UIBezierPath对象的方法：</p>
+<p>1、 + bezierPath</p>
+<p>创建并返回UIBezierPath对象；</p>
+<p>2、 + bezierPathWithRect:</p>
+<p>初始化矩形路径；</p>
+<p>3、 + bezierPathWithOvalInRect:</p>
+<p>初始化椭圆路径；</p>
+<p>4、 + bezierPathWithRoundedRect:cornerRadius:</p>
+<p>初始化圆角矩形路径，cornerRadius是圆角的半径；</p>
+<p>5、 + bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:</p>
+<p>初始圆角矩形路径，可以特定的圆化矩形的某个角；</p>
+<p>6、 + bezierPathWithArcCenter:radius:startAngle:endAngle:clockwise:</p>
+<p>初始化圆弧路径，可以指定半径，开始角度，结束角度，以及是否顺时针绘制；</p>
+<p>7、 + bezierPathWithCGPath:</p>
+<p>初始化 Core Graphics path对象；</p>
+<p>8、 - bezierPathByReversingPath</p>
+<p>通过反转当前UIBezierPath的路径来创建新的UIBezierPath路径；</p>
+<p>9、- init</p>
+<p>创建返回一个空的路径对象；</p>
+<p>构造路径的方法：</p>
+<p>1、 - moveToPoint:</p>
+<p>指定当前点；</p>
+<p>2、 - addLineToPoint:</p>
+<p>追加直线到当前路径；</p>
+<p>3、- addArcWithCenter:radius:startAngle:endAngle:clockwise:</p>
+<p>追加圆弧到当前路径；</p>
+<p>4、- addCurveToPoint:controlPoint1:controlPoint2:</p>
+<p>追加三次贝塞尔曲线到路径中；</p>
+<p>5、- addQuadCurveToPoint:controlPoint:</p>
+<p>追加四次贝塞尔曲线到路径中；</p>
+<p>6、- closePath</p>
+<p>关闭最近添加的子路径；</p>
+<p>7、- removeAllPoints</p>
+<p>删除所有点，也就是删除所有的子路径；</p>
+<p>8、- appendPath:</p>
+<p>追加特定的路径到该路径；</p>
+<p>9、CGPath</p>
+<p>路径的Core Graphics 表示.</p>
+<p>10、- CGPath路径的Core Graphics 表示.</p>
+<p>11、currentPoint</p>
+<p>绘制路径的当前点</p>
+<p>绘制属性:</p>
+<p>1、lineWidth</p>
+<p>路径线条宽度；</p>
+<p>2、lineCapStyle</p>
+<p>终点的形状；</p>
+<p>3、lineJoinStyle</p>
+<p>路径连接处节点的形状；</p>
+<p>4、miterLimit</p>
+<p>有助于避免线条连接处的尖峰的极限值；</p>
+<p>5、flatness</p>
+<p>决定曲线段渲染准确度的因子；</p>
+<p>6、usesEvenOddFillRule</p>
+<p>指示奇偶卷积规则是否用于绘制路径的布尔值；</p>
+<p>7、- setLineDash:count:phase:</p>
+<p>Sets the line-stroking pattern for the path.</p>
+<ul>
+<li>getLineDash:count:phase:</li>
+</ul>
+<p>Retrieves the line-stroking pattern for the path.</p>
+<p>绘制路径的方法：</p>
+<p>1、- fill</p>
+<p>使用当前的绘制属性画出路径所包围的区域；</p>
+<p>2、- fillWithBlendMode:alpha:</p>
+<p>使用特定的混合模式和透明度绘制路径所包围的区域；</p>
+<p>3、- stroke</p>
+<p>使用当前的绘制属性沿着路径画一条线；</p>
+<p>4、- strokeWithBlendMode:alpha:</p>
+<p>使用特定的混合模式和透明度沿着路径画一条线；</p>
+<p>切图路径的方法：</p>
+<ul>
+<li>addClip</li>
+</ul>
+<p>把路径所包围的区域和当前图文环境的切图路径做交集的结果作为当前的切图路径；</p>
+<p>命中检测的方法：</p>
+<p>1、- containsPoint:</p>
+<p>返回路径所包围的区域是否包含特定点的布尔值；</p>
+<p>2、empty</p>
+<p>返回路径是否没有有效元素的布尔值</p>
+<p>bounds</p>
+<p>路径的边框；</p>
+<p>1、- applyTransform:</p>
+<p>使用特定的放射变换矩阵转换路径上的所有点；</p>
+<p>CGAffineTransformMakeRotation(旋转的弧度)</p>
+<p>这个方法旋转的时候，是坐标系的旋转，正弧度表示逆时针旋转，负弧度表示顺时针旋转；</p>
+<p>CAShapeLayer</p>
+<p>在其坐标空间内可以画三次贝塞尔曲线的图层。</p>
+<p>形状由图层的内容和它的第一个子层之间复合而成的；</p>
+<h3 id="下来我们使用上面的这些API绘制一个简单的动画片人物–小猪佩奇"><a href="#下来我们使用上面的这些API绘制一个简单的动画片人物–小猪佩奇" class="headerlink" title="下来我们使用上面的这些API绘制一个简单的动画片人物–小猪佩奇"></a>下来我们使用上面的这些API绘制一个简单的动画片人物–小猪佩奇</h3><p>话不多说，我们先上一个最终的效果图：<br><img src="/2018/06/12/UIBezierPath绘制小猪佩奇/佩奇颜色图.jpg" alt="小猪佩奇"></p>
+<p>下面我们来介绍一下具体的绘制过程是怎样的！！！</p>
+<h4 id="自定义一个UIView–PeppaPigView"><a href="#自定义一个UIView–PeppaPigView" class="headerlink" title="自定义一个UIView–PeppaPigView"></a>自定义一个UIView–PeppaPigView</h4><p>首先我们在自定义的UIView–PeppaPigView中，重写其- (void)drawRect:(CGRect)rect;方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (void)drawRect:(CGRect)rect</span><br><span class="line">&#123;</span><br><span class="line">    [self drawLeftArm];</span><br><span class="line">    [self drawRightArm];</span><br><span class="line">    [self drawBody];</span><br><span class="line">    [self drawHead];</span><br><span class="line">    [self drawNose];</span><br><span class="line">    [self drawEyes];</span><br><span class="line">    [self drawMouse];</span><br><span class="line">    [self drawLegs];</span><br><span class="line">    [self drawEar];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在这里我们把绘制小猪佩奇按照其不同的身体部位分成这样几个步骤：</p>
+<p>1、绘制左胳膊；</p>
+<p>2、绘制右胳膊；</p>
+<p>3、绘制身体；</p>
+<p>4、绘制头部；</p>
+<p>5、绘制鼻子；</p>
+<p>6、绘制眼睛；</p>
+<p>7、绘制嘴巴；</p>
+<p>8、绘制双腿；</p>
+<p>9、绘制耳朵；</p>
+<p>这些绘制的顺序，也是有技巧和次序的。部分部位的绘制顺序不能随意调换。比如绘制耳朵的方法必须放在最后，因为其中使用了addClip方法来确定切图的交集区域。如果放在最前面，必须重新设定和注意切图的交集区域。</p>
+<p>下面按照绘制的顺序来逐一介绍绘制的方法：</p>
+<p>1、绘制左胳膊：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">//左胳膊</span><br><span class="line">- (void)drawLeftArm</span><br><span class="line">&#123;</span><br><span class="line">    UIBezierPath *armPath1 = [UIBezierPath bezierPathWithArcCenter:CGPointMake(195, 700) radius:350 startAngle:-0.585 * M_PI endAngle:-0.68 * M_PI clockwise:NO];</span><br><span class="line">    </span><br><span class="line">    armPath1.lineWidth = 10.0;</span><br><span class="line">    armPath1.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    armPath1.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor1 = [self colorWithHexValue:0xFC9BD7];</span><br><span class="line">    [strokeColor1 set];</span><br><span class="line">    [armPath1 stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor1 = [UIColor clearColor];</span><br><span class="line">    [fillColor1 set];</span><br><span class="line">    [armPath1 fill];</span><br><span class="line">    </span><br><span class="line">    UIBezierPath *armPath2 = [UIBezierPath bezierPathWithArcCenter:CGPointMake(7.5, 404.5) radius:20 startAngle:0.1 * M_PI endAngle:-0.5 * M_PI clockwise:NO];</span><br><span class="line">    armPath2.lineWidth = 10.0;</span><br><span class="line">    armPath2.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    armPath2.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor2 = [self colorWithHexValue:0xFC9BD7];</span><br><span class="line">    [strokeColor2 set];</span><br><span class="line">    [armPath2 stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor2 = [UIColor clearColor];</span><br><span class="line">    [fillColor2 set];</span><br><span class="line">    [armPath2 fill];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>左胳膊的绘制很简单，主要绘制了一条弧；</p>
+<p>2、绘制右胳膊：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">//右胳膊</span><br><span class="line">- (void)drawRightArm</span><br><span class="line">&#123;</span><br><span class="line">    UIBezierPath *armPath1 = [UIBezierPath bezierPathWithArcCenter:CGPointMake(195, 700) radius:350 startAngle:-0.415 * M_PI endAngle:-0.32 * M_PI clockwise:YES];</span><br><span class="line"></span><br><span class="line">    armPath1.lineWidth = 10.0;</span><br><span class="line">    armPath1.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    armPath1.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor1 = [self colorWithHexValue:0xFC9BD7];</span><br><span class="line">    [strokeColor1 set];</span><br><span class="line">    [armPath1 stroke];</span><br><span class="line"></span><br><span class="line">    UIColor *fillColor1 = [UIColor clearColor];</span><br><span class="line">    [fillColor1 set];</span><br><span class="line">    [armPath1 fill];</span><br><span class="line">    </span><br><span class="line">    UIBezierPath *armPath2 = [UIBezierPath bezierPathWithArcCenter:CGPointMake(382.5, 404.5) radius:20 startAngle:-0.5 * M_PI endAngle:-1.1* M_PI clockwise:NO];</span><br><span class="line">    armPath2.lineWidth = 10.0;</span><br><span class="line">    armPath2.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    armPath2.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor2 = [self colorWithHexValue:0xFC9BD7];</span><br><span class="line">    [strokeColor2 set];</span><br><span class="line">    [armPath2 stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor2 = [UIColor clearColor];</span><br><span class="line">    [fillColor2 set];</span><br><span class="line">    [armPath2 fill];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>右胳膊的绘制和左胳膊的绘制基本相似。</p>
+<p>3、绘制身体：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">//身体</span><br><span class="line">- (void)drawBody</span><br><span class="line">&#123;</span><br><span class="line">    UIBezierPath *bodyPath1 = [UIBezierPath bezierPathWithArcCenter:CGPointMake(410, 620) radius:400 startAngle:-0.737 * M_PI endAngle:-0.93 * M_PI clockwise:NO];</span><br><span class="line">    bodyPath1.lineWidth = 2.0;</span><br><span class="line">    bodyPath1.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    bodyPath1.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor1 = [self colorWithHexValue:0xD01E34];</span><br><span class="line">    [strokeColor1 set];</span><br><span class="line">    [bodyPath1 stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor1 = [self colorWithHexValue:0xE03E4C];</span><br><span class="line">    [fillColor1 set];</span><br><span class="line">    [bodyPath1 fill];</span><br><span class="line">    </span><br><span class="line">    CGPoint currentPoint1 = [bodyPath1 currentPoint];</span><br><span class="line">    </span><br><span class="line">    UIBezierPath *bodyPath2 = [UIBezierPath bezierPathWithArcCenter:CGPointMake(-20, 620) radius:400 startAngle:-0.264 * M_PI endAngle:-0.07 * M_PI clockwise:YES];</span><br><span class="line">    </span><br><span class="line">    [bodyPath2 addLineToPoint:currentPoint1];</span><br><span class="line">    </span><br><span class="line">    bodyPath2.lineWidth = 2.0;</span><br><span class="line">    bodyPath2.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    bodyPath2.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor2 = [self colorWithHexValue:0xD01E34];</span><br><span class="line">    [strokeColor2 set];</span><br><span class="line">    [bodyPath2 stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor2 = [self colorWithHexValue:0xE03E4C];</span><br><span class="line">    [fillColor2 set];</span><br><span class="line">    [bodyPath2 fill];</span><br><span class="line">    </span><br><span class="line">    CGPoint p0 = currentPoint1;</span><br><span class="line">    CGPoint p1 = [[bodyPath1 bezierPathByReversingPath] currentPoint];</span><br><span class="line">    CGPoint p2 = [[bodyPath2 bezierPathByReversingPath] currentPoint];</span><br><span class="line">    </span><br><span class="line">    UIBezierPath *innerPath = [UIBezierPath bezierPath];</span><br><span class="line">    [innerPath moveToPoint:p0];</span><br><span class="line">    [innerPath addLineToPoint:p1];</span><br><span class="line">    [innerPath addLineToPoint:p2];</span><br><span class="line">    [innerPath closePath];</span><br><span class="line">    UIColor *strokeColorInner = [self colorWithHexValue:0xE03E4C];</span><br><span class="line">    [strokeColorInner set];</span><br><span class="line">    [innerPath stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColorInner = [self colorWithHexValue:0xE03E4C];</span><br><span class="line">    [fillColorInner set];</span><br><span class="line">    [innerPath fill];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>身体部分的绘制，也是由两条圆弧和一条直线绘制而成。后面的innerPath主要是为了最后上色用的封闭路径。</p>
+<p>4、绘制头部：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">//头（含脸颊）</span><br><span class="line">- (void)drawHead</span><br><span class="line">&#123;</span><br><span class="line">    UIBezierPath *headPath1 = [UIBezierPath bezierPathWithArcCenter:CGPointMake(120, 355) radius:240 startAngle:-0.57 * M_PI endAngle:-0.27 * M_PI clockwise:YES];</span><br><span class="line">    headPath1.lineWidth = 2.0;</span><br><span class="line">    headPath1.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    headPath1.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor1 = [self colorWithHexValue:0xE675C4];</span><br><span class="line">    [strokeColor1 set];</span><br><span class="line">    [headPath1 stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor1 = [self colorWithHexValue:0xFC9BD7];</span><br><span class="line">    [fillColor1 set];</span><br><span class="line">    [headPath1 fill];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    UIBezierPath *headPath2 = [UIBezierPath bezierPathWithArcCenter:CGPointMake(192, 235) radius:105 startAngle:-0.2 * M_PI endAngle:0.85 * M_PI clockwise:YES];</span><br><span class="line">    headPath2.lineWidth = 2.0;</span><br><span class="line">    headPath2.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    headPath2.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor2 = [self colorWithHexValue:0xE675C4];</span><br><span class="line">    [strokeColor2 set];</span><br><span class="line">    [headPath2 stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor2 = [self colorWithHexValue:0xFC9BD7];</span><br><span class="line">    [fillColor2 set];</span><br><span class="line">    [headPath2 fill];</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    UIBezierPath *headPath3 = [UIBezierPath bezierPathWithArcCenter:CGPointMake(160, 250) radius:70 startAngle:0.85 * M_PI endAngle:-0.72 * M_PI clockwise:YES];</span><br><span class="line">    headPath3.lineWidth = 2.0;</span><br><span class="line">    headPath3.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    headPath3.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor3 = [self colorWithHexValue:0xE675C4];</span><br><span class="line">    [strokeColor3 set];</span><br><span class="line">    [headPath3 stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor3 = [self colorWithHexValue:0xFC9BD7];</span><br><span class="line">    [fillColor3 set];</span><br><span class="line">    [headPath3 fill];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    UIBezierPath *headPath4 = [UIBezierPath bezierPathWithArcCenter:CGPointMake(130, 110) radius:90 startAngle:0.55 * M_PI endAngle:0.78 * M_PI clockwise:YES];</span><br><span class="line">    headPath4.lineWidth = 2.0;</span><br><span class="line">    headPath4.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    headPath4.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor4 = [self colorWithHexValue:0xE675C4];</span><br><span class="line">    [strokeColor4 set];</span><br><span class="line">    [headPath4 stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor4 = [self colorWithHexValue:0xFC9BD7];</span><br><span class="line">    [fillColor4 set];</span><br><span class="line">    [headPath4 fill];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    UIBezierPath *headPath5 = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(220, 215, 60, 60)];</span><br><span class="line">    headPath5.lineWidth = 2.0;</span><br><span class="line">    headPath5.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    headPath5.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor5 = [self colorWithHexValue:0xFA72C7];</span><br><span class="line">    [strokeColor5 set];</span><br><span class="line">    [headPath5 stroke];</span><br><span class="line"></span><br><span class="line">    UIColor *fillColor5 = [self colorWithHexValue:0xFA72C7];</span><br><span class="line">    [fillColor5 set];</span><br><span class="line">    [headPath5 fill];</span><br><span class="line">    </span><br><span class="line">    CGPoint p0 = [[headPath1 bezierPathByReversingPath] currentPoint];</span><br><span class="line">    CGPoint p1 = [headPath1 currentPoint];</span><br><span class="line">    CGPoint p2 = [headPath2 currentPoint];</span><br><span class="line">    CGPoint p3 = [headPath3 currentPoint];</span><br><span class="line">    CGPoint p4 = [headPath4 currentPoint];</span><br><span class="line">    UIBezierPath *innerPath = [UIBezierPath bezierPath];</span><br><span class="line">    [innerPath moveToPoint:p0];</span><br><span class="line">    [innerPath addLineToPoint:p1];</span><br><span class="line">    [innerPath addLineToPoint:p2];</span><br><span class="line">    [innerPath addLineToPoint:CGPointMake(p3.x-4, p3.y)];</span><br><span class="line">    [innerPath addLineToPoint:p4];</span><br><span class="line">    [innerPath closePath];</span><br><span class="line">    UIColor *strokeColorInner = [self colorWithHexValue:0xFC9BD7];</span><br><span class="line">    [strokeColorInner set];</span><br><span class="line">    [innerPath stroke];</span><br><span class="line"></span><br><span class="line">    UIColor *fillColorInner = [self colorWithHexValue:0xFC9BD7];</span><br><span class="line">    [fillColorInner set];</span><br><span class="line">    [innerPath fill];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>头部的绘制主要是有四段圆弧拼接而成，其中headPath5的圆表示脸颊部分，innerPath也是为了最终上色使用的封闭路径。</p>
+<p>5、绘制鼻子；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">- (void)drawNose</span><br><span class="line">&#123;</span><br><span class="line">    UIBezierPath *nosePath1 = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(90, 90, 40, 50)];</span><br><span class="line">    nosePath1.lineWidth = 2.0;</span><br><span class="line">    nosePath1.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    nosePath1.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    CGAffineTransform transform1 = CGAffineTransformMakeRotation(0.1*M_PI);</span><br><span class="line">    [nosePath1 applyTransform: transform1];</span><br><span class="line">    UIColor *strokeColor1 = [self colorWithHexValue:0xE675C4];</span><br><span class="line">    [strokeColor1 set];</span><br><span class="line">    [nosePath1 stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor1 = [self colorWithHexValue:0xFC9BD7];</span><br><span class="line">    [fillColor1 set];</span><br><span class="line">    [nosePath1 fill];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    UIBezierPath *nosePath2 = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(99, 109, 8, 10)];</span><br><span class="line">    nosePath2.lineWidth = 1.5;</span><br><span class="line">    nosePath2.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    nosePath2.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    CGAffineTransform transform2 = CGAffineTransformMakeRotation(0.1*M_PI);</span><br><span class="line">    [nosePath2 applyTransform: transform2];</span><br><span class="line">    UIColor *strokeColor2 = [self colorWithHexValue:0xE675C4];</span><br><span class="line">    [strokeColor2 set];</span><br><span class="line">    [nosePath2 stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor2 = [self colorWithHexValue:0xE675C4];</span><br><span class="line">    [fillColor2 set];</span><br><span class="line">    [nosePath2 fill];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    UIBezierPath *nosePath3 = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(114, 113, 8, 10)];</span><br><span class="line">    nosePath3.lineWidth = 1.5;</span><br><span class="line">    nosePath3.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    nosePath3.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    CGAffineTransform transform3 = CGAffineTransformMakeRotation(0.1*M_PI);</span><br><span class="line">    [nosePath3 applyTransform: transform3];</span><br><span class="line">    UIColor *strokeColor3 = [self colorWithHexValue:0xE675C4];</span><br><span class="line">    [strokeColor3 set];</span><br><span class="line">    [nosePath3 stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor3 = [self colorWithHexValue:0xE675C4];</span><br><span class="line">    [fillColor3 set];</span><br><span class="line">    [nosePath3 fill];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>佩奇鼻子的绘制主要主要由一个大的椭圆和两个小的椭圆鼻孔组成的，只是对需要对我们平常所绘制的椭圆使用applyTransform做一个旋转。旋转的角度（弧度制）作为参数传给CGAffineTransformMakeRotation方法。</p>
+<p>6、绘制眼睛：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">//眼睛</span><br><span class="line">- (void)drawEyes</span><br><span class="line">&#123;</span><br><span class="line">    UIBezierPath *eyePath1 = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(135, 143, 45, 45)];</span><br><span class="line">    eyePath1.lineWidth = 2.0;</span><br><span class="line">    eyePath1.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    eyePath1.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor1 = [UIColor blackColor];</span><br><span class="line">    [strokeColor1 set];</span><br><span class="line">    [eyePath1 stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor1 = [UIColor whiteColor];</span><br><span class="line">    [fillColor1 set];</span><br><span class="line">    [eyePath1 fill];</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    UIBezierPath *eyePath2 = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(190, 165, 45, 45)];</span><br><span class="line">    eyePath2.lineWidth = 2.0;</span><br><span class="line">    eyePath2.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    eyePath2.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor2 = [UIColor blackColor];</span><br><span class="line">    [strokeColor2 set];</span><br><span class="line">    [eyePath2 stroke];</span><br><span class="line"></span><br><span class="line">    UIColor *fillColor2 = [UIColor whiteColor];</span><br><span class="line">    [fillColor2 set];</span><br><span class="line">    [eyePath2 fill];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    UIBezierPath *eyePath3 = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(145, 163, 10, 10)];</span><br><span class="line">    eyePath3.lineWidth = 2.0;</span><br><span class="line">    eyePath3.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    eyePath3.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor3 = [UIColor blackColor];</span><br><span class="line">    [strokeColor3 set];</span><br><span class="line">    [eyePath3 stroke];</span><br><span class="line"></span><br><span class="line">    UIColor *fillColor3 = [UIColor blackColor];</span><br><span class="line">    [fillColor3 set];</span><br><span class="line">    [eyePath3 fill];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    UIBezierPath *eyePath4 = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(200, 185, 10, 10)];</span><br><span class="line">    eyePath4.lineWidth = 2.0;</span><br><span class="line">    eyePath4.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    eyePath4.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor4 = [UIColor blackColor];</span><br><span class="line">    [strokeColor4 set];</span><br><span class="line">    [eyePath4 stroke];</span><br><span class="line"></span><br><span class="line">    UIColor *fillColor4 = [UIColor blackColor];</span><br><span class="line">    [fillColor4 set];</span><br><span class="line">    [eyePath4 fill];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>眼睛的绘制很简单，不需要任何多余的操作，只需要绘制四个圆即可。</p>
+<p>7、绘制嘴巴；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">//嘴巴</span><br><span class="line">- (void)drawMouse</span><br><span class="line">&#123;</span><br><span class="line">    UIBezierPath *mousePath1 = [UIBezierPath bezierPathWithArcCenter:CGPointMake(190, 235) radius:60 startAngle:0.45 * M_PI endAngle:0.9 * M_PI clockwise:YES];</span><br><span class="line">    mousePath1.lineWidth = 2.0;</span><br><span class="line">    mousePath1.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    mousePath1.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor1 = [self colorWithHexValue:0xC62D80];</span><br><span class="line">    [strokeColor1 set];</span><br><span class="line">    [mousePath1 stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor1 = [UIColor clearColor];</span><br><span class="line">    [fillColor1 set];</span><br><span class="line">    [mousePath1 fill];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>嘴巴的绘制是最简单的，只需要一条圆弧。</p>
+<p>8、绘制双腿:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line">//双腿</span><br><span class="line">- (void)drawLegs</span><br><span class="line">&#123;</span><br><span class="line">    UIBezierPath *LegPath = [UIBezierPath bezierPath];</span><br><span class="line">    [LegPath moveToPoint:CGPointMake(115, 533)];</span><br><span class="line">    [LegPath addLineToPoint:CGPointMake(115, 601)];</span><br><span class="line">    </span><br><span class="line">    [LegPath addLineToPoint:CGPointMake(135, 603)];</span><br><span class="line">    [LegPath addLineToPoint:CGPointMake(135, 533)];</span><br><span class="line">    </span><br><span class="line">    [LegPath moveToPoint:CGPointMake(255, 533)];</span><br><span class="line">    [LegPath addLineToPoint:CGPointMake(255, 601)];</span><br><span class="line">    </span><br><span class="line">    [LegPath addLineToPoint:CGPointMake(275, 603)];</span><br><span class="line">    [LegPath addLineToPoint:CGPointMake(275, 533)];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    LegPath.lineWidth = 2.0;</span><br><span class="line">    LegPath.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    LegPath.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor = [self colorWithHexValue:0xFC9BD7];</span><br><span class="line">    [strokeColor set];</span><br><span class="line">    [LegPath stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor = [self colorWithHexValue:0xFC9BD7];</span><br><span class="line">    [fillColor set];</span><br><span class="line">    [LegPath fill];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    UIBezierPath *footPath1 = [UIBezierPath bezierPathWithArcCenter:CGPointMake(135, 613) radius:10 startAngle:-0.5 * M_PI endAngle:0.5 * M_PI clockwise:YES];</span><br><span class="line">    </span><br><span class="line">    footPath1.lineWidth = 2.0;</span><br><span class="line">    footPath1.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    footPath1.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor1 = [UIColor blackColor];</span><br><span class="line">    [strokeColor1 set];</span><br><span class="line">    [footPath1 stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor1 = [UIColor blackColor];</span><br><span class="line">    [fillColor1 set];</span><br><span class="line">    [footPath1 fill];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    UIBezierPath *footPath2 = [UIBezierPath bezierPathWithArcCenter:CGPointMake(275, 613) radius:10 startAngle:-0.5 * M_PI endAngle:0.5 * M_PI clockwise:YES];</span><br><span class="line">    </span><br><span class="line">    footPath2.lineWidth = 2.0;</span><br><span class="line">    footPath2.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    footPath2.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor2 = [UIColor blackColor];</span><br><span class="line">    [strokeColor2 set];</span><br><span class="line">    [footPath2 stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor2 = [UIColor blackColor];</span><br><span class="line">    [fillColor2 set];</span><br><span class="line">    [footPath2 fill];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    UIBezierPath *footPath3 = [UIBezierPath bezierPathWithArcCenter:CGPointMake(55, 613) radius:15 startAngle:-0.5 * M_PI endAngle:0.5 * M_PI clockwise:NO];</span><br><span class="line">    </span><br><span class="line">    footPath3.lineWidth = 2.0;</span><br><span class="line">    footPath3.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    footPath3.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor3 = [UIColor blackColor];</span><br><span class="line">    [strokeColor3 set];</span><br><span class="line">    [footPath3 stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor3 = [UIColor blackColor];</span><br><span class="line">    [fillColor3 set];</span><br><span class="line">    [footPath3 fill];</span><br><span class="line">    </span><br><span class="line">    UIBezierPath *footPath4 = [UIBezierPath bezierPathWithArcCenter:CGPointMake(195, 613) radius:15 startAngle:-0.5 * M_PI endAngle:0.5 * M_PI clockwise:NO];</span><br><span class="line">    </span><br><span class="line">    footPath4.lineWidth = 2.0;</span><br><span class="line">    footPath4.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    footPath4.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor4 = [UIColor blackColor];</span><br><span class="line">    [strokeColor4 set];</span><br><span class="line">    [footPath4 stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor4 = [UIColor blackColor];</span><br><span class="line">    [fillColor4 set];</span><br><span class="line">    [footPath4 fill];</span><br><span class="line">    </span><br><span class="line">    UIBezierPath *footPath = [UIBezierPath bezierPath];</span><br><span class="line">    [footPath moveToPoint:CGPointMake(55, 598)];</span><br><span class="line">    [footPath addLineToPoint:CGPointMake(135, 603)];</span><br><span class="line">    </span><br><span class="line">    [footPath addLineToPoint:CGPointMake(135, 623)];</span><br><span class="line">    [footPath addLineToPoint:CGPointMake(55, 628)];</span><br><span class="line">    </span><br><span class="line">    [footPath moveToPoint:CGPointMake(195, 598)];</span><br><span class="line">    [footPath addLineToPoint:CGPointMake(275, 603)];</span><br><span class="line">    </span><br><span class="line">    [footPath addLineToPoint:CGPointMake(275, 623)];</span><br><span class="line">    [footPath addLineToPoint:CGPointMake(195, 628)];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    footPath.lineWidth = 2.0;</span><br><span class="line">    footPath.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    footPath.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    UIColor *strokeColor5 = [UIColor blackColor];</span><br><span class="line">    [strokeColor5 set];</span><br><span class="line">    [footPath stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor5 = [UIColor blackColor];</span><br><span class="line">    [fillColor5 set];</span><br><span class="line">    [footPath fill];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>双腿的绘制是由一些直线条和半圆形的弧组成的。</p>
+<p>9、绘制耳朵：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">//耳朵</span><br><span class="line">- (void)drawEar</span><br><span class="line">&#123;</span><br><span class="line">    UIBezierPath *clipPath1 = [UIBezierPath bezierPathWithArcCenter:CGPointMake(210, 130) radius:120 startAngle:0.19 * M_PI endAngle: 1.08 * M_PI clockwise:NO];</span><br><span class="line">    [clipPath1 addLineToPoint:CGPointMake(210, 130)];</span><br><span class="line">    [clipPath1 closePath];</span><br><span class="line">    [clipPath1 addClip];</span><br><span class="line"></span><br><span class="line">    UIBezierPath *earPath1 = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(200, 10, 55, 80)];</span><br><span class="line">    earPath1.lineWidth = 2.0;</span><br><span class="line">    earPath1.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    earPath1.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    CGAffineTransform transform1 = CGAffineTransformMakeRotation(0.09*M_PI);</span><br><span class="line">    [earPath1 applyTransform: transform1];</span><br><span class="line">    UIColor *strokeColor2 = [self colorWithHexValue:0xE675C4];</span><br><span class="line">    [strokeColor2 set];</span><br><span class="line">    [earPath1 stroke];</span><br><span class="line">    </span><br><span class="line">    UIColor *fillColor2 = [self colorWithHexValue:0xFC9BD7];</span><br><span class="line">    [fillColor2 set];</span><br><span class="line">    [earPath1 fill];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    UIBezierPath *earPath2 = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(270, 10, 55, 80)];</span><br><span class="line">    earPath2.lineWidth = 2.0;</span><br><span class="line">    earPath2.lineCapStyle = kCGLineCapRound;</span><br><span class="line">    earPath2.lineJoinStyle = kCGLineCapRound;</span><br><span class="line">    CGAffineTransform transform2 = CGAffineTransformMakeRotation(0.1*M_PI);</span><br><span class="line">    [earPath2 applyTransform: transform2];</span><br><span class="line">    UIColor *strokeColor3 = [self colorWithHexValue:0xE675C4];</span><br><span class="line">    [strokeColor3 set];</span><br><span class="line">    [earPath2 stroke];</span><br><span class="line"></span><br><span class="line">    UIColor *fillColor3 = [self colorWithHexValue:0xFC9BD7];</span><br><span class="line">    [fillColor3 set];</span><br><span class="line">    [earPath2 fill];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>耳朵的绘制咋一看不是很难，由两个椭圆组成，并作了一点旋转，但是需要截取椭圆的小部分。在实现这个截取小部分时，使用addClip方法来设定新的切图交集区域，只要在切图交集区域内的路径，才会绘制，这样就可以把椭圆的那一小部分截取了。</p>
+<p>但是后面的绘制也都会在新的切图交集区域内绘制，因此，需要把耳朵的绘制放在所有绘制的最后，防止其他部分绘制不能正常绘制。</p>
+<p>这样我们就绘制完了这只可爱的社会人–小猪佩奇：</p>
+<p><img src="/2018/06/12/UIBezierPath绘制小猪佩奇/佩奇颜色图.jpg" alt="小猪佩奇"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持就是对我的鼓励</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="shiru 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="shiru 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/UIBezierPath/" rel="tag"># UIBezierPath</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/31/iOS-Blocks语法、变量及为什么选用copy修饰符/" rel="next" title="iOS Blocks语法、变量及为什么选用copy修饰符">
+                <i class="fa fa-chevron-left"></i> iOS Blocks语法、变量及为什么选用copy修饰符
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzk3NC8xMDUwOQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shiru</p>
+              <p class="site-description motion-element" itemprop="description">记录花花小草的技术成长之旅</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#首先我们需要先了解一下UIBezierPath的语法及相关API的使用方法。"><span class="nav-number">1.</span> <span class="nav-text">首先我们需要先了解一下UIBezierPath的语法及相关API的使用方法。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下来我们使用上面的这些API绘制一个简单的动画片人物–小猪佩奇"><span class="nav-number">2.</span> <span class="nav-text">下来我们使用上面的这些API绘制一个简单的动画片人物–小猪佩奇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义一个UIView–PeppaPigView"><span class="nav-number">2.1.</span> <span class="nav-text">自定义一个UIView–PeppaPigView</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shiru</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
