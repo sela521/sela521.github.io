@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="设计模式,对象创建模式," />
+  <meta name="keywords" content="iOS,SDWebImage," />
 
 
 
@@ -79,22 +79,22 @@
 
 
 
-<meta name="description" content="对象创建模式有： 原型模式； 工厂方法； 抽象工厂； 生成器模式； 单例模式； 原型模式 应用于复制操作的模式。主要涉及到深复制和浅复制的理解； 对象在复制时，需要它所对应的类实现了NSCopying协议中定义的- (id)copyWithZone:(NSZone *)zone方法。 但是如果要深复制数组，并且数组中的元素是对象的话，就需要注意，不是简单的[array copy]就可以实现的">
-<meta name="keywords" content="设计模式,对象创建模式">
+<meta name="description" content="这个库是一个支持缓存的图片异步加载库。为了方便使用，SDWebImage为一些UI控件，如UIView，UIImageView，UIButton，MKAnnotationView添加了分类。 这个框架的几大特征： 在UIImageView，UIButton，MKAnnotationView的类目中添加了网络图片和缓存的管理； 异步图片加载器； 带有自动缓存过期处理的异步内存+磁盘图片缓存机制； 后">
+<meta name="keywords" content="iOS,SDWebImage">
 <meta property="og:type" content="article">
-<meta property="og:title" content="对象创建的几种模式的对比和理解">
-<meta property="og:url" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/index.html">
+<meta property="og:title" content="SDWebImage框架的学习">
+<meta property="og:url" content="http://yoursite.com/2018/07/13/SDWebImage框架的学习/index.html">
 <meta property="og:site_name" content="花花小草">
-<meta property="og:description" content="对象创建模式有： 原型模式； 工厂方法； 抽象工厂； 生成器模式； 单例模式； 原型模式 应用于复制操作的模式。主要涉及到深复制和浅复制的理解； 对象在复制时，需要它所对应的类实现了NSCopying协议中定义的- (id)copyWithZone:(NSZone *)zone方法。 但是如果要深复制数组，并且数组中的元素是对象的话，就需要注意，不是简单的[array copy]就可以实现的">
+<meta property="og:description" content="这个库是一个支持缓存的图片异步加载库。为了方便使用，SDWebImage为一些UI控件，如UIView，UIImageView，UIButton，MKAnnotationView添加了分类。 这个框架的几大特征： 在UIImageView，UIButton，MKAnnotationView的类目中添加了网络图片和缓存的管理； 异步图片加载器； 带有自动缓存过期处理的异步内存+磁盘图片缓存机制； 后">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/工厂方法.jpg">
-<meta property="og:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/抽象工厂.jpg">
-<meta property="og:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/生成器模式.jpg">
-<meta property="og:updated_time" content="2018-03-02T05:46:09.000Z">
+<meta property="og:image" content="http://yoursite.com/2018/07/13/SDWebImage框架的学习/UML图的表示.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/13/SDWebImage框架的学习/SDWebImageClassDiagram.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/13/SDWebImage框架的学习/SDWebImageSequenceDiagram.png">
+<meta property="og:updated_time" content="2018-07-17T11:25:32.840Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="对象创建的几种模式的对比和理解">
-<meta name="twitter:description" content="对象创建模式有： 原型模式； 工厂方法； 抽象工厂； 生成器模式； 单例模式； 原型模式 应用于复制操作的模式。主要涉及到深复制和浅复制的理解； 对象在复制时，需要它所对应的类实现了NSCopying协议中定义的- (id)copyWithZone:(NSZone *)zone方法。 但是如果要深复制数组，并且数组中的元素是对象的话，就需要注意，不是简单的[array copy]就可以实现的">
-<meta name="twitter:image" content="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/工厂方法.jpg">
+<meta name="twitter:title" content="SDWebImage框架的学习">
+<meta name="twitter:description" content="这个库是一个支持缓存的图片异步加载库。为了方便使用，SDWebImage为一些UI控件，如UIView，UIImageView，UIButton，MKAnnotationView添加了分类。 这个框架的几大特征： 在UIImageView，UIButton，MKAnnotationView的类目中添加了网络图片和缓存的管理； 异步图片加载器； 带有自动缓存过期处理的异步内存+磁盘图片缓存机制； 后">
+<meta name="twitter:image" content="http://yoursite.com/2018/07/13/SDWebImage框架的学习/UML图的表示.png">
 
 
 
@@ -124,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/07/13/SDWebImage框架的学习/"/>
 
 
 
 
 
-  <title>对象创建的几种模式的对比和理解 | 花花小草</title>
+  <title>SDWebImage框架的学习 | 花花小草</title>
   
 
 
@@ -267,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/02/对象创建的几种模式的对比和理解/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/13/SDWebImage框架的学习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shiru">
@@ -284,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">对象创建的几种模式的对比和理解</h1>
+          <h1 class="post-title" itemprop="name headline">SDWebImage框架的学习</h1>
         
 
         <div class="post-meta">
@@ -296,8 +296,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-02T10:49:50+08:00">
-                2018-03-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-13T20:22:33+08:00">
+                2018-07-13
               </time>
             
 
@@ -319,8 +319,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">设计模式</span>
+                  <a href="/categories/框架库/" itemprop="url" rel="index">
+                    <span itemprop="name">框架库</span>
                   </a>
                 </span>
 
@@ -356,25 +356,44 @@
       
 
       
-        <p>对象创建模式有：</p>
-<pre><code>原型模式；
-工厂方法；
-抽象工厂；
-生成器模式；
-单例模式；
-</code></pre><h3 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h3><p> 应用于复制操作的模式。主要涉及到深复制和浅复制的理解；<br> 对象在复制时，需要它所对应的类实现了NSCopying协议中定义的- (id)copyWithZone:(NSZone *)zone方法。<br> 但是如果要深复制数组，并且数组中的元素是对象的话，就需要注意，不是简单的[array copy]就可以实现的，这样数组中的对象还是指向同一地址，并没有实现数组的深拷贝。而要实现数组深拷贝，首先数组中的对象所在的类，需要实现上面所讲的copyWithZone方法。然后对数组进行遍历时，对每个元素进行copy。还有一种比较简便的方法，就是使用这个方法[[NSMutableArray alloc] initWithArray:array copyItems:YES]。当然前提也是这个对象所对应的类实现了copyWithZone。</p>
-<h3 id="工厂方法"><a href="#工厂方法" class="headerlink" title="工厂方法"></a>工厂方法</h3><p>工厂方法模式是抽象工厂模式的组成部分。</p>
-<p>各种具体工厂重载其抽象工厂父类中定义的工厂方法，并用这个重载的工厂方法创建自己的产品。</p>
-<p>生产者的重要之处不在于创建对象，而是使用（类或对象的）工厂方法创建具体产品，并返回抽象类型（也就是说返回的并不是具体的产品子类，而是具体产品的父类Product）。</p>
-<p>适合“一个类中无法预期需要生成哪个类的对象，想让它的子类决定生成的对象”的情况。<br><img src="/2018/03/02/对象创建的几种模式的对比和理解/工厂方法.jpg" alt="工厂方法"></p>
-<h3 id="抽象工厂"><a href="#抽象工厂" class="headerlink" title="抽象工厂"></a>抽象工厂</h3><p>工厂方法生产的都是一种产品。</p>
-<p>而抽象工厂是对工厂方法的Product和Creator作了抽象之后，Creator的子类可以通过组合Product创建一系列的多种产品。如果需要增加产品种类，只要增加相应的产品类，不会影响别的产品的创建。<br><img src="/2018/03/02/对象创建的几种模式的对比和理解/抽象工厂.jpg" alt="抽象工厂"></p>
-<h3 id="生成器模式"><a href="#生成器模式" class="headerlink" title="生成器模式"></a>生成器模式</h3><p>生成器模式，也叫做建造者模式；</p>
-<p>生成器模式中包含两个角色：分别是指导者和生成器。生成器模式所要构建的对象是由很多部分组成的。</p>
-<p>上面说抽象工厂是为了生产一系列产品的复杂创建类型的设计模式，</p>
-<p>抽象工厂则是会以固定的方式，固定的步骤来构建一个类型的产品。虽然它可以生成一系列的产品，但是产品种类相同的话，那么生产的步骤也是固定的。如果要生产不同的产品，就需要创建不同的类来实现不同的事物。抽象工厂在创建完产品时，会立即返回。</p>
-<p>生成器模式，是为了以不同的方式（例如，不同的状态组合），不同的步骤来分步构建同类产品；这里生成的对象，使用不同的步骤和方式就可以生成有差别的对象。构建不同状态的同一事物。生成器模式是在构建步骤完成之后在最后返回产品。<br><img src="/2018/03/02/对象创建的几种模式的对比和理解/生成器模式.jpg" alt="生成器模式"></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>关于原型模式和单例模式比较简单，就不一一对比了。工厂方法，抽象工厂和生成器模式几个创建复杂对象的模式有时候可能引起混淆，所以做了简单的对比。具体的实现还是需要在项目中根据具体情况来选择合适的模式。网上也有很多关于这几种模式的举例，根据每种模式的特点，自己最好能想出几个例子，会有助于理解。</p>
+        <p>这个库是一个支持缓存的图片异步加载库。为了方便使用，SDWebImage为一些UI控件，如UIView，UIImageView，UIButton，MKAnnotationView添加了分类。</p>
+<h4 id="这个框架的几大特征："><a href="#这个框架的几大特征：" class="headerlink" title="这个框架的几大特征："></a>这个框架的几大特征：</h4><ul>
+<li>在UIImageView，UIButton，MKAnnotationView的类目中添加了网络图片和缓存的管理；</li>
+<li>异步图片加载器；</li>
+<li>带有自动缓存过期处理的异步内存+磁盘图片缓存机制；</li>
+<li>后台图片解压；</li>
+<li>同一个URL不会被多次下载；</li>
+<li>虚假URL不会被重复尝试下载；</li>
+<li>主线程不会被阻塞；</li>
+<li>高性能；</li>
+<li>使用GCD和ARC；</li>
+</ul>
+<h4 id="支持的图片格式："><a href="#支持的图片格式：" class="headerlink" title="支持的图片格式："></a>支持的图片格式：</h4><ul>
+<li>支持JPEG,PNG…等图片格式，包括GIF；</li>
+<li>WebP格式，包括动画WebP；<br>要求：</li>
+<li>iOS7.0及以后的系统；</li>
+<li>tvOS9.0及之后的系统；</li>
+<li>watchOS2.0及之后的系统；</li>
+<li>macOS10.9及之后的系统；</li>
+<li>Xcode7.3及之后的系统；</li>
+</ul>
+<h4 id="使用方法："><a href="#使用方法：" class="headerlink" title="使用方法："></a>使用方法：</h4><p>#import <sdwebimage uiimageview+webcache.h=""><br>…<br>[imageView sd_setImageWithURL:[NSURL URLWithString:@”<a href="http://www.domain.com/path/to/image.jpg" target="_blank" rel="noopener">http://www.domain.com/path/to/image.jpg</a>“]<br>             placeholderImage:[UIImage imageNamed:@”placeholder.png”]];</sdwebimage></p>
+<h3 id="下来我们根据SDWebImage的结构图和流程图，来梳理SDWebImage加载图片的步骤和原理："><a href="#下来我们根据SDWebImage的结构图和流程图，来梳理SDWebImage加载图片的步骤和原理：" class="headerlink" title="下来我们根据SDWebImage的结构图和流程图，来梳理SDWebImage加载图片的步骤和原理："></a>下来我们根据SDWebImage的结构图和流程图，来梳理SDWebImage加载图片的步骤和原理：</h3><p>1、首先，为了能看懂下面的结构图，我们先来看一下OMT（Object-Modeling Technique）图示法中的各个标记的含义。<br><img src="/2018/07/13/SDWebImage框架的学习/UML图的表示.png" alt="UML图的表示"><br>2、下面，来看SDWebImage框架的结构图：<br><img src="/2018/07/13/SDWebImage框架的学习/SDWebImageClassDiagram.png" alt="结构图"><br>3、流程图：<br><img src="/2018/07/13/SDWebImage框架的学习/SDWebImageSequenceDiagram.png" alt="流程图"></p>
+<p>对于结构图和流程图，我们可以先不具体看，而是从我们的1中的包含文件说起。<br>用使用SDWebImage就需要先包含SDWebImage包下的UIImageView+WebCache头文件。<br>因此，</p>
+<p>（1）我们先在结构图中找到UIImageView+WebCache这个分类文件，这个分类暴露了一个叫做 - (void)sd_setImageWithURL:(nullable NSURL *)url的方法给我们用。</p>
+<p>（2）从结构图中，可以看出这个方法依赖于UIImageView的父类UIView的分类 UIView+WebCache中的 sd_internalSetImageWithURL方法。</p>
+<p>（3）同样的， UIView+WebCache中的 sd_internalSetImageWithURL方法又依赖于 SDWebImageManager中的 loadImageWithURL方法。</p>
+<p>（4）SDWebImageManager中的 loadImageWithURL方法，就是我们获取图片的关键步骤了。</p>
+<p>（4.1）在SDWebImageManager中SDImageCache和SDWebImageDownloader是其中的一部分，因此说SDWebImageManager和SDImageCache、SDWebImageDownloader的引用之间构成聚合关系；</p>
+<p>（4.2）SDImageCache的引用需要调用 queryCacheOperationForKey方法来在缓存中查询该url对应的图片缓存，并返回。</p>
+<p>（4.3）SDWebImageDownloader的引用需要调用 downloadImageWithURL方法去下载URL所对应的图片，并返回。</p>
+<p>（4.4）对于下载成功的图片，需要SDImageCache的引用调用 storeImage方法将下载完成的图片储存在缓存中，以便下次调用。</p>
+<p>以上，我们就对SDWebImage的框架和工作流程有了一个大致的了解。</p>
+<h3 id="下面，我们对SDWebImage的几大特性，来分析一下其源码，是怎么实现的？"><a href="#下面，我们对SDWebImage的几大特性，来分析一下其源码，是怎么实现的？" class="headerlink" title="下面，我们对SDWebImage的几大特性，来分析一下其源码，是怎么实现的？"></a>下面，我们对SDWebImage的几大特性，来分析一下其源码，是怎么实现的？</h3><p>缓存图片有三种类型：<br>   //图片不在缓存中，而是从网络下载的<br>    SDImageCacheTypeNone,<br>    //图片是磁盘中获取的<br>    SDImageCacheTypeDisk,<br>    //图片是从内存缓存中获取的<br>    SDImageCacheTypeMemory<br>图片缓存选项的类型也有三种：<br>    //默认情况下，当图片缓存在内存中时，我们不会查询磁盘数据。这种类型会强制同时查询磁盘数据<br>    SDImageCacheQueryDataWhenInMemory = 1 &lt;&lt; 0,<br>    //默认情况下，我们是同步查询内存缓存，异步查询磁盘数据。这种类型会强制同步查询磁盘数据<br>    SDImageCacheQueryDiskSync = 1 &lt;&lt; 1,<br>    //默认情况下，图片按照原本尺寸解码。iOS中，这个标志位会把图片缩小到个设备内存兼容的尺寸。<br>    SDImageCacheScaleDownLargeImages = 1 &lt;&lt; 2</p>
+<h4 id="1、在UIImageView，UIButton，MKAnnotationView的分类中添加了网络图片和缓存的管理；"><a href="#1、在UIImageView，UIButton，MKAnnotationView的分类中添加了网络图片和缓存的管理；" class="headerlink" title="1、在UIImageView，UIButton，MKAnnotationView的分类中添加了网络图片和缓存的管理；"></a>1、在UIImageView，UIButton，MKAnnotationView的分类中添加了网络图片和缓存的管理；</h4><p>在SDWebImage的WebCache Categories目录下，是关于UIImageView，UIButton，MKAnnotationView的分类，其中暴露给我们可以通过传入URL加载网络图片的方法；</p>
+<h4 id="2、异步图片加载器；"><a href="#2、异步图片加载器；" class="headerlink" title="2、异步图片加载器；"></a>2、异步图片加载器；</h4><p>通过传入图片URL开始加载图片的过程主要在SDWebImageManager的loadImageWithURL方法中实现；<br>在这个方法中，首先通过调用SDImageCache的queryCacheOperationForKey方法去查询URL在缓存中的图片。<br>这个URL在SDImageCache的memCache对应一个key，其value就是对应的内存缓存图片；<br>如果图片中</p>
+<p>但是当没有从内存缓存或者磁盘映像中获取到图片，那么就要从网络中异步下载图片。下载图片的网络请求任务是添加在 SDWebImageDownloaderOperation中的。SDWebImageDownloaderOperation继承自 NSOperation。这些操作SDWebImageDownloaderOperation依次存在 NSOperationQueue中。<br>其中这个添加任务到队列的操作进行了加锁。<br>因此说，SDWebImage是一个异步图片加载器。</p>
+<h4 id="3、带有自动缓存过期处理的异步内存-磁盘图片缓存机制；"><a href="#3、带有自动缓存过期处理的异步内存-磁盘图片缓存机制；" class="headerlink" title="3、带有自动缓存过期处理的异步内存+磁盘图片缓存机制；"></a>3、带有自动缓存过期处理的异步内存+磁盘图片缓存机制；</h4><p>SDWebImage的缓存周期是一周，也就是 60 <em> 60 </em> 24 * 7秒。<br>在进入后台时或者应用被杀死时，会进行判断：如果超过了缓存周期，就会删除URL所对应的文件；<br>图片下载完成后，将图片存在缓存中，再根据根据配置项选择是否将图片存储到磁盘中。</p>
 
       
     </div>
@@ -421,9 +440,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-            <a href="/tags/对象创建模式/" rel="tag"># 对象创建模式</a>
+            <a href="/tags/SDWebImage/" rel="tag"># SDWebImage</a>
           
         </div>
       
@@ -436,8 +455,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/02/08/Mac下基于github的hexo博客搭建及常用功能添加/" rel="next" title="Mac下基于github的hexo博客搭建及常用功能添加">
-                <i class="fa fa-chevron-left"></i> Mac下基于github的hexo博客搭建及常用功能添加
+              <a href="/2018/06/28/iOS-GCD使用详解/" rel="next" title="iOS GCD使用详解">
+                <i class="fa fa-chevron-left"></i> iOS GCD使用详解
               </a>
             
           </div>
@@ -445,10 +464,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/16/iOS-极光推送了解/" rel="prev" title="iOS 极光推送了解">
-                iOS 极光推送了解 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -585,7 +600,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#原型模式"><span class="nav-number">1.</span> <span class="nav-text">原型模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工厂方法"><span class="nav-number">2.</span> <span class="nav-text">工厂方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抽象工厂"><span class="nav-number">3.</span> <span class="nav-text">抽象工厂</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成器模式"><span class="nav-number">4.</span> <span class="nav-text">生成器模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number"></span> <span class="nav-text">总结</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#这个框架的几大特征："><span class="nav-number">1.</span> <span class="nav-text">这个框架的几大特征：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#支持的图片格式："><span class="nav-number">2.</span> <span class="nav-text">支持的图片格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用方法："><span class="nav-number">3.</span> <span class="nav-text">使用方法：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下来我们根据SDWebImage的结构图和流程图，来梳理SDWebImage加载图片的步骤和原理："><span class="nav-number"></span> <span class="nav-text">下来我们根据SDWebImage的结构图和流程图，来梳理SDWebImage加载图片的步骤和原理：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下面，我们对SDWebImage的几大特性，来分析一下其源码，是怎么实现的？"><span class="nav-number"></span> <span class="nav-text">下面，我们对SDWebImage的几大特性，来分析一下其源码，是怎么实现的？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、在UIImageView，UIButton，MKAnnotationView的分类中添加了网络图片和缓存的管理；"><span class="nav-number">1.</span> <span class="nav-text">1、在UIImageView，UIButton，MKAnnotationView的分类中添加了网络图片和缓存的管理；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、异步图片加载器；"><span class="nav-number">2.</span> <span class="nav-text">2、异步图片加载器；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、带有自动缓存过期处理的异步内存-磁盘图片缓存机制；"><span class="nav-number">3.</span> <span class="nav-text">3、带有自动缓存过期处理的异步内存+磁盘图片缓存机制；</span></a></li></ol></div>
             
 
           </div>
