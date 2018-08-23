@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,正则," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="NSPredicatePredicate：断言，谓语，术语的意思。 定义一个逻辑条件，用来在内存过滤或者获取时，限定搜索的条件。 Predicates表示一个可以用来过滤对象集合的条件。通常，我们可以从 NSComparisonPredicate, NSCompoundPredicate, 和 NSExpression的实例直接创建predicates，但是，我们也可以从格式化的string来创建">
+<meta name="keywords" content="iOS,正则">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS NSPredicate和NSRegularExpression">
+<meta property="og:url" content="http://yoursite.com/2018/08/23/iOS-NSPredicate和NSRegularExpression/index.html">
+<meta property="og:site_name" content="花花小草">
+<meta property="og:description" content="NSPredicatePredicate：断言，谓语，术语的意思。 定义一个逻辑条件，用来在内存过滤或者获取时，限定搜索的条件。 Predicates表示一个可以用来过滤对象集合的条件。通常，我们可以从 NSComparisonPredicate, NSCompoundPredicate, 和 NSExpression的实例直接创建predicates，但是，我们也可以从格式化的string来创建">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-23T12:18:41.145Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS NSPredicate和NSRegularExpression">
+<meta name="twitter:description" content="NSPredicatePredicate：断言，谓语，术语的意思。 定义一个逻辑条件，用来在内存过滤或者获取时，限定搜索的条件。 Predicates表示一个可以用来过滤对象集合的条件。通常，我们可以从 NSComparisonPredicate, NSCompoundPredicate, 和 NSExpression的实例直接创建predicates，但是，我们也可以从格式化的string来创建">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/23/iOS-NSPredicate和NSRegularExpression/"/>
+
+
+
+
+
+  <title>iOS NSPredicate和NSRegularExpression | 花花小草</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">花花小草</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/23/iOS-NSPredicate和NSRegularExpression/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shiru">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花花小草">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS NSPredicate和NSRegularExpression</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-23T19:41:41+08:00">
+                2018-08-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/正则/" itemprop="url" rel="index">
+                    <span itemprop="name">正则</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="NSPredicate"><a href="#NSPredicate" class="headerlink" title="NSPredicate"></a>NSPredicate</h2><p>Predicate：断言，谓语，术语的意思。</p>
+<p>定义一个逻辑条件，用来在内存过滤或者获取时，限定搜索的条件。</p>
+<p>Predicates表示一个可以用来过滤对象集合的条件。通常，我们可以从 NSComparisonPredicate, NSCompoundPredicate, 和 NSExpression的实例直接创建predicates，但是，我们也可以从格式化的string来创建predicates，这个格式化的string可以被NSPredicate的类方法解析。</p>
+<p>predicates 格式化string的例子包括：</p>
+<ul>
+<li>简单的比较，如 grade == “7” ,     firstName like “Shaffiq”</li>
+<li>不区分大小写[c]与不区分重音符号[d]的模糊匹配，如 name contains[cd] “itroen”</li>
+<li>逻辑操作，如 (firstName like “Mark”) 或 (lastName like “Adderley”)</li>
+<li>时间范围的约束，如 date between {$YESTERDAY, $TOMORROW}</li>
+<li>相关条件，如 group.name like “work*”</li>
+<li>集合运算，如 @sum.items.price &lt; 1000</li>
+</ul>
+<p>完整的语句参考地址：<a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Predicates/AdditionalChapters/Introduction.html#//apple_ref/doc/uid/TP40001789" target="_blank" rel="noopener">https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Predicates/AdditionalChapters/Introduction.html#//apple_ref/doc/uid/TP40001789</a></p>
+<p>我们也可以通过 evaluateWithObject:substitutionVariables: 方法创建一个包含变量的predicates，这样，predicate就可以在运行时替代具体的值之前预定义。</p>
+<h3 id="1、创建predicate的方法："><a href="#1、创建predicate的方法：" class="headerlink" title="1、创建predicate的方法："></a>1、创建predicate的方法：</h3><ul>
+<li><ul>
+<li>predicateWithFormat:</li>
+</ul>
+</li>
+<li>通过创建一个新的string并解析，来创建并返回一个新的predicate；</li>
+<li><ul>
+<li>predicateWithFormat:argumentArray:</li>
+</ul>
+</li>
+<li>通过给定数组中的值来替代格式化string并解析，来实例化一个predicate；</li>
+<li><ul>
+<li>predicateWithFormat:arguments:</li>
+</ul>
+</li>
+<li>通过给定参数的值来替代格式化string并解析，来实例化一个predicate；</li>
+<li><ul>
+<li>predicateWithSubstitutionVariables:</li>
+</ul>
+</li>
+<li>返回一个predicate的copy，新的copy对象中的变量将会被给定字典中特定的值替代；</li>
+<li><ul>
+<li>predicateWithValue:</li>
+</ul>
+</li>
+<li>对给定的bool值进行评估来创建并返回predicate；</li>
+<li><ul>
+<li>predicateWithBlock:</li>
+</ul>
+</li>
+<li>通过特定的block对象和字典的评估来实例化一个predicate；</li>
+<li><ul>
+<li>predicateFromMetadataQueryString:</li>
+</ul>
+</li>
+<li>通过一个元数据查询字符串来实例化一个predicate；</li>
+</ul>
+<h3 id="2、评估一个predicate"><a href="#2、评估一个predicate" class="headerlink" title="2、评估一个predicate"></a>2、评估一个predicate</h3><ul>
+<li><ul>
+<li>evaluateWithObject:</li>
+</ul>
+</li>
+<li>返回一个bool值，表明特定的对象和predicate指定的条件是否匹配；</li>
+<li><ul>
+<li>evaluateWithObject:substitutionVariables:</li>
+</ul>
+</li>
+<li>返回一个bool值，表明特定的对象和predicate在替代了给定字典中的值后指定的条件是否匹配；</li>
+<li><ul>
+<li>allowEvaluation</li>
+</ul>
+</li>
+<li>强制安全解码的predicate允许被评估。当一个使用 NSSecureCoding编码的predicate对象在安全解码时，是不能被评估的。因为评估一个从存档中取出的predicate是有潜在风险的。在激活评估之前，我们应该证实 key paths, selectors,和其他细节来确保没有错误或恶意代码被执行。一旦我们验证了predicate，我们就可以通过调用allowEvaluation来激活接收器来评估。<br>3、获取一个字符串表达式</li>
+<li>predicateFormat：NSPredicate的只读属性；</li>
+</ul>
+<h2 id="NSRegularExpression"><a href="#NSRegularExpression" class="headerlink" title="NSRegularExpression"></a>NSRegularExpression</h2><p>一个不可变的表示形式，可用于Unicode string的编译正则表达式。</p>
+<p>NSRegularExpression的基本匹配方法是一个Block迭代方法，可允许客户端提供一个Block对象，来当正则表达式匹配上目标字符的一部分时，该Block块被调用。还有其他一些方便的方法，可以返回把所有匹配结果的数组，匹配的总数，第一个匹配结果，第一个匹配的range。</p>
+<p>单个的匹配结果，用 NSTextCheckingResult类的实例来表示，它携带了关于全部匹配范围（range属性），每个匹配结果的范围（ rangeAtIndex:方法）等等信息。对于基本的 NSRegularExpression对象，匹配结果是 NSTextCheckingTypeRegularExpression，但是子类或许可以使用其他类型。</p>
+<h4 id="NSRegularExpression的使用示例"><a href="#NSRegularExpression的使用示例" class="headerlink" title="NSRegularExpression的使用示例"></a>NSRegularExpression的使用示例</h4><p>下面是NSRegularExpression类的一系列示例，这些例子使用 \b(a|b)(c|d)\b的正则表达式来作为他们的正则表达式。</p>
+<p>这段代码创建了一个正则表达式来匹配两个字符的单词，其首字母是“a”或者“b”，第二个字母是“c”或者“d”。指定NSRegularExpressionCaseInsensitive意味着，匹配是不区分大小写的，所以它也匹配到“BC”，“aD”等等，或者相同的小写。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">NSError *error = NULL;</span><br><span class="line">NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@&quot;\\b(a|b)(c|d)\\b&quot;</span><br><span class="line">                                                                       options:NSRegularExpressionCaseInsensitive</span><br><span class="line">                                                                         error:&amp;error];</span><br></pre></td></tr></table></figure></p>
+<p>numberOfMatchesInString:options:range: 方法提供了一个简单的机制来计算给定字符串范围内的匹配结果个数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">NSUInteger numberOfMatches = [regex numberOfMatchesInString:string</span><br><span class="line">                                                    options:0</span><br><span class="line">                                                      range:NSMakeRange(0, [string length])];</span><br></pre></td></tr></table></figure></p>
+<p>如果你只对第一个匹配结果的范围感兴趣，那就可以使用 rangeOfFirstMatchInString:options:range: 方法。一些正则表达式可以成功的匹配0长度的范围，因此和 {NSNotFound, 0} 的range进行对比，是检验是否有匹配结果的最可靠的方法。</p>
+<p>示例中的正则表达式包含了两组捕获条件，分别对应两组圆括号中的内容，一个是首字母，一个是第二个字母。如果你不仅仅关注整个匹配范围，还想获取对应给定的匹配结果的 NSTextCheckingResult对象。这个 NSTextCheckingResult对象通过range属性提供了整个匹配范围的信息，还通过rangeAtIndex方法提供了每个匹配结果的范围信息。<br>第一个匹配结果通过 [result rangeAtIndex:1]可得到，第二个匹配结果通过 [result rangeAtIndex:2]可得到。 [result rangeAtIndex:0]相当于 [result range]。</p>
+<p>如果result返回non-nil，那么[result range]将是一个有效的范围，因此，和{NSNotFound, 0} 的range进行对比是没有必要的。但是，对于正则表达式，匹配结果可能参加，也可能不参加给定的匹配条件，如果匹配结果没有参加给定匹配，那么 [result rangeAtIndex:idx] 将会返回 {NSNotFound, 0}。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">NSRange rangeOfFirstMatch = [regex rangeOfFirstMatchInString:string options:0 range:NSMakeRange(0, [string length])];</span><br><span class="line">if (!NSEqualRanges(rangeOfFirstMatch, NSMakeRange(NSNotFound, 0))) &#123;</span><br><span class="line">    NSString *substringForFirstMatch = [string substringWithRange:rangeOfFirstMatch];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>matchesInString:options:range: 会返回所有的匹配结果。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">NSArray *matches = [regex matchesInString:string</span><br><span class="line">                                  options:0</span><br><span class="line">                                    range:NSMakeRange(0, [string length])];</span><br><span class="line">for (NSTextCheckingResult *match in matches) &#123;</span><br><span class="line">     NSRange matchRange = [match range];</span><br><span class="line">     NSRange firstHalfRange = [match rangeAtIndex:1];</span><br><span class="line">     NSRange secondHalfRange = [match rangeAtIndex:2];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>firstMatchInString:options:range: 方法和matchesInString:options:range:方法类似，只是返回的是第一个匹配结果。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">NSTextCheckingResult *match = [regex firstMatchInString:string</span><br><span class="line">                                                options:0</span><br><span class="line">                                                  range:NSMakeRange(0, [string length])];</span><br><span class="line">if (match) &#123;</span><br><span class="line">    NSRange matchRange = [match range];</span><br><span class="line">    NSRange firstHalfRange = [match rangeAtIndex:1];</span><br><span class="line">    NSRange secondHalfRange = [match rangeAtIndex:2];</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>enumerateMatchesInString:options:range:usingBlock:这个Block枚举方法，是NSRegularExpression的匹配方法中最普通和灵活的。我们可以用它循环迭代字符串中的匹配结果，执行块中指定的任意操作，也可以在需要的时候终止。下面的例子中，循环迭代是在获取到一定数量的匹配结果后终止的。</p>
+<p>如果没有特殊项NSMatchingReportProgress ，也没有NSMatchingReportCompletion ，那么Block的result参数保证是非nil的，也就是保证range是有效的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">__block NSUInteger count = 0;</span><br><span class="line">[regex enumerateMatchesInString:string options:0 range:NSMakeRange(0, [string length]) usingBlock:^(NSTextCheckingResult *match, NSMatchingFlags flags, BOOL *stop)&#123;</span><br><span class="line">     NSRange matchRange = [match range];</span><br><span class="line">     NSRange firstHalfRange = [match rangeAtIndex:1];</span><br><span class="line">     NSRange secondHalfRange = [match rangeAtIndex:2];</span><br><span class="line">     if (++count &gt;= 100) *stop = YES;</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure></p>
+<p>NSRegularExpression也提供了一些简单的方法来执行查询并替换的操作。下面的例子返回一个被修改的copy，但是又一个相应的方法来修改一个可更改的字符串。模板指定用于替换匹配结果的内容，$0代表整个匹配范围的内容，$1代表第一个匹配范围的内容，等等。在这个例子中，模板将单词中的两个字母颠倒：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">NSString *modifiedString = [regex stringByReplacingMatchesInString:string</span><br><span class="line">                                                           options:0</span><br><span class="line">                                                             range:NSMakeRange(0, [string length])</span><br><span class="line">                                                      withTemplate:@&quot;$2$1”];</span><br></pre></td></tr></table></figure></p>
+<h3 id="并发与线程安全"><a href="#并发与线程安全" class="headerlink" title="并发与线程安全"></a>并发与线程安全</h3><p>NSRegularExpression是不可更改的，线程安全的。因此，单例被用在多线程的匹配操作中。然而，在操作过程中，不管事在另一个线程中，还是在迭代的Block，字符串都不应该被改变。</p>
+<h4 id="正则表达式语句"><a href="#正则表达式语句" class="headerlink" title="正则表达式语句"></a>正则表达式语句</h4><p>下表描述了用来在字符串中进行模式匹配的正则表达式中用到的字符表达式，指定多少次模式匹配和额外的匹配约束的模式运算符，最后一个表指定了正则表达式中包含的标志位，可指定多行搜索行为（这些标志位也可以通过 NSRegularExpressionOptions来指定）。</p>
+<h4 id="正则表达式元字符"><a href="#正则表达式元字符" class="headerlink" title="正则表达式元字符"></a>正则表达式元字符</h4><p>表1中描述了用来匹配字符的字符序列</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Character Expression</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">\a</td>
+<td style="text-align:left">匹配响铃字符, \u0007</td>
+</tr>
+<tr>
+<td style="text-align:left">\A</td>
+<td style="text-align:left">匹配字符串开头。与^不同，\A不会换行匹配，也就是不支持多行匹配</td>
+</tr>
+<tr>
+<td style="text-align:left">\b, outside of a [Set]</td>
+<td style="text-align:left">匹配当前位置是否是单词的边界。边界出现在单词字符（\w语言元素）和非单词字符（\W语言元素）之间的边界上。单词字符包括字母数字字符和下划线。</td>
+</tr>
+<tr>
+<td style="text-align:left">\b, within a [Set]</td>
+<td style="text-align:left">匹配退格键, \u0008.</td>
+</tr>
+<tr>
+<td style="text-align:left">\B</td>
+<td style="text-align:left">匹配不得出现在\b边界上</td>
+</tr>
+<tr>
+<td style="text-align:left">\cX匹配由X指定的控制字符</td>
+</tr>
+<tr>
+<td style="text-align:left">\d</td>
+<td style="text-align:left">匹配一个数字字符，[0-9]</td>
+</tr>
+<tr>
+<td style="text-align:left">\D</td>
+<td style="text-align:left">匹配一个非数字字符，与\d相反</td>
+</tr>
+<tr>
+<td style="text-align:left">\e</td>
+<td style="text-align:left">匹配转义字符, \u001B.</td>
+</tr>
+<tr>
+<td style="text-align:left">\E</td>
+<td style="text-align:left">终止\Q启动的（将元字符视为非元字符）的功能.</td>
+</tr>
+<tr>
+<td style="text-align:left">\f</td>
+<td style="text-align:left">匹配换页符, \u000C.</td>
+</tr>
+<tr>
+<td style="text-align:left">\G</td>
+<td style="text-align:left">匹配必须出现在上一个匹配结束的地方</td>
+</tr>
+<tr>
+<td style="text-align:left">\n</td>
+<td style="text-align:left">匹配换行符, \u000A.</td>
+</tr>
+<tr>
+<td style="text-align:left">\N{UNICODE CHARACTER NAME}</td>
+<td style="text-align:left">匹配命名字符</td>
+</tr>
+<tr>
+<td style="text-align:left">\p{UNICODE PROPERTY NAME}</td>
+<td style="text-align:left">匹配指定的Unicode通用类别或命名块中的任何单个字符</td>
+</tr>
+<tr>
+<td style="text-align:left">\P{UNICODE PROPERTY NAME}</td>
+<td style="text-align:left">匹配不在指定的Unicode通用类别或命名块中的任何单个字符</td>
+</tr>
+<tr>
+<td style="text-align:left">\Q</td>
+<td style="text-align:left">将元字符视为非元字符，直到碰到\E</td>
+</tr>
+<tr>
+<td style="text-align:left">\r</td>
+<td style="text-align:left">匹配回车符, \u000D.</td>
+</tr>
+<tr>
+<td style="text-align:left">\s</td>
+<td style="text-align:left">匹配白空格字符. 白空格定义为 [\t\n\f\r\p{Z}].</td>
+</tr>
+<tr>
+<td style="text-align:left">\S</td>
+<td style="text-align:left">匹配非白空格字符</td>
+</tr>
+<tr>
+<td style="text-align:left">\t</td>
+<td style="text-align:left">匹配水平制表符, \u0009.</td>
+</tr>
+<tr>
+<td style="text-align:left">\uhhhh</td>
+<td style="text-align:left">使用十六进制匹配字符</td>
+</tr>
+<tr>
+<td style="text-align:left">\Uhhhhhhhh</td>
+<td style="text-align:left">使用十六进制匹配字符。必须是精确的8位16进制数</td>
+</tr>
+<tr>
+<td style="text-align:left">\w</td>
+<td style="text-align:left">匹配单词字符，包括字母字符，数字，下划线</td>
+</tr>
+<tr>
+<td style="text-align:left">\W</td>
+<td style="text-align:left">匹配非单词字符</td>
+</tr>
+<tr>
+<td style="text-align:left">\x{hhhh}</td>
+<td style="text-align:left">匹配0xhhhh的字符，从1到6位16进制数字被提供</td>
+</tr>
+<tr>
+<td style="text-align:left">\xhh</td>
+<td style="text-align:left">匹配0xhh的字符，从1到2位16进制数字被提供</td>
+</tr>
+<tr>
+<td style="text-align:left">\X</td>
+<td style="text-align:left">匹配字形聚类</td>
+</tr>
+<tr>
+<td style="text-align:left">\Z</td>
+<td style="text-align:left">匹配是否是结尾处的位置，并且在字符串末尾的\n之前。</td>
+</tr>
+<tr>
+<td style="text-align:left">\z</td>
+<td style="text-align:left">匹配是否是结尾处的位置</td>
+</tr>
+<tr>
+<td style="text-align:left">\n</td>
+<td style="text-align:left">向后引用，匹配第n个匹配结果。n必须1 &lt; n &lt; 匹配结果的总数.</td>
+</tr>
+<tr>
+<td style="text-align:left">\0ooo</td>
+<td style="text-align:left">匹配八进制字符。Match an Octal character.  ooo is from one to three octal digits.  0377 is the largest allowed Octal character. The leading zero is required; it distinguishes Octal constants from back references.</td>
+</tr>
+<tr>
+<td style="text-align:left">[pattern]</td>
+<td style="text-align:left">匹配模式中的任意一个字符.</td>
+</tr>
+<tr>
+<td style="text-align:left">.</td>
+<td style="text-align:left">匹配任何字符</td>
+</tr>
+<tr>
+<td style="text-align:left">^</td>
+<td style="text-align:left">匹配行首</td>
+</tr>
+<tr>
+<td style="text-align:left">$</td>
+<td style="text-align:left">匹配行尾</td>
+</tr>
+<tr>
+<td style="text-align:left">\</td>
+<td style="text-align:left">标记下一个字符为特殊字符。下列字符必须被标记为转义字符 * ? + [ ( ) { } ^ $</td>
+<td>\ . /</td>
+</tr>
+</tbody>
+</table>
+<h3 id="正则表达式运算符"><a href="#正则表达式运算符" class="headerlink" title="正则表达式运算符"></a>正则表达式运算符</h3><table>
+<thead>
+<tr>
+<th style="text-align:left">Character Expression</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">&#124;</td>
+<td style="text-align:left">逻辑“或”运算. A</td>
+<td>B 匹配 A 或 B.</td>
+</tr>
+<tr>
+<td style="text-align:left">*</td>
+<td style="text-align:left">匹配表达式0次或尽可能多次.</td>
+</tr>
+<tr>
+<td style="text-align:left">+</td>
+<td style="text-align:left">匹配表达式1次或尽可能多次.</td>
+</tr>
+<tr>
+<td style="text-align:left">?</td>
+<td style="text-align:left">匹配0次或1次.</td>
+</tr>
+<tr>
+<td style="text-align:left">{n}</td>
+<td style="text-align:left">匹配精确的n次.</td>
+</tr>
+<tr>
+<td style="text-align:left">{n,}</td>
+<td style="text-align:left">匹配至少n次. 尽可能匹配多次.</td>
+</tr>
+<tr>
+<td style="text-align:left">{n,m}</td>
+<td style="text-align:left">匹配n到m次。 尽可能匹配多次，但不能超过m次.</td>
+</tr>
+<tr>
+<td style="text-align:left">*?</td>
+<td style="text-align:left">匹配0次或多次。</td>
+</tr>
+<tr>
+<td style="text-align:left">+?</td>
+<td style="text-align:left">匹配1次或多次.</td>
+</tr>
+<tr>
+<td style="text-align:left">??</td>
+<td style="text-align:left">匹配0次或1次.</td>
+</tr>
+<tr>
+<td style="text-align:left">{n}?</td>
+<td style="text-align:left">精确匹配n次.</td>
+</tr>
+<tr>
+<td style="text-align:left">{n,}?</td>
+<td style="text-align:left">至少匹配n次，但次数尽可能少</td>
+</tr>
+<tr>
+<td style="text-align:left">{n,m}?</td>
+<td style="text-align:left">匹配n~m次，但次数尽可能少</td>
+</tr>
+<tr>
+<td style="text-align:left">*+</td>
+<td style="text-align:left">匹配0次或多次。当第一次遇到时，尽可能多地匹配。即使整个匹配失败，也不要重试。</td>
+</tr>
+<tr>
+<td style="text-align:left">++</td>
+<td style="text-align:left">匹配1次或多次</td>
+</tr>
+<tr>
+<td style="text-align:left">?+</td>
+<td style="text-align:left">匹配0次或多次.</td>
+</tr>
+<tr>
+<td style="text-align:left">{n}+</td>
+<td style="text-align:left">精确匹配n次</td>
+</tr>
+<tr>
+<td style="text-align:left">{n,}+</td>
+<td style="text-align:left">匹配至少n次.</td>
+</tr>
+<tr>
+<td style="text-align:left">{n,m}+</td>
+<td style="text-align:left">匹配n~m次.</td>
+</tr>
+<tr>
+<td style="text-align:left">(…)</td>
+<td style="text-align:left">匹配圆括号。匹配后，匹配圆括号的子表达式的输入范围是可用的。</td>
+</tr>
+<tr>
+<td style="text-align:left">(?:…)</td>
+<td style="text-align:left">匹配非圆括号</td>
+</tr>
+<tr>
+<td style="text-align:left">(?&gt;…)</td>
+<td style="text-align:left">原子匹配圆括号的子表达式</td>
+</tr>
+<tr>
+<td style="text-align:left">(?# … )</td>
+<td style="text-align:left">无格式注释，…为注释内容.</td>
+</tr>
+<tr>
+<td style="text-align:left">(?= … )</td>
+<td style="text-align:left">前瞻断言。</td>
+</tr>
+<tr>
+<td style="text-align:left">(?! … )</td>
+<td style="text-align:left">否定的前瞻断言</td>
+</tr>
+<tr>
+<td style="text-align:left">(?&lt;= … )</td>
+<td style="text-align:left">Look-behind 断言</td>
+</tr>
+<tr>
+<td style="text-align:left">(?&lt;! … )</td>
+<td style="text-align:left">否定的Look-behind 断言</td>
+</tr>
+<tr>
+<td style="text-align:left">(?ismwx-ismwx:… )</td>
+<td style="text-align:left">标志位设置</td>
+</tr>
+<tr>
+<td style="text-align:left">(?ismwx-ismwx)</td>
+<td style="text-align:left">标志位设置</td>
+</tr>
+</tbody>
+</table>
+<h3 id="模板匹配格式"><a href="#模板匹配格式" class="headerlink" title="模板匹配格式"></a>模板匹配格式</h3><p>NSRegularExpression类使用模板匹配的技巧对不可变和可变字符串提供了查找并替代的方法。<br>下表描述了模板匹配的语法：</p>
+<table>
+<thead>
+<tr>
+<th>模板</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$n</td>
+<td>捕获组n的text将会被替换为$n，n必须大于0且小于等于捕获组的数目。没有数字跟随的$没有特殊含义，它将在替换文本中，只作为$。</td>
+</tr>
+</tbody>
+</table>
+<p>\把字符作为字面含义，不代表任何特殊意义。替换文本中的\只用于$和\，但是也可以用于没有不良影响的其他字符。</p>
+<p>替代字符被当做一个模板，$0代表匹配范围内的内容都被替换。$1代表第一个捕获组的内容被替换。超出捕获组总数最大值的将被视为普通字符，没有数字跟随的$。反斜杠对$和\转义。</p>
+<h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><p>NSRegularExpression是一个非确定有限自动匹配引擎。基于此，包含*或者+运算符的复杂正则表达式模板在匹配时，性能比较差，甚至匹配失败。</p>
+<p>创建正则表达式</p>
+<ul>
+<li>+ regularExpressionWithPattern:options:error:<br>使用特定的正则表达式模板和options创建NSRegularExpression实例。<br>- initWithPattern:options:error:<br>使用特定的正则表达式模板和options返回NSRegularExpression实例。</li>
+</ul>
+<h3 id="获取整个表达式和options"><a href="#获取整个表达式和options" class="headerlink" title="获取整个表达式和options"></a>获取整个表达式和options</h3><ul>
+<li>pattern: 返回正则表达式模板</li>
+<li>options</li>
+</ul>
+<p>numberOfCaptureGroups<br>返回正则表达式的捕获组总数</p>
+<h3 id="使用正则表达式搜索字符串"><a href="#使用正则表达式搜索字符串" class="headerlink" title="使用正则表达式搜索字符串"></a>使用正则表达式搜索字符串</h3><ul>
+<li>- numberOfMatchesInString:options:range:</li>
+</ul>
+<p>返回指定范围字符内的正则匹配数量。</p>
+<ul>
+<li>- enumerateMatchesInString:options:range:usingBlock:</li>
+</ul>
+<p>使用Block来处理正则表达匹配结果来枚举字符串。</p>
+<ul>
+<li>- matchesInString:options:range:</li>
+</ul>
+<p>返回返回包含字符中的所有正则匹配结果的数组</p>
+<ul>
+<li>- firstMatchInString:options:range:</li>
+</ul>
+<p>返回返回包含字符中的第一个正则匹配结果</p>
+<ul>
+<li>- rangeOfFirstMatchInString:options:range:</li>
+</ul>
+<p>返回返回包含字符中的第一个正则匹配结果的范围。</p>
+<h3 id="使用正则表示替代字符串"><a href="#使用正则表示替代字符串" class="headerlink" title="使用正则表示替代字符串"></a>使用正则表示替代字符串</h3><ul>
+<li>- replaceMatchesInString:options:range:withTemplate:</li>
+</ul>
+<p>使用模板字符串替换可变字符串内匹配的正则表达式</p>
+<ul>
+<li>- stringByReplacingMatchesInString:options:range:withTemplate:</li>
+</ul>
+<p>返回一个包含使用模板字符串替换匹配正则表达式的新字符串</p>
+<h3 id="转义字符串中的字符"><a href="#转义字符串中的字符" class="headerlink" title="转义字符串中的字符"></a>转义字符串中的字符</h3><ul>
+<li>+ escapedTemplateForString:</li>
+</ul>
+<p>返回增加了必要的反斜杠转义来保护字符的匹配模板元字符的一个模板字符串</p>
+<ul>
+<li>+ escapedPatternForString:</li>
+</ul>
+<p>返回增加了必要的反斜杠转义来保护字符的匹配模板元字符的一个字符串</p>
+<h3 id="自定义替换功能"><a href="#自定义替换功能" class="headerlink" title="自定义替换功能"></a>自定义替换功能</h3><ul>
+<li>- replacementStringForResult:inString:offset:template:</li>
+</ul>
+<p>用来对单个结果执行模板替换来实现他们自己的替换功能</p>
+<h3 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h3><ul>
+<li>NSRegularExpressionOptions</li>
+</ul>
+<p>这些约束定义了正则表达式的选项，这些约束通过属性regularExpressionWithPattern:options:error:和 initWithPattern:options:error:来使用，.</p>
+<ul>
+<li>NSMatchingFlags</li>
+</ul>
+<p>通过匹配进度，完成，失败的Block来设置。通过方法enumerateMatchesInString:options:range:usingBlock:来使用</p>
+<ul>
+<li>NSMatchingOptions</li>
+</ul>
+<p>匹配选项约束指定了表达式的报告，完成和匹配规则等匹配方法。这些约束在所有搜索，替代使用正则表达式的地方使用。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持就是对我的鼓励</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="shiru 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="shiru 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/正则/" rel="tag"># 正则</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/03/jenkins-gitlab-xcode-fir自动化打包流程/" rel="next" title="jenkins+gitlab+xcode+fir自动化打包流程">
+                <i class="fa fa-chevron-left"></i> jenkins+gitlab+xcode+fir自动化打包流程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzk3NC8xMDUwOQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shiru</p>
+              <p class="site-description motion-element" itemprop="description">记录花花小草的技术成长之旅</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NSPredicate"><span class="nav-number">1.</span> <span class="nav-text">NSPredicate</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、创建predicate的方法："><span class="nav-number">1.1.</span> <span class="nav-text">1、创建predicate的方法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、评估一个predicate"><span class="nav-number">1.2.</span> <span class="nav-text">2、评估一个predicate</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NSRegularExpression"><span class="nav-number">2.</span> <span class="nav-text">NSRegularExpression</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NSRegularExpression的使用示例"><span class="nav-number">2.0.1.</span> <span class="nav-text">NSRegularExpression的使用示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发与线程安全"><span class="nav-number">2.1.</span> <span class="nav-text">并发与线程安全</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#正则表达式语句"><span class="nav-number">2.1.1.</span> <span class="nav-text">正则表达式语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#正则表达式元字符"><span class="nav-number">2.1.2.</span> <span class="nav-text">正则表达式元字符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则表达式运算符"><span class="nav-number">2.2.</span> <span class="nav-text">正则表达式运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模板匹配格式"><span class="nav-number">2.3.</span> <span class="nav-text">模板匹配格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性能"><span class="nav-number">2.4.</span> <span class="nav-text">性能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取整个表达式和options"><span class="nav-number">2.5.</span> <span class="nav-text">获取整个表达式和options</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用正则表达式搜索字符串"><span class="nav-number">2.6.</span> <span class="nav-text">使用正则表达式搜索字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用正则表示替代字符串"><span class="nav-number">2.7.</span> <span class="nav-text">使用正则表示替代字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转义字符串中的字符"><span class="nav-number">2.8.</span> <span class="nav-text">转义字符串中的字符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义替换功能"><span class="nav-number">2.9.</span> <span class="nav-text">自定义替换功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#约束"><span class="nav-number">2.10.</span> <span class="nav-text">约束</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shiru</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
