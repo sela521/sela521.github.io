@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="花花小草">
 <meta property="og:description" content="NSPredicatePredicate：断言，谓语，术语的意思。 定义一个逻辑条件，用来在内存过滤或者获取时，限定搜索的条件。 Predicates表示一个可以用来过滤对象集合的条件。通常，我们可以从 NSComparisonPredicate, NSCompoundPredicate, 和 NSExpression的实例直接创建predicates，但是，我们也可以从格式化的string来创建">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-23T12:18:41.145Z">
+<meta property="og:updated_time" content="2018-08-23T12:34:03.724Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS NSPredicate和NSRegularExpression">
 <meta name="twitter:description" content="NSPredicatePredicate：断言，谓语，术语的意思。 定义一个逻辑条件，用来在内存过滤或者获取时，限定搜索的条件。 Predicates表示一个可以用来过滤对象集合的条件。通常，我们可以从 NSComparisonPredicate, NSCompoundPredicate, 和 NSExpression的实例直接创建predicates，但是，我们也可以从格式化的string来创建">
@@ -367,57 +367,27 @@
 <p>完整的语句参考地址：<a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Predicates/AdditionalChapters/Introduction.html#//apple_ref/doc/uid/TP40001789" target="_blank" rel="noopener">https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Predicates/AdditionalChapters/Introduction.html#//apple_ref/doc/uid/TP40001789</a></p>
 <p>我们也可以通过 evaluateWithObject:substitutionVariables: 方法创建一个包含变量的predicates，这样，predicate就可以在运行时替代具体的值之前预定义。</p>
 <h3 id="1、创建predicate的方法："><a href="#1、创建predicate的方法：" class="headerlink" title="1、创建predicate的方法："></a>1、创建predicate的方法：</h3><ul>
-<li><ul>
-<li>predicateWithFormat:</li>
-</ul>
-</li>
+<li>+ predicateWithFormat:</li>
 <li>通过创建一个新的string并解析，来创建并返回一个新的predicate；</li>
-<li><ul>
-<li>predicateWithFormat:argumentArray:</li>
-</ul>
-</li>
+<li>+ predicateWithFormat:argumentArray:</li>
 <li>通过给定数组中的值来替代格式化string并解析，来实例化一个predicate；</li>
-<li><ul>
-<li>predicateWithFormat:arguments:</li>
-</ul>
-</li>
+<li>+ predicateWithFormat:arguments:</li>
 <li>通过给定参数的值来替代格式化string并解析，来实例化一个predicate；</li>
-<li><ul>
-<li>predicateWithSubstitutionVariables:</li>
-</ul>
-</li>
+<li>- predicateWithSubstitutionVariables:</li>
 <li>返回一个predicate的copy，新的copy对象中的变量将会被给定字典中特定的值替代；</li>
-<li><ul>
-<li>predicateWithValue:</li>
-</ul>
-</li>
+<li>+ predicateWithValue:</li>
 <li>对给定的bool值进行评估来创建并返回predicate；</li>
-<li><ul>
-<li>predicateWithBlock:</li>
-</ul>
-</li>
+<li>+ predicateWithBlock:</li>
 <li>通过特定的block对象和字典的评估来实例化一个predicate；</li>
-<li><ul>
-<li>predicateFromMetadataQueryString:</li>
-</ul>
-</li>
+<li>+ predicateFromMetadataQueryString:</li>
 <li>通过一个元数据查询字符串来实例化一个predicate；</li>
 </ul>
 <h3 id="2、评估一个predicate"><a href="#2、评估一个predicate" class="headerlink" title="2、评估一个predicate"></a>2、评估一个predicate</h3><ul>
-<li><ul>
-<li>evaluateWithObject:</li>
-</ul>
-</li>
+<li>- evaluateWithObject:</li>
 <li>返回一个bool值，表明特定的对象和predicate指定的条件是否匹配；</li>
-<li><ul>
-<li>evaluateWithObject:substitutionVariables:</li>
-</ul>
-</li>
+<li>- evaluateWithObject:substitutionVariables:</li>
 <li>返回一个bool值，表明特定的对象和predicate在替代了给定字典中的值后指定的条件是否匹配；</li>
-<li><ul>
-<li>allowEvaluation</li>
-</ul>
-</li>
+<li>- allowEvaluation</li>
 <li>强制安全解码的predicate允许被评估。当一个使用 NSSecureCoding编码的predicate对象在安全解码时，是不能被评估的。因为评估一个从存档中取出的predicate是有潜在风险的。在激活评估之前，我们应该证实 key paths, selectors,和其他细节来确保没有错误或恶意代码被执行。一旦我们验证了predicate，我们就可以通过调用allowEvaluation来激活接收器来评估。<br>3、获取一个字符串表达式</li>
 <li>predicateFormat：NSPredicate的只读属性；</li>
 </ul>
