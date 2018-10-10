@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,图片浏览框架," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="MWPhotoBrowser是项目中用到的一个图片浏览框架。一直说系统的研究一下其中加载图片的过程，以及图片浏览时的对于图片在内存中的处理。基本上按照自己看代码的流程来研读的，所以可能思路会比较细碎一些。下面分两篇来写对MWPhotoBrowser的理解。 （一）、MWPhotoBrowser的介绍和使用方法：MWPhotoBrowser是一个简单的iOS图片和视频浏览框架，带有网格视图，标题，选">
+<meta name="keywords" content="iOS,图片浏览框架">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图片框架MWPhotoBrowser详解（一）">
+<meta property="og:url" content="http://yoursite.com/2018/10/10/图片框架MWPhotoBrowser详解（一）/index.html">
+<meta property="og:site_name" content="花花小草">
+<meta property="og:description" content="MWPhotoBrowser是项目中用到的一个图片浏览框架。一直说系统的研究一下其中加载图片的过程，以及图片浏览时的对于图片在内存中的处理。基本上按照自己看代码的流程来研读的，所以可能思路会比较细碎一些。下面分两篇来写对MWPhotoBrowser的理解。 （一）、MWPhotoBrowser的介绍和使用方法：MWPhotoBrowser是一个简单的iOS图片和视频浏览框架，带有网格视图，标题，选">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-10T12:32:00.225Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="图片框架MWPhotoBrowser详解（一）">
+<meta name="twitter:description" content="MWPhotoBrowser是项目中用到的一个图片浏览框架。一直说系统的研究一下其中加载图片的过程，以及图片浏览时的对于图片在内存中的处理。基本上按照自己看代码的流程来研读的，所以可能思路会比较细碎一些。下面分两篇来写对MWPhotoBrowser的理解。 （一）、MWPhotoBrowser的介绍和使用方法：MWPhotoBrowser是一个简单的iOS图片和视频浏览框架，带有网格视图，标题，选">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/10/图片框架MWPhotoBrowser详解（一）/"/>
+
+
+
+
+
+  <title>图片框架MWPhotoBrowser详解（一） | 花花小草</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">花花小草</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/10/图片框架MWPhotoBrowser详解（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shiru">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花花小草">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">图片框架MWPhotoBrowser详解（一）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-10T20:20:10+08:00">
+                2018-10-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>MWPhotoBrowser是项目中用到的一个图片浏览框架。一直说系统的研究一下其中加载图片的过程，以及图片浏览时的对于图片在内存中的处理。基本上按照自己看代码的流程来研读的，所以可能思路会比较细碎一些。下面分两篇来写对MWPhotoBrowser的理解。</p>
+<h2 id="（一）、MWPhotoBrowser的介绍和使用方法："><a href="#（一）、MWPhotoBrowser的介绍和使用方法：" class="headerlink" title="（一）、MWPhotoBrowser的介绍和使用方法："></a>（一）、MWPhotoBrowser的介绍和使用方法：</h2><p>MWPhotoBrowser是一个简单的iOS图片和视频浏览框架，带有网格视图，标题，选择按钮等。<br>MWPhotoBrowser可以通过提供资源库的UIImage对象，PHAsset对象，以及URL来展示一个或多个图片，视频。这个图片浏览器可以下载和缓存网络图片。还可以缩放，平移图片，展示可定制的标题。</p>
+<p>这个图片浏览器还可以允许用户使用网格图片视图或主图片视图来选择一张或多张图片。</p>
+<p>可运行在iOS7及之后的系统上。所有字符串都可以本地化，因此可用于支持多种语言的app。</p>
+<p>依赖于其他三个第三方库，分别是：</p>
+<ul>
+<li>MBProgressHUD</li>
+<li>DACircularProgress</li>
+<li>SDWebImage。</li>
+</ul>
+<h3 id="使用："><a href="#使用：" class="headerlink" title="使用："></a>使用：</h3><p>MWPhotoBrowser是在导航控制器内呈现的。使用非常简单：<br>1、#import “MWPhotoBrowser.h”到源文件中。</p>
+<p>2、设置代理（MWPhotoBrowserDelegate）；</p>
+<p>3、实现其中以MWPhoto来提供图片浏览数据的两个要求实现的代理方法；</p>
+<p>我们可以通过提供UIImage对象，PHAsset对象，或者包含文件、网络图片、资源库图片路径的URL来创建MWPhoto对象。</p>
+<p>MWPhoto对象处理缓存，文件管理，下载网络图片，以及各种优化。如果我们想使用自己的数据模型来展示图片，只需要确保这个模型遵守了MWPhoto协议就可以了。然后我们就可以自己来处理缓存、下载管理。关于这个更多信息我们可以在MWPhotoProtocol.h中查看。</p>
+<h4 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h4><p>关于如何实现图片浏览器的示例，可以参看下面的demo片段：</p>
+<h5 id="1、设置代理（MWPhotoBrowserDelegate）；"><a href="#1、设置代理（MWPhotoBrowserDelegate）；" class="headerlink" title="1、设置代理（MWPhotoBrowserDelegate）；"></a>1、设置代理（MWPhotoBrowserDelegate）；</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">// 创建MWPhoto对象数组</span><br><span class="line">self.photos = [NSMutableArray array];</span><br><span class="line"></span><br><span class="line">// 添加图片</span><br><span class="line">[photos addObject:[MWPhoto photoWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@&quot;photo2l&quot; ofType:@&quot;jpg&quot;]]]];//文件</span><br><span class="line">[photos addObject:[MWPhoto photoWithURL:[NSURL URLWithString:@&quot;http://farm4.static.flickr.com/3629/3339128908_7aecabc34b.jpg&quot;]]];//URL</span><br><span class="line">[photos addObject:[MWPhoto photoWithURL:[NSURL URLWithString:@&quot;http://farm4.static.flickr.com/3590/3329114220_5fbc5bc92b.jpg&quot;]]];//URL</span><br><span class="line"></span><br><span class="line">// 通过海报图片添加视频</span><br><span class="line">MWPhoto *video = [MWPhoto photoWithURL:[NSURL URLWithString:@&quot;https://scontent.cdninstagram.com/hphotos-xpt1/t51.2885-15/e15/11192696_824079697688618_1761661_n.jpg&quot;]];</span><br><span class="line">video.videoURL = [[NSURL alloc] initWithString:@&quot;https://scontent.cdninstagram.com/hphotos-xpa1/t50.2886-16/11200303_1440130956287424_1714699187_n.mp4&quot;];</span><br><span class="line">[photos addObject:video];</span><br><span class="line"></span><br><span class="line">// 每次图片浏览器展示时创建，图片浏览器对象不能复用</span><br><span class="line">MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];</span><br><span class="line"></span><br><span class="line">// 设置可选项</span><br><span class="line">browser.displayActionButton = YES; // 是否展示允许分享，复制等操作项按钮，默认是YES</span><br><span class="line">browser.displayNavArrows = NO; // 是否在工具栏展示左右导航箭头，默认为NO</span><br><span class="line">browser.displaySelectionButtons = NO; // 是否在每张照片上展示选择按钮，默认为NO</span><br><span class="line">browser.zoomPhotosToFill = YES; //即将填满屏幕的图片会被缩放至填满，默认YES</span><br><span class="line">browser.alwaysShowControls = NO; //控制条和控件是否始终可见，或者是否在全图展示时隐去，默认NO</span><br><span class="line">browser.enableGrid = YES; // 是否允许网格缩略图视图，默认YES</span><br><span class="line">browser.startOnGrid = NO; // 是否以缩略图网格开始，而不是第一张图片，默认NO</span><br><span class="line">browser.autoPlayOnAppear = NO; // 自动播放第一个视频</span><br><span class="line"></span><br><span class="line">// 按需定制选择图片时的颜色</span><br><span class="line">browser.customImageSelectedIconName = @&quot;ImageSelected.png&quot;;</span><br><span class="line">browser.customImageSelectedSmallIconName = @&quot;ImageSelectedSmall.png&quot;;</span><br><span class="line"></span><br><span class="line">// 设置当前可见图片索引</span><br><span class="line">[browser setCurrentPhotoIndex:1];</span><br><span class="line"></span><br><span class="line">// 呈现</span><br><span class="line">[self.navigationController pushViewController:browser animated:YES];</span><br><span class="line"></span><br><span class="line">// 操作设置</span><br><span class="line">[browser showNextPhotoAnimated:YES];</span><br><span class="line">[browser showPreviousPhotoAnimated:YES];</span><br><span class="line">[browser setCurrentPhotoIndex:10];</span><br></pre></td></tr></table></figure>
+<h5 id="2、实现其中以MWPhoto来提供图片浏览数据的两个要求实现的代理方法；"><a href="#2、实现其中以MWPhoto来提供图片浏览数据的两个要求实现的代理方法；" class="headerlink" title="2、实现其中以MWPhoto来提供图片浏览数据的两个要求实现的代理方法；"></a>2、实现其中以MWPhoto来提供图片浏览数据的两个要求实现的代理方法；</h5><p>接着，实现必须的代理方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser &#123;</span><br><span class="line">    return self.photos.count;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (id &lt;MWPhoto&gt;)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index &#123;</span><br><span class="line">    if (index &lt; self.photos.count) &#123;</span><br><span class="line">        return [self.photos objectAtIndex:index];</span><br><span class="line">    &#125;</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们可以把图片浏览器封装在新的导航控制器中来呈现。demo中可以在两种呈现方式中切换。</p>
+<h4 id="视频"><a href="#视频" class="headerlink" title="视频"></a>视频</h4><p>我们可以通过一个video URL创建一个标准的MWPhoto对象来表示视频。我们也可以使用PHAsset对象或者视频资源的URL来创建MWPhoto对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// 使用视频的海报图片URL创建MWPhoto</span><br><span class="line">MWPhoto *video = [MWPhoto photoWithURL:[NSURL URLWithString:@&quot;https://scontent.cdninstagram.com/hphotos-xpt1/t51.2885-15/e15/11192696_824079697688618_1761661_n.jpg&quot;]];</span><br><span class="line">video.videoURL = [NSURL URLWithString:@&quot;https://scontent.cdninstagram.com/hphotos-xpa1/t50.2886-16/11200303_1440130956287424_1714699187_n.mp4&quot;];</span><br><span class="line"></span><br><span class="line">// 使用视频的PHAsset创建MWPhoto</span><br><span class="line">MWPhoto *video = [MWPhoto photoWithAsset:asset targetSize:[UIScreen mainScreen].bounds.size]; // Example sizing</span><br><span class="line"></span><br><span class="line">// 使用视频的ALAsset创建MWPhoto</span><br><span class="line">MWPhoto *video = [MWPhoto photoWithURL:asset.defaultRepresentation.url];</span><br><span class="line">if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypeVideo) &#123;</span><br><span class="line">    photo.videoURL = asset.defaultRepresentation.url;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 使用没有海报图片的视频的URL创建MWPhoto</span><br><span class="line">MWPhoto *video = [MWPhoto videoWithURL:[NSURL URLWithString:@&quot;https://scontent.cdninstagram.com/hphotos-xfa1/t50.2886-16/11237510_945154435524423_2137519922_n.mp4&quot;]];</span><br><span class="line"></span><br><span class="line">// 使用视频的网格缩略图URL创建MWPhoto</span><br><span class="line">MWPhoto *videoThumb = [MWPhoto photoWithURL:[NSURL URLWithString:@&quot;https://scontent.cdninstagram.com/hphotos-xaf1/t51.2885-15/s150x150/e15/11240463_963135443745570_1519872157_n.jpg&quot;]];</span><br><span class="line">videoThumb.isVideo = YES;</span><br><span class="line"></span><br><span class="line">// 使用没有海报图片的视频的网格缩略图创建MWPhoto</span><br><span class="line">MWPhoto *videoThumb = [MWPhoto new];</span><br><span class="line">videoThumb.isVideo = YES;</span><br></pre></td></tr></table></figure></p>
+<h4 id="Grid：网格展示"><a href="#Grid：网格展示" class="headerlink" title="Grid：网格展示"></a>Grid：网格展示</h4><p>为了恰当地展示出缩略图的网格，我们必须确保设置enableGrid属性为YES，并实现下面的代理方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (id &lt;MWPhoto&gt;)photoBrowser:(MWPhotoBrowser *)photoBrowser thumbPhotoAtIndex:(NSUInteger)index;</span><br></pre></td></tr></table></figure></p>
+<p>图片浏览器也可以通过启用startOnGrid属性来以网格开始浏览。</p>
+<h4 id="Action"><a href="#Action" class="headerlink" title="Action"></a>Action</h4><p>默认情况下，如果Action按钮是可见的，那么图片就会被发送到UIActivityViewController<br>我们可以通过实现下面的代理方法来自定义Action：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)photoBrowser:(MWPhotoBrowser *)photoBrowser actionButtonPressedForPhotoAtIndex:(NSUInteger)index &#123;</span><br><span class="line">    // Do your thing!</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="Photo-Caption"><a href="#Photo-Caption" class="headerlink" title="Photo Caption"></a>Photo Caption</h4><p>图片的标题可以通过设置指定图片的caption属性来展示。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MWPhoto *photo = [MWPhoto photoWithURL:[NSURL URLWithString:@&quot;http://farm4.static.flickr.com/3629/3339128908_7aecabc34b.jpg&quot;]];</span><br><span class="line">photo.caption = @&quot;Campervan&quot;;</span><br></pre></td></tr></table></figure></p>
+<p>如果没有设置，就不会展示标题。</p>
+<h5 id="自定义Captions"><a href="#自定义Captions" class="headerlink" title="自定义Captions"></a>自定义Captions</h5><p>默认情况下，caption是通过一个简单的黑色透明label视图来展示图片的caption。如果我们想实现自己的caption视图，只要遵循下面几步：</p>
+<ul>
+<li>1、对于我们的图片，使用MWPhoto的子类，因此，我们可以存储除了caption之外的更多的数据。</li>
+<li>2、子类MWCaptionView ，并覆写 -setupCaption 和 -sizeThatFits:来布局视图和设置尺寸。更详细的信息参见MWCaptionView.h</li>
+<li>3、像下面展示的这样实现 -photoBrowser:captionViewForPhotoAtIndex: MWPhotoBrowser 代理方法：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (MWCaptionView *)photoBrowser:(MWPhotoBrowser *)photoBrowser captionViewForPhotoAtIndex:(NSUInteger)index &#123;</span><br><span class="line">    MWPhoto *photo = [self.photos objectAtIndex:index];</span><br><span class="line">    MyMWCaptionViewSubclass *captionView = [[MyMWCaptionViewSubclass alloc] initWithPhoto:photo];</span><br><span class="line">    return captionView;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="Selections"><a href="#Selections" class="headerlink" title="Selections"></a>Selections</h4><p>照片浏览器展示了复选框来允许用户选择一个或多个图片。要想使用这个特征，只需启用displaySelectionButtons属性，并实现夏敏的代理方法即可：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)photoBrowser:(MWPhotoBrowser *)photoBrowser isPhotoSelectedAtIndex:(NSUInteger)index &#123;</span><br><span class="line">    return [[_selections objectAtIndex:index] boolValue];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index selectedChanged:(BOOL)selected &#123;</span><br><span class="line">    [_selections replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:selected]];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持就是对我的鼓励</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="shiru 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="shiru 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/图片浏览框架/" rel="tag"># 图片浏览框架</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/23/iOS-NSPredicate和NSRegularExpression/" rel="next" title="iOS NSPredicate和NSRegularExpression">
+                <i class="fa fa-chevron-left"></i> iOS NSPredicate和NSRegularExpression
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzk3NC8xMDUwOQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shiru</p>
+              <p class="site-description motion-element" itemprop="description">记录花花小草的技术成长之旅</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#（一）、MWPhotoBrowser的介绍和使用方法："><span class="nav-number">1.</span> <span class="nav-text">（一）、MWPhotoBrowser的介绍和使用方法：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用："><span class="nav-number">1.1.</span> <span class="nav-text">使用：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#图片"><span class="nav-number">1.1.1.</span> <span class="nav-text">图片</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、设置代理（MWPhotoBrowserDelegate）；"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">1、设置代理（MWPhotoBrowserDelegate）；</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、实现其中以MWPhoto来提供图片浏览数据的两个要求实现的代理方法；"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">2、实现其中以MWPhoto来提供图片浏览数据的两个要求实现的代理方法；</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#视频"><span class="nav-number">1.1.2.</span> <span class="nav-text">视频</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Grid：网格展示"><span class="nav-number">1.1.3.</span> <span class="nav-text">Grid：网格展示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Action"><span class="nav-number">1.1.4.</span> <span class="nav-text">Action</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Photo-Caption"><span class="nav-number">1.1.5.</span> <span class="nav-text">Photo Caption</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#自定义Captions"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">自定义Captions</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Selections"><span class="nav-number">1.1.6.</span> <span class="nav-text">Selections</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shiru</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
