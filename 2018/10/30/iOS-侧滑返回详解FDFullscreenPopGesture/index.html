@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,侧滑返回," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1、侧滑本身是系统自带的，但是是左边缘触发的侧滑； 2、是什么导致了自带的实现不起作用的？原因有（1）、隐藏了系统右上角返回的按钮，系统会自动关掉左滑返回的功能；（2）、禁用侧滑功能；（3）、自定义返回键或者导航栏后，侧滑失灵； 3、怎么解决？使用FDFullscreenPopGesture可以解决一个支持全屏侧滑的 UINavigationController的类目。FDFullscreenPo">
+<meta name="keywords" content="iOS,侧滑返回">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 侧滑返回详解FDFullscreenPopGesture">
+<meta property="og:url" content="http://yoursite.com/2018/10/30/iOS-侧滑返回详解FDFullscreenPopGesture/index.html">
+<meta property="og:site_name" content="花花小草">
+<meta property="og:description" content="1、侧滑本身是系统自带的，但是是左边缘触发的侧滑； 2、是什么导致了自带的实现不起作用的？原因有（1）、隐藏了系统右上角返回的按钮，系统会自动关掉左滑返回的功能；（2）、禁用侧滑功能；（3）、自定义返回键或者导航栏后，侧滑失灵； 3、怎么解决？使用FDFullscreenPopGesture可以解决一个支持全屏侧滑的 UINavigationController的类目。FDFullscreenPo">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/10/30/iOS-侧滑返回详解FDFullscreenPopGesture/_FDFullscreenPopGestureRecognizerDelegate实现.jpg">
+<meta property="og:updated_time" content="2018-10-30T11:19:48.872Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS 侧滑返回详解FDFullscreenPopGesture">
+<meta name="twitter:description" content="1、侧滑本身是系统自带的，但是是左边缘触发的侧滑； 2、是什么导致了自带的实现不起作用的？原因有（1）、隐藏了系统右上角返回的按钮，系统会自动关掉左滑返回的功能；（2）、禁用侧滑功能；（3）、自定义返回键或者导航栏后，侧滑失灵； 3、怎么解决？使用FDFullscreenPopGesture可以解决一个支持全屏侧滑的 UINavigationController的类目。FDFullscreenPo">
+<meta name="twitter:image" content="http://yoursite.com/2018/10/30/iOS-侧滑返回详解FDFullscreenPopGesture/_FDFullscreenPopGestureRecognizerDelegate实现.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/30/iOS-侧滑返回详解FDFullscreenPopGesture/"/>
+
+
+
+
+
+  <title>iOS 侧滑返回详解FDFullscreenPopGesture | 花花小草</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">花花小草</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/30/iOS-侧滑返回详解FDFullscreenPopGesture/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shiru">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花花小草">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS 侧滑返回详解FDFullscreenPopGesture</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-30T19:10:38+08:00">
+                2018-10-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/框架库/" itemprop="url" rel="index">
+                    <span itemprop="name">框架库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>1、侧滑本身是系统自带的，但是是左边缘触发的侧滑；</p>
+<p>2、是什么导致了自带的实现不起作用的？原因有<br>（1）、隐藏了系统右上角返回的按钮，系统会自动关掉左滑返回的功能；<br>（2）、禁用侧滑功能；<br>（3）、自定义返回键或者导航栏后，侧滑失灵；</p>
+<p>3、怎么解决？<br>使用FDFullscreenPopGesture可以解决<br>一个支持全屏侧滑的 UINavigationController的类目。FDFullscreenPopGesture的这个类目：UINavigation+FDFullscreenPopGesture，扩展了iOS7+的侧滑返回功能。取代从左边缘滑起的是，我们可以从屏幕的任意位置滑动，并且伴随着返回上个界面的过渡动画也可以正常流畅。<br>这个框架中只有两个文件，添加到项目工程中，所有的导航控制器都将自动会支持全屏侧滑。<br>禁用导航控制器的侧滑功能：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">navigationController.fd_fullscreenPopGestureRecognizer.enabled = NO;</span><br></pre></td></tr></table></figure></p>
+<p>禁用viewcontroller的侧滑功能：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">viewController.fd_interactivePopDisabled = YES;</span><br></pre></td></tr></table></figure></p>
+<p>基于导航栏外形的viewcontroller：<br>当使用全屏侧滑功能时，它可以正确的处理导航栏的过渡动画。</p>
+<ul>
+<li>有导航栏到无导航栏；</li>
+<li>无导航栏到有导航栏；</li>
+<li>无导航栏到无导航栏；</li>
+</ul>
+<p>这种优化是默认开启的，我们不必再调用 UINavigationController的-setNavigationBarHidden:animated:方法了，而是使用viewcontroller的API来隐藏导航栏。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    self.fd_prefersNavigationBarHidden = NO;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>也就是说fd_prefersNavigationBarHidden这个属性，默认是No。</p>
+<p>如果是带scrollView的视图控制器<br>如果你想在有scrollView或者scrollView的子类中，使用全屏侧滑，那么可以通过在自定义的scrollView或者scrollView的子类中，复写下面这个方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer &#123;</span><br><span class="line">    if (self.contentOffset.x &lt;= 0) &#123;</span><br><span class="line">        if ([otherGestureRecognizer.delegate isKindOfClass:NSClassFromString(@&quot;_FDFullscreenPopGestureRecognizerDelegate&quot;)]) &#123;</span><br><span class="line">            return YES;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return NO;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个第三方框架FDFullscreenPopGesture中，定义了的UINavigationController+FDFullscreenPopGesture文件，其中分别包含对 UINavigationController和UIViewController的分类。</p>
+<p>UINavigationController+FDFullscreenPopGesture.h文件:</p>
+<p>1、在UINavigationController的分类 UINavigationController + FDFullscreenPopGesture中，<br>暴露给用户的属性有：</p>
+<ul>
+<li>@property (nonatomic, strong, readonly) UIPanGestureRecognizer *fd_fullscreenPopGestureRecognizer;//这个滑动手势，处理用户的侧滑弹出操作。</li>
+<li>@property (nonatomic, assign) BOOL fd_viewControllerBasedNavigationBarAppearanceEnabled;//判断fd_viewControllerBasedNavigationBarAppearanceEnabled属性，视图控制器可以自己控制，而不是全局的方式控制，导航栏的外观。，默认是YES。</li>
+</ul>
+<p>2、在UIViewController的分类 UIViewController + FDFullscreenPopGesture中，允许视图控制器禁用用户弹出手势，比如某些情况下，视图控制器需要自己处理滑动手势。<br>其中，暴露给用户的属性有</p>
+<ul>
+<li>@property (nonatomic, assign) BOOL fd_interactivePopDisabled;//当处于导航控制栈中时，是否禁用用户弹出手势；</li>
+<li>@property (nonatomic, assign) BOOL fd_prefersNavigationBarHidden;//通过检查基于导航栏的视图控制器是否可用，来指明视图控制器的导航栏隐藏与否。默认是NO，一般导航栏是展示的。</li>
+<li>@property (nonatomic, assign) CGFloat fd_interactivePopMaxAllowedInitialDistanceToLeftEdge;//最大允许触发侧滑弹出手势的距离左边缘的距离。默认是0。忽略这一限制。</li>
+</ul>
+<p>UINavigationController+FDFullscreenPopGesture.m文件:</p>
+<p>1、 _FDFullscreenPopGestureRecognizerDelegate协议声明<br>这个协议遵从 UIGestureRecognizerDelegate协议：</p>
+<ul>
+<li>@property (nonatomic, weak) UINavigationController *navigationController;</li>
+</ul>
+<p>2、_FDFullscreenPopGestureRecognizerDelegate协议实现<br>实现UIGestureRecognizerDelegate的代理方法：<br><img src="/2018/10/30/iOS-侧滑返回详解FDFullscreenPopGesture/_FDFullscreenPopGestureRecognizerDelegate实现.jpg" alt="_FDFullscreenPopGestureRecognizerDelegate实现"></p>
+<p>3、UIViewController的分类（  UIViewController (FDFullscreenPopGesturePrivate) ）的声明和实现的方法：<br>在分类中声明了 _FDViewControllerWillAppearInjectBlock的Block变量。</p>
+<ul>
+<li><ul>
+<li>(void)load；</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>在这个方法中，将 viewWillAppear:和fd_viewWillAppear:  以及 viewWillDisappear:和fd_viewWillDisappear:做了运行时交换。</li>
+<li>具体fd_viewWillAppear:和fd_viewWillDisappear:是做什么的？继续往下看，</li>
+</ol>
+<ul>
+<li><ul>
+<li>(void)fd_viewWillAppear:(BOOL)animated</li>
+</ul>
+</li>
+<li><ul>
+<li>(void)fd_viewWillDisappear:(BOOL)animated</li>
+</ul>
+</li>
+</ul>
+<p>//fd_willAppearInjectBlock的getter/setter方法</p>
+<ul>
+<li><ul>
+<li>(_FDViewControllerWillAppearInjectBlock)fd_willAppearInjectBlock</li>
+</ul>
+</li>
+<li><ul>
+<li>(void)setFd_willAppearInjectBlock:(_FDViewControllerWillAppearInjectBlock)block</li>
+</ul>
+</li>
+</ul>
+<p>4、  UINavigationController + FDFullscreenPopGesture分类</p>
+<ul>
+<li><ul>
+<li>(void)load</li>
+</ul>
+</li>
+<li><ul>
+<li>(void)fd_pushViewController:(UIViewController *)viewController animated:(BOOL)animated<pre><code>1、添加自己的手势到边缘侧滑手势依附的View上；
+2、将原来的边缘侧滑手势的target和action添加到我们自己的手势上；
+3、禁用原来的边缘侧滑手势；
+</code></pre></li>
+</ul>
+</li>
+<li><ul>
+<li>(void)fd_setupViewControllerBasedNavigationBarAppearanceIfNeeded:(UIViewController *)appearingViewController<pre><code>1、判断是不是自己控制导航栏的是否隐藏；
+2、如果是全局控制的，就直接返回；如果是自己控制的，就继续；
+3、将控制导航栏的是否隐藏的Block赋值给即将出现的和即将消失的视图控制器。
+</code></pre></li>
+</ul>
+</li>
+<li><ul>
+<li>(_FDFullscreenPopGestureRecognizerDelegate *)fd_popGestureRecognizerDelegate<pre><code>//fd_popGestureRecognizerDelegate的getter方法
+</code></pre></li>
+</ul>
+</li>
+<li><ul>
+<li>(UIPanGestureRecognizer *)fd_fullscreenPopGestureRecognizer<pre><code>//fd_fullscreenPopGestureRecognizer的getter方法
+</code></pre></li>
+</ul>
+</li>
+<li><ul>
+<li>(BOOL)fd_viewControllerBasedNavigationBarAppearanceEnabled<pre><code>//fd_viewControllerBasedNavigationBarAppearanceEnabled的getter方法
+</code></pre></li>
+</ul>
+</li>
+<li><ul>
+<li>(void)setFd_viewControllerBasedNavigationBarAppearanceEnabled:(BOOL)enabled<pre><code>//fd_viewControllerBasedNavigationBarAppearanceEnabled的setter方法
+</code></pre>5、 UIViewController + FDFullscreenPopGesture分类<br>//fd_interactivePopDisabled属性的getter/setter方法</li>
+</ul>
+</li>
+<li><ul>
+<li>(BOOL)fd_interactivePopDisabled</li>
+</ul>
+</li>
+<li><ul>
+<li>(void)setFd_interactivePopDisabled:(BOOL)disabled</li>
+</ul>
+</li>
+</ul>
+<p>//fd_prefersNavigationBarHidden属性的getter/setter方法</p>
+<ul>
+<li><ul>
+<li>(BOOL)fd_prefersNavigationBarHidden</li>
+</ul>
+</li>
+<li><ul>
+<li>(void)setFd_prefersNavigationBarHidden:(BOOL)hidden</li>
+</ul>
+</li>
+</ul>
+<p>//fd_interactivePopMaxAllowedInitialDistanceToLeftEdge属性的getter/setter方法</p>
+<ul>
+<li><ul>
+<li>(CGFloat)fd_interactivePopMaxAllowedInitialDistanceToLeftEdge</li>
+</ul>
+</li>
+<li><ul>
+<li>(void)setFd_interactivePopMaxAllowedInitialDistanceToLeftEdge:(CGFloat)distance</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持就是对我的鼓励</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="shiru 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="shiru 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/侧滑返回/" rel="tag"># 侧滑返回</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/10/图片框架MWPhotoBrowser详解（二）/" rel="next" title="图片框架MWPhotoBrowser详解（二）">
+                <i class="fa fa-chevron-left"></i> 图片框架MWPhotoBrowser详解（二）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzk3NC8xMDUwOQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shiru</p>
+              <p class="site-description motion-element" itemprop="description">记录花花小草的技术成长之旅</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shiru</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
