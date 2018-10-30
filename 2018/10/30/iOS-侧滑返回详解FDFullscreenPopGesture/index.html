@@ -88,7 +88,7 @@
 <meta property="og:description" content="1、侧滑本身是系统自带的，但是是左边缘触发的侧滑； 2、是什么导致了自带的实现不起作用的？原因有（1）、隐藏了系统右上角返回的按钮，系统会自动关掉左滑返回的功能；（2）、禁用侧滑功能；（3）、自定义返回键或者导航栏后，侧滑失灵； 3、怎么解决？使用FDFullscreenPopGesture可以解决一个支持全屏侧滑的 UINavigationController的类目。FDFullscreenPo">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2018/10/30/iOS-侧滑返回详解FDFullscreenPopGesture/_FDFullscreenPopGestureRecognizerDelegate实现.jpg">
-<meta property="og:updated_time" content="2018-10-30T11:19:48.872Z">
+<meta property="og:updated_time" content="2018-10-30T11:29:27.756Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS 侧滑返回详解FDFullscreenPopGesture">
 <meta name="twitter:description" content="1、侧滑本身是系统自带的，但是是左边缘触发的侧滑； 2、是什么导致了自带的实现不起作用的？原因有（1）、隐藏了系统右上角返回的按钮，系统会自动关掉左滑返回的功能；（2）、禁用侧滑功能；（3）、自定义返回键或者导航栏后，侧滑失灵； 3、怎么解决？使用FDFullscreenPopGesture可以解决一个支持全屏侧滑的 UINavigationController的类目。FDFullscreenPo">
@@ -388,106 +388,52 @@
 <p>2、_FDFullscreenPopGestureRecognizerDelegate协议实现<br>实现UIGestureRecognizerDelegate的代理方法：<br><img src="/2018/10/30/iOS-侧滑返回详解FDFullscreenPopGesture/_FDFullscreenPopGestureRecognizerDelegate实现.jpg" alt="_FDFullscreenPopGestureRecognizerDelegate实现"></p>
 <p>3、UIViewController的分类（  UIViewController (FDFullscreenPopGesturePrivate) ）的声明和实现的方法：<br>在分类中声明了 _FDViewControllerWillAppearInjectBlock的Block变量。</p>
 <ul>
-<li><ul>
-<li>(void)load；</li>
-</ul>
-</li>
+<li>+ (void)load；</li>
 </ul>
 <ol>
 <li>在这个方法中，将 viewWillAppear:和fd_viewWillAppear:  以及 viewWillDisappear:和fd_viewWillDisappear:做了运行时交换。</li>
 <li>具体fd_viewWillAppear:和fd_viewWillDisappear:是做什么的？继续往下看，</li>
 </ol>
 <ul>
-<li><ul>
-<li>(void)fd_viewWillAppear:(BOOL)animated</li>
-</ul>
-</li>
-<li><ul>
-<li>(void)fd_viewWillDisappear:(BOOL)animated</li>
-</ul>
-</li>
+<li>- (void)fd_viewWillAppear:(BOOL)animated</li>
+<li>- (void)fd_viewWillDisappear:(BOOL)animated</li>
 </ul>
 <p>//fd_willAppearInjectBlock的getter/setter方法</p>
 <ul>
-<li><ul>
-<li>(_FDViewControllerWillAppearInjectBlock)fd_willAppearInjectBlock</li>
-</ul>
-</li>
-<li><ul>
-<li>(void)setFd_willAppearInjectBlock:(_FDViewControllerWillAppearInjectBlock)block</li>
-</ul>
-</li>
+<li>- (_FDViewControllerWillAppearInjectBlock)fd_willAppearInjectBlock</li>
+<li>- (void)setFd_willAppearInjectBlock:(_FDViewControllerWillAppearInjectBlock)block</li>
 </ul>
 <p>4、  UINavigationController + FDFullscreenPopGesture分类</p>
 <ul>
-<li><ul>
-<li>(void)load</li>
-</ul>
-</li>
-<li><ul>
-<li>(void)fd_pushViewController:(UIViewController *)viewController animated:(BOOL)animated<pre><code>1、添加自己的手势到边缘侧滑手势依附的View上；
+<li>+ (void)load</li>
+<li>- (void)fd_pushViewController:(UIViewController *)viewController animated:(BOOL)animated<pre><code>1、添加自己的手势到边缘侧滑手势依附的View上；
 2、将原来的边缘侧滑手势的target和action添加到我们自己的手势上；
 3、禁用原来的边缘侧滑手势；
 </code></pre></li>
-</ul>
-</li>
-<li><ul>
-<li>(void)fd_setupViewControllerBasedNavigationBarAppearanceIfNeeded:(UIViewController *)appearingViewController<pre><code>1、判断是不是自己控制导航栏的是否隐藏；
+<li>- (void)fd_setupViewControllerBasedNavigationBarAppearanceIfNeeded:(UIViewController *)appearingViewController<pre><code>1、判断是不是自己控制导航栏的是否隐藏；
 2、如果是全局控制的，就直接返回；如果是自己控制的，就继续；
 3、将控制导航栏的是否隐藏的Block赋值给即将出现的和即将消失的视图控制器。
 </code></pre></li>
-</ul>
-</li>
-<li><ul>
-<li>(_FDFullscreenPopGestureRecognizerDelegate *)fd_popGestureRecognizerDelegate<pre><code>//fd_popGestureRecognizerDelegate的getter方法
+<li>- (_FDFullscreenPopGestureRecognizerDelegate *)fd_popGestureRecognizerDelegate<pre><code>//fd_popGestureRecognizerDelegate的getter方法
 </code></pre></li>
-</ul>
-</li>
-<li><ul>
-<li>(UIPanGestureRecognizer *)fd_fullscreenPopGestureRecognizer<pre><code>//fd_fullscreenPopGestureRecognizer的getter方法
+<li>- (UIPanGestureRecognizer *)fd_fullscreenPopGestureRecognizer<pre><code>//fd_fullscreenPopGestureRecognizer的getter方法
 </code></pre></li>
-</ul>
-</li>
-<li><ul>
-<li>(BOOL)fd_viewControllerBasedNavigationBarAppearanceEnabled<pre><code>//fd_viewControllerBasedNavigationBarAppearanceEnabled的getter方法
+<li>- (BOOL)fd_viewControllerBasedNavigationBarAppearanceEnabled<pre><code>//fd_viewControllerBasedNavigationBarAppearanceEnabled的getter方法
 </code></pre></li>
-</ul>
-</li>
-<li><ul>
-<li>(void)setFd_viewControllerBasedNavigationBarAppearanceEnabled:(BOOL)enabled<pre><code>//fd_viewControllerBasedNavigationBarAppearanceEnabled的setter方法
+<li>- (void)setFd_viewControllerBasedNavigationBarAppearanceEnabled:(BOOL)enabled<pre><code>//fd_viewControllerBasedNavigationBarAppearanceEnabled的setter方法
 </code></pre>5、 UIViewController + FDFullscreenPopGesture分类<br>//fd_interactivePopDisabled属性的getter/setter方法</li>
-</ul>
-</li>
-<li><ul>
-<li>(BOOL)fd_interactivePopDisabled</li>
-</ul>
-</li>
-<li><ul>
-<li>(void)setFd_interactivePopDisabled:(BOOL)disabled</li>
-</ul>
-</li>
+<li>- (BOOL)fd_interactivePopDisabled</li>
+<li>- (void)setFd_interactivePopDisabled:(BOOL)disabled</li>
 </ul>
 <p>//fd_prefersNavigationBarHidden属性的getter/setter方法</p>
 <ul>
-<li><ul>
-<li>(BOOL)fd_prefersNavigationBarHidden</li>
-</ul>
-</li>
-<li><ul>
-<li>(void)setFd_prefersNavigationBarHidden:(BOOL)hidden</li>
-</ul>
-</li>
+<li>- (BOOL)fd_prefersNavigationBarHidden</li>
+<li>- (void)setFd_prefersNavigationBarHidden:(BOOL)hidden</li>
 </ul>
 <p>//fd_interactivePopMaxAllowedInitialDistanceToLeftEdge属性的getter/setter方法</p>
 <ul>
-<li><ul>
-<li>(CGFloat)fd_interactivePopMaxAllowedInitialDistanceToLeftEdge</li>
-</ul>
-</li>
-<li><ul>
-<li>(void)setFd_interactivePopMaxAllowedInitialDistanceToLeftEdge:(CGFloat)distance</li>
-</ul>
-</li>
+<li>- (CGFloat)fd_interactivePopMaxAllowedInitialDistanceToLeftEdge</li>
+<li>- (void)setFd_interactivePopMaxAllowedInitialDistanceToLeftEdge:(CGFloat)distance</li>
 </ul>
 
       
