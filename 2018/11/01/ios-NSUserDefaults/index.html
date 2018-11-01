@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一个用户默认数据库的接口，在应用启动的过程中，可以持久地用它来存储键值对。 概览NSUserDefaults类提供了和默认系统交互的接口。默认系统允许APP定制匹配用户喜好的行为。比如说，可以让用户指定偏好的测量单位，或者媒体播放速度。APP通过分配用户数据库的一系列参数来存储这些偏好设置。这些参数被称为默认值，因为它们通常被用来确定APP在启动时的默认状态，或者在默认情况下的工作方式。    在">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ios NSUserDefaults">
+<meta property="og:url" content="http://yoursite.com/2018/11/01/ios-NSUserDefaults/index.html">
+<meta property="og:site_name" content="花花小草">
+<meta property="og:description" content="一个用户默认数据库的接口，在应用启动的过程中，可以持久地用它来存储键值对。 概览NSUserDefaults类提供了和默认系统交互的接口。默认系统允许APP定制匹配用户喜好的行为。比如说，可以让用户指定偏好的测量单位，或者媒体播放速度。APP通过分配用户数据库的一系列参数来存储这些偏好设置。这些参数被称为默认值，因为它们通常被用来确定APP在启动时的默认状态，或者在默认情况下的工作方式。    在">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-01T06:38:51.895Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ios NSUserDefaults">
+<meta name="twitter:description" content="一个用户默认数据库的接口，在应用启动的过程中，可以持久地用它来存储键值对。 概览NSUserDefaults类提供了和默认系统交互的接口。默认系统允许APP定制匹配用户喜好的行为。比如说，可以让用户指定偏好的测量单位，或者媒体播放速度。APP通过分配用户数据库的一系列参数来存储这些偏好设置。这些参数被称为默认值，因为它们通常被用来确定APP在启动时的默认状态，或者在默认情况下的工作方式。    在">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/11/01/ios-NSUserDefaults/"/>
+
+
+
+
+
+  <title>ios NSUserDefaults | 花花小草</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">花花小草</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/01/ios-NSUserDefaults/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shiru">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花花小草">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ios NSUserDefaults</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-01T14:28:38+08:00">
+                2018-11-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>一个用户默认数据库的接口，在应用启动的过程中，可以持久地用它来存储键值对。</p>
+<h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><p>NSUserDefaults类提供了和默认系统交互的接口。默认系统允许APP定制匹配用户喜好的行为。比如说，可以让用户指定偏好的测量单位，或者媒体播放速度。APP通过分配用户数据库的一系列参数来存储这些偏好设置。这些参数被称为默认值，因为它们通常被用来确定APP在启动时的默认状态，或者在默认情况下的工作方式。<br>    在运行时，可以使用NSUserDefaults对象从用户默认的数据库来读取APP需要的默认值。NSUserDefaults会缓存信息来避免每次需要默认值时都去打开用户默认数据库。当我们设置一个默认值时，它在进程中同步改变，然后异步的持久化存储。</p>
+<h4 id="重要："><a href="#重要：" class="headerlink" title="重要："></a>重要：</h4><p>不要直接访问偏好设置子系统。修改首选项属性列表文件可能会导致更改丢失，更改反映延迟，或者程序崩溃。可以使用defaults命令行来配置首选项（偏好设置）。</p>
+<p>除了教育机构的托管设备，用户的默认值是本地存储在单个设备上的，并被持久化以备份和恢复。在用户的连接设备中，使用NSUbiquitousKeyValueStore来同步首选项和其他数据。</p>
+<p>存储默认值<br>NSUserDefaults类提供了便捷的方法来访问如floats, doubles, integers, Boolean, URLs等常用类型。这些方法在设置默认值的方法中说明。</p>
+<p>默认值对象必须是一个属性列表，列表是一个个 NSData, NSString, NSNumber, NSDate, NSArray, 或 NSDictionary的实例，（或对集合来说，是实例的组合）。如果想存储任何类型的对象，通常我们应该先存档它来创建一个NSData实例。</p>
+<p>NSUserDefaults返回的值是不可变的，即使我们设置值时是个可变的对象。比如说，我们设置一个可变字符串作为“MyStringDefault”的值，但是之后我们用 stringForKey: 方法取出的字符串将会是不可变的。如果我们设置一个可变字符串作为默认值，后来还改变了这个字符串，这个默认值也不会反射出这个已经改变了的字符串，除非你从新再用 setObject:forKey: 这个方法设置一遍。</p>
+<h3 id="持久化文件引用"><a href="#持久化文件引用" class="headerlink" title="持久化文件引用"></a>持久化文件引用</h3><p>一个文件URL指定了文件系统中的一个位置。如果我们用setURL:forKey: 方法来为特定文件存储位置，然后用户移动了这个文件，那么APP在下次启动后就不能定位这个文件了。为了通过文件系统的标识来存储文件引用，你可以使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bookmarkDataWithOptions:includingResourceValuesForKeys:relativeToURL:error:</span><br></pre></td></tr></table></figure></p>
+<p>这个方法来创建NSURL的书签数据，然后使用setObject:forKey:方法来持久化它。那么我们可以使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">URLByResolvingBookmarkData:options:relativeToURL:bookmarkDataIsStale:error:</span><br></pre></td></tr></table></figure></p>
+<p>这个方法来解析用户默认系统存储的文件引用的书签数据。</p>
+<h3 id="响应默认值改变"><a href="#响应默认值改变" class="headerlink" title="响应默认值改变"></a>响应默认值改变</h3><p>我们可以使用键值对监听任何特定值的更新通知。我们也可以为 在  defaultCenter通知中心的 NSUserDefaultsDidChangeNotification 注册监听者，以便本地默认数据库的所有更新被通知。</p>
+<h3 id="在托管环境下使用默认值"><a href="#在托管环境下使用默认值" class="headerlink" title="在托管环境下使用默认值"></a>在托管环境下使用默认值</h3><p>如果APP支持托管环境，我们可以使用 NSUserDefaults 来确定那个首选项由管理员被管理，以利于用户。在托管环境，如计算机实验室或角上中，管理员或者老师可以通过为用户建立一系列默认首选项来配置系统。如果首选项被以这种方式管理，APP会通过禁用或者隐藏控制器来防止用户编辑首选项。</p>
+<p>运行在教育机构托管设备上的APP，可以使用云键值对，来共享其他用户设备上的小量数据。比如说，电子书APP可以存储用户正在阅读的当前页，以便APP的其他实例启动时，可以打开到相同页。</p>
+<h3 id="沙盒"><a href="#沙盒" class="headerlink" title="沙盒"></a>沙盒</h3><p>一个沙盒APP不能访问或修改其他任何APP的首选项，除了下面这些情况：</p>
+<ul>
+<li>macOS和iOS系统上的APP扩展。</li>
+<li>macOS系统上的应用组的其他APP。</li>
+</ul>
+<p>使用方法添加的第三方APP的域不允许我们的APP访问这个第三方APP的首选项。尝试访问或修改其他APP的首选项不会导致错误。macOS可以读写自己应用内定位的文件，而不是其他应用的首选项文件。</p>
+<p>NSUserDefaults是线程安全的。</p>
+<h4 id="获取标准用户默认值对象"><a href="#获取标准用户默认值对象" class="headerlink" title="获取标准用户默认值对象"></a>获取标准用户默认值对象</h4><p>standardUserDefaults<br>返回标准用户默认值对象</p>
+<h4 id="创建用户默认值对象"><a href="#创建用户默认值对象" class="headerlink" title="创建用户默认值对象"></a>创建用户默认值对象</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- init</span><br></pre></td></tr></table></figure>
+<p>使用默认值来为APP何当前用户初始化创建用户默认值对象<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- initWithSuiteName:</span><br></pre></td></tr></table></figure></p>
+<p>使用特定的数据库名称初始化创建用户默认值对象</p>
+<h4 id="获取默认值"><a href="#获取默认值" class="headerlink" title="获取默认值"></a>获取默认值</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- objectForKey:</span><br></pre></td></tr></table></figure>
+<p>返回和指定key关联的对象<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- URLForKey:</span><br></pre></td></tr></table></figure></p>
+<p>返回和指定key关联的URL<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- arrayForKey:</span><br></pre></td></tr></table></figure></p>
+<p>返回和指定key关联的数组<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- dictionaryForKey:</span><br></pre></td></tr></table></figure></p>
+<p>返回和指定key关联的字典<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- stringForKey:</span><br></pre></td></tr></table></figure></p>
+<p>返回和指定key关联的字符串<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- stringArrayForKey:</span><br></pre></td></tr></table></figure></p>
+<p>返回和指定key关联的字符串数组<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- dataForKey:</span><br></pre></td></tr></table></figure></p>
+<p>返回和指定key关联的data对象<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- boolForKey:</span><br></pre></td></tr></table></figure></p>
+<p>返回和指定key关联的布尔值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- integerForKey:</span><br></pre></td></tr></table></figure></p>
+<p>返回和指定key关联的整型数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- floatForKey:</span><br></pre></td></tr></table></figure></p>
+<p>返回和指定key关联的浮点数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- doubleForKey:</span><br></pre></td></tr></table></figure></p>
+<p>返回和指定key关联的双精度浮点数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- dictionaryRepresentation</span><br></pre></td></tr></table></figure></p>
+<p>返回包含搜索列表中域下的所有键值对的字典</p>
+<h4 id="设置默认值"><a href="#设置默认值" class="headerlink" title="设置默认值"></a>设置默认值</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- setObject:forKey:</span><br></pre></td></tr></table></figure>
+<p>为特定默认key设置值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- setFloat:forKey:</span><br></pre></td></tr></table></figure></p>
+<p>为特定默认key设置特定浮点值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- setDouble:forKey:</span><br></pre></td></tr></table></figure></p>
+<p>为特定默认key设置特定双精度浮点值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- setInteger:forKey:</span><br></pre></td></tr></table></figure></p>
+<p>为特定默认key设置特定整型值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- setBool:forKey:</span><br></pre></td></tr></table></figure></p>
+<p>为特定默认key设置特定布尔值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- setURL:forKey:</span><br></pre></td></tr></table></figure></p>
+<p>为特定默认key设置特定URL</p>
+<h4 id="移除默认值"><a href="#移除默认值" class="headerlink" title="移除默认值"></a>移除默认值</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- removeObjectForKey:</span><br></pre></td></tr></table></figure>
+<p>移除特定默认key对应的值</p>
+<h4 id="Maintaining-Suites"><a href="#Maintaining-Suites" class="headerlink" title="Maintaining Suites"></a>Maintaining Suites</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- addSuiteNamed:</span><br></pre></td></tr></table></figure>
+<p>插入特定域名到接收者的搜索列表中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- removeSuiteNamed:</span><br></pre></td></tr></table></figure></p>
+<p>从接收者的搜索列表中移除特定域名</p>
+<h4 id="注册默认值"><a href="#注册默认值" class="headerlink" title="注册默认值"></a>注册默认值</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- registerDefaults:</span><br></pre></td></tr></table></figure>
+<p>添加特定字典的内容到注册域中</p>
+<h4 id="维护持久域"><a href="#维护持久域" class="headerlink" title="维护持久域"></a>维护持久域</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- persistentDomainForName:</span><br></pre></td></tr></table></figure>
+<p>返回特定域的默认值字典<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- setPersistentDomain:forName:</span><br></pre></td></tr></table></figure></p>
+<p>为特定持久域设置字典<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- removePersistentDomainForName:</span><br></pre></td></tr></table></figure></p>
+<p>移除用户默认值中特定持久域的内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- persistentDomainNames（Deprecated）</span><br></pre></td></tr></table></figure></p>
+<p>返回当前持久域名下的数组</p>
+<h4 id="维护不稳定的域"><a href="#维护不稳定的域" class="headerlink" title="维护不稳定的域"></a>维护不稳定的域</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">volatileDomainNames</span><br></pre></td></tr></table></figure>
+<p>当前不稳定的域名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- volatileDomainForName:</span><br></pre></td></tr></table></figure></p>
+<p>返回特定不稳定域的字典<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- setVolatileDomain:forName:</span><br></pre></td></tr></table></figure></p>
+<p>给特定不稳定域设置字典.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- removeVolatileDomainForName:</span><br></pre></td></tr></table></figure></p>
+<p>移除用户默认值下的指定不稳定域</p>
+<h4 id="访问托管环境的key"><a href="#访问托管环境的key" class="headerlink" title="访问托管环境的key"></a>访问托管环境的key</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- objectIsForcedForKey:</span><br></pre></td></tr></table></figure>
+<p>返回的布尔值表名，特定key是否被管理员管理<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- objectIsForcedForKey:inDomain:</span><br></pre></td></tr></table></figure></p>
+<p>返回的布尔值表名，特定域中的key是否被管理员管理</p>
+<h4 id="Domains"><a href="#Domains" class="headerlink" title="Domains"></a>Domains</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSArgumentDomain</span><br></pre></td></tr></table></figure>
+<p>从应用的参数中解析的默认值组成的域。有一对或多对在应用的命令行中包含的-default值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSGlobalDomain</span><br></pre></td></tr></table></figure></p>
+<p>所有的应用可见的默认值组成的域<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSRegistrationDomain</span><br></pre></td></tr></table></figure></p>
+<p>一系列临时默认值组成的域，它的值是应用设定的，以确保成功搜索</p>
+<h4 id="通知"><a href="#通知" class="headerlink" title="通知"></a>通知</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSUserDefaultsDidChangeNotification</span><br></pre></td></tr></table></figure>
+<p>当前程序用户默认值改变时发出<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSUserDefaultsSizeLimitExceededNotification</span><br></pre></td></tr></table></figure></p>
+<p>当用户默认值系统允许存储更多数据时发出<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSUbiquitousUserDefaultsCompletedInitialSyncNotification</span><br></pre></td></tr></table></figure></p>
+<p>当设备第一次连接云账户，或者用户切换主云账户，默认值完成数据下载时，发出。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSUbiquitousUserDefaultsDidChangeAccountsNotification</span><br></pre></td></tr></table></figure></p>
+<p>当用户改变主云账户时发出<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSUbiquitousUserDefaultsNoCloudAccountNotification</span><br></pre></td></tr></table></figure></p>
+<p>当设置云默认值但是没有云用户登录时发出</p>
+<h4 id="Legacy"><a href="#Legacy" class="headerlink" title="Legacy"></a>Legacy</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- initWithUser:（Deprecated）</span><br></pre></td></tr></table></figure>
+<p>使用特定用户账户初始化用户默认值对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- synchronize</span><br></pre></td></tr></table></figure></p>
+<p>等待任何默认值数据库的异步更新并返回；这个方法是不必要的，同时不应该被使用的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ resetStandardUserDefaults</span><br></pre></td></tr></table></figure></p>
+<p>这个方法没有任何效果，不应该被使用</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持就是对我的鼓励</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="shiru 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="shiru 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/30/iOS-侧滑返回详解FDFullscreenPopGesture/" rel="next" title="iOS 侧滑返回详解FDFullscreenPopGesture">
+                <i class="fa fa-chevron-left"></i> iOS 侧滑返回详解FDFullscreenPopGesture
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzk3NC8xMDUwOQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shiru</p>
+              <p class="site-description motion-element" itemprop="description">记录花花小草的技术成长之旅</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概览"><span class="nav-number">1.</span> <span class="nav-text">概览</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#重要："><span class="nav-number">1.0.1.</span> <span class="nav-text">重要：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#持久化文件引用"><span class="nav-number">1.1.</span> <span class="nav-text">持久化文件引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#响应默认值改变"><span class="nav-number">1.2.</span> <span class="nav-text">响应默认值改变</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在托管环境下使用默认值"><span class="nav-number">1.3.</span> <span class="nav-text">在托管环境下使用默认值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#沙盒"><span class="nav-number">1.4.</span> <span class="nav-text">沙盒</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#获取标准用户默认值对象"><span class="nav-number">1.4.1.</span> <span class="nav-text">获取标准用户默认值对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建用户默认值对象"><span class="nav-number">1.4.2.</span> <span class="nav-text">创建用户默认值对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取默认值"><span class="nav-number">1.4.3.</span> <span class="nav-text">获取默认值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置默认值"><span class="nav-number">1.4.4.</span> <span class="nav-text">设置默认值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#移除默认值"><span class="nav-number">1.4.5.</span> <span class="nav-text">移除默认值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Maintaining-Suites"><span class="nav-number">1.4.6.</span> <span class="nav-text">Maintaining Suites</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注册默认值"><span class="nav-number">1.4.7.</span> <span class="nav-text">注册默认值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#维护持久域"><span class="nav-number">1.4.8.</span> <span class="nav-text">维护持久域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#维护不稳定的域"><span class="nav-number">1.4.9.</span> <span class="nav-text">维护不稳定的域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#访问托管环境的key"><span class="nav-number">1.4.10.</span> <span class="nav-text">访问托管环境的key</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Domains"><span class="nav-number">1.4.11.</span> <span class="nav-text">Domains</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通知"><span class="nav-number">1.4.12.</span> <span class="nav-text">通知</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Legacy"><span class="nav-number">1.4.13.</span> <span class="nav-text">Legacy</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shiru</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
